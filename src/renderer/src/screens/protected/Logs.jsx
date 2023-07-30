@@ -1,0 +1,196 @@
+import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { useState, useEffect, useRef } from 'react'
+
+import { Toast } from 'primereact/toast'
+import { Column } from 'primereact/column'
+import { Button } from 'primereact/button'
+import { DataTable } from 'primereact/datatable'
+
+import Navbar from '../../components/Navbar'
+import { API_URL } from '../../utils/exports'
+import CopyText from '../../components/CopyText'
+import { catchHandler, showToast } from '../../utils/functions'
+
+const Logs = () => {
+  const toast = useRef(null)
+  const MESSAGE_LENGTH = 70
+  const { user } = useSelector((state) => state.auth)
+
+  const [logs, setLogs] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [expandedRow, setExpandedRow] = useState(null)
+  const [selectedLogs, setSelectedLogs] = useState([])
+
+  const token = user ? user.token : 'token'
+  const userId = user ? user.id : 'test-123456'
+
+  useEffect(() => {
+    return fetchLogs()
+  }, [])
+
+  const handleDownloadRequest = () => {
+    const arrayOfIds = selectedLogs.map((obj) => obj.id)
+    setIsLoading(true)
+
+    axios({
+      url: `${API_URL}/logs/${userId}`,
+      method: 'POST',
+      responseType: 'blob',
+      data: {
+        selection: arrayOfIds
+      },
+      timeout: 300_000,
+      headers: { 'x-access-token': token }
+    })
+      .then((response) => {
+        const filename = response.headers['content-disposition'].split('filename=')[1]
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', filename)
+        document.body.appendChild(link)
+        link.click()
+        showToast('success', 'Success', 'Download complete.', toast)
+      })
+      .catch((error) => {
+        catchHandler(error, toast)
+      })
+      .finally(() => setIsLoading(false))
+  }
+
+  const fetchLogs = () => {
+    setIsLoading(true)
+    axios
+      .get(`${API_URL}/logs`, { headers: { 'x-access-token': token } }) // 5 minutes timeout
+      .then((response) => {
+        setLogs(response.data)
+      })
+      .catch((error) => {
+        catchHandler(error, toast)
+      })
+      .finally(() => setIsLoading(false))
+  }
+
+  const paginatorLeft = (
+    <Button loading={isLoading} type="button" icon="pi pi-refresh" text onClick={fetchLogs} />
+  )
+  const paginatorRight = (
+    <Button
+      loading={isLoading}
+      type="button"
+      icon="pi pi-download"
+      text
+      onClick={handleDownloadRequest}
+    />
+  )
+  const allowExpansion = (rowData) => rowData.massage.length > MESSAGE_LENGTH
+  const messageColTemplate = (data) => {
+    const massage = data.massage
+    return (
+      <p className="m-0">
+        {massage.length > MESSAGE_LENGTH ? `${massage.substring(0, MESSAGE_LENGTH)}...` : massage}
+      </p>
+    )
+  }
+  const header = (
+    <div className="flex flex-wrap justify-content-between gap-2">
+      <div className="flex flex-wrap gap-2">
+        <h3 className="">Logs Table</h3>
+      </div>
+      <div className="flex flex-wrap justify-content-end gap-2">
+        <Button
+          loading={isLoading}
+          icon="pi pi-minus"
+          label="Collapse All"
+          onClick={() => setExpandedRow(null)}
+          text
+        />
+      </div>
+    </div>
+  )
+
+  return (
+    <div>
+      <Navbar activeIndex={4} />
+      <Toast ref={toast} />
+      <div className="mt-4">
+        <DataTable
+          rows={50}
+          size="small"
+          dataKey="id"
+          sortOrder={-1}
+          header={header}
+          value={logs}
+          sortMode="multiple"
+          sortField="timestamp"
+          selectionMode="checkbox"
+          selection={selectedLogs}
+          expandedRows={expandedRow}
+          paginatorLeft={paginatorLeft}
+          paginatorRight={paginatorRight}
+          scrollHeight="calc(100vh - 15rem)"
+          rowsPerPageOptions={[50, 100, 250, 500]}
+          onRowToggle={(e) => setExpandedRow(e.data)}
+          rowExpansionTemplate={rowExpansionTemplate}
+          onSelectionChange={(e) => setSelectedLogs(e.value)}
+          removableSort
+          showGridlines
+          stripedRows
+          paginator
+          scrollable
+          virtualScrollerOptions={{}} //left empty on purpose
+        >
+          <Column expander={allowExpansion} style={{ width: '1rem' }} />
+          <Column field="id" selectionMode="multiple" style={{ width: '2rem' }} />
+          {/* <Column field="generatee_id" filter filterPlaceholder="Search by id" header="Generatee Id" headerStyle={{ maxWidth: "5vw" }} /> */}
+          <Column
+            field="generatee_name"
+            filter
+            filterPlaceholder="Search by name"
+            sortable
+            header="By"
+            headerStyle={{ width: '20vw' }}
+          />
+          <Column
+            field="timestamp"
+            filter
+            filterPlaceholder="Search by date"
+            sortable
+            sortField="timestamp"
+            header="Timestamp"
+            headerStyle={{ width: '20vw' }}
+          />
+          <Column
+            field="massage"
+            filter
+            filterPlaceholder="Search by massage"
+            header="Message"
+            body={messageColTemplate}
+          />
+        </DataTable>
+      </div>
+    </div>
+  )
+}
+
+export default Logs
+
+const rowExpansionTemplate = (data) => {
+  return (
+    <table className="table my-3 mx-4">
+      <tbody>
+        <tr>
+          <td className="p-2 font-bold ">Generatee Id:</td>
+          <td className="p-2 font-italic">
+            <CopyText text={data.generatee_id} />
+          </td>
+        </tr>
+        <tr>
+          <td className="p-2 font-bold">Message:</td>
+          <td className="p-2">{data.massage}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}

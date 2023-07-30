@@ -1,0 +1,19 @@
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 5px;
+  transition: background-color 0.6s ease;
+}
+
+.dot-active {
+  background-color: #1eff00;
+}
+
+.dot-inactive {
+  background-color: #ff0000;
+}
+
+/* Path: src\js\assets\css\custom.css */
