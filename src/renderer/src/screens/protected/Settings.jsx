@@ -83,7 +83,7 @@ const Settings = () => {
     }
 
     axios
-      .put(`${API_URL}/users/${id}`, data, { headers: { 'x-access-token': token } })
+      .put(`${API_URL}/users/update/${id}`, data, { headers: { 'x-access-token': token } })
       .then((res) => {
         if (res.status !== 200) {
           return
@@ -132,6 +132,9 @@ const Settings = () => {
                   id="Phone"
                   className="p-inputtext-sm"
                   value={settings.phone}
+                  maxLength={11}
+                  minLength={11}
+                  placeholder="27687654320"
                   onChange={(e) => setSettings((prev) => ({ ...prev, phone: e.target.value }))}
                 />
               </div>
