@@ -1,19 +1,68 @@
-//import Clock from 'react-live-clock'
-import { useState } from 'react'
+import moment from 'moment'
 import { useNavigate } from 'react-router'
+import { useEffect, useRef, useState } from 'react'
 
 import { Card } from 'primereact/card'
 import { Badge } from 'primereact/badge'
 import { Button } from 'primereact/button'
 import { Divider } from 'primereact/divider'
+import { OverlayPanel } from 'primereact/overlaypanel'
 
 import MyMap from '../../components/Map'
 import Navbar from '../../components/Navbar'
+import { API_URL } from '../../utils/exports'
 
 const Dashbord = () => {
+  const op = useRef(null)
   const navigator = useNavigate()
   const [zoom, setZoom] = useState(16.2)
+  const [color, setColor] = useState('info')
+  const [intervalTime, setIntervalTime] = useState(10_000)
   const [center, setCenter] = useState([-26.260693, 29.121075])
+
+  useEffect(() => {
+    const intervalTime = JSON.parse(localStorage.getItem('intervalTime'))
+    if (intervalTime) {
+      setIntervalTime(intervalTime)
+    }
+    checkResponseTime(API_URL)
+    const intervalId = setInterval(() => {
+      checkResponseTime(API_URL)
+    }, intervalTime)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [intervalTime])
+
+  async function checkResponseTime(url) {
+    try {
+      const start = Date.now()
+      const server = await fetch(url)
+      const end = Date.now()
+      const responseTime = end - start
+
+      if (server.status !== 200) {
+        throw new Error('Server is down')
+      }
+
+      if (responseTime < 500) {
+        setColor('success')
+      } else if (responseTime < 5000) {
+        setColor('warning')
+      } else {
+        setColor('danger')
+      }
+    } catch (error) {
+      setColor('red')
+    }
+  }
+
+  const updateInterval = (time) => {
+    setIntervalTime(time)
+    localStorage.setItem('intervalTime', JSON.stringify(time))
+    op.current.hide()
+  }
 
   return (
     <div className="max-h-screen max-w-screen overflow-hidden">
@@ -31,6 +80,7 @@ const Dashbord = () => {
               />
             </div>
           </div>
+
           {/* Footer caontainer */}
           <div className="mt-3">
             <div className="grid m-0">
@@ -43,14 +93,18 @@ const Dashbord = () => {
               </div>
 
               <div className="col-1 p-0 flex align-items-center">
-                <Badge value="" severity="success" />
+                <Button
+                  text
+                  size="small"
+                  tooltip={`Ping every: ${intervalTime / 1000} sec. Click to change`}
+                  tooltipOptions={{ position: 'top' }}
+                  onClick={(e) => op.current.toggle(e)}
+                >
+                  <Badge value="" severity={color} />
+                </Button>
               </div>
               <div className="col-3 p-0 flex align-items-center">
-                {/* <Clock
-                  format={'dddd, MMMM Do YYYY, h:mm:ss a'}
-                  ticking={true}
-                  className="text-yellow-500 align-self-center"
-                /> */}
+                <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
               </div>
 
               <div className="col-1 flex justify-content-end p-0">
@@ -187,6 +241,40 @@ const Dashbord = () => {
           </Card>
         </div>
       </div>
+      <OverlayPanel ref={op}>
+        <div>
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-900"
+            label="3 sec"
+            onClick={() => updateInterval(3_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-900"
+            label="10 sec"
+            onClick={() => updateInterval(10_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-900"
+            label="30 sec"
+            onClick={() => updateInterval(30_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-900"
+            label="1 min"
+            onClick={() => updateInterval(60_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-900"
+            label="5 min"
+            onClick={() => updateInterval(300_000)}
+          />
+        </div>
+      </OverlayPanel>
     </div>
   )
 }

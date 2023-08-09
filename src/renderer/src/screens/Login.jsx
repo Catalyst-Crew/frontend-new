@@ -1,5 +1,4 @@
 import axios from 'axios'
-//import Clock from 'react-live-clock'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { useRef, useState } from 'react'
@@ -11,6 +10,7 @@ import { InputText } from 'primereact/inputtext'
 import { API_URL } from '../utils/exports'
 import { login } from '../store/features/authSlice'
 import { catchHandler, showToast } from '../utils/functions'
+import DateTime from '../components/DateTime'
 
 const Login = () => {
   const toast = useRef(null)
@@ -56,7 +56,7 @@ const Login = () => {
   return (
     <div className="column text-center py-6">
       <Toast ref={toast} />
-      {/* <Clock format={'dddd, MMMM Do YYYY, h:mm:ss a'} ticking={true} className="text-yellow-500" /> */}
+      <DateTime />
 
       <h1>Login</h1>
       <p className="m-4">Welcome back! Please enter your details.</p>

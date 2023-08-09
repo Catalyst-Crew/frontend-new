@@ -18,29 +18,27 @@ export default function App() {
 
   return (
     <HashRouter>
-      {
-        //isLogged && user ?
-        true ? (
-          <Routes>
-            <Route path="/" index element={<Dashbord />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/logs" element={<Logs />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/employees" element={<Employee />} />
-            <Route path="/access-points" element={<AccessPoints />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" index element={<Dashbord />} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" element={<Login />} />
-          </Routes>
-        )
-      }
+      {isLogged && user ? (
+        //true ?
+        <Routes>
+          <Route path="/" index element={<Dashbord />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/logs" element={<Logs />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/employees" element={<Employee />} />
+          <Route path="/access-points" element={<AccessPoints />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="*" index element={<Dashbord />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="*" element={<Login />} />
+        </Routes>
+      )}
     </HashRouter>
   )
 }
