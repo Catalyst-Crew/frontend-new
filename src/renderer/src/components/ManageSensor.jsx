@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
@@ -62,7 +63,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
     axios
       .put(
         `${API_URL}/sensors/unassign`,
-        { username, deviceId: data?.deviceId, id: data?.id },
+        { username, device_id: data?.deviceId, id: data?.id },
         {
           headers: { 'x-access-token': token }
         }
@@ -103,13 +104,13 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
   }
 
   return (
-    <Card title="Manage Sensor" className="mt-2" subTitle={data?.id.substring(0, 10)}>
+    <Card title="Manage Sensor" className="mt-2" subTitle={`${data?.id_prefix}${data.id}`}>
       <div className="card flex flex-column gap-2 mt-3 ml-2">
         <div className="flex flex-column gap-2 ">
           <label htmlFor="access">Device ID:</label>
           <Inplace closable>
             <InplaceDisplay>
-              <p className="my-1">{sensorData?.deviceId || 'Click to edit'}</p>
+              <p className="my-1">{sensorData?.device_id || 'Click to edit'}</p>
             </InplaceDisplay>
             <InplaceContent>
               <InputText
@@ -124,11 +125,11 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
         <div className="flex flex-column gap-2 ">
           <label htmlFor="reason">Status:</label>
           <Dropdown
-            value={sensorData?.active}
+            value={sensorData?.status}
             onChange={(e) => setData((prev) => ({ ...prev, active: e.value }))}
             options={staticData.switchState}
-            optionLabel="status"
-            optionValue="code"
+            optionLabel="name"
+            optionValue="status"
             placeholder="Select Status"
             className="w-full md:w-14rem"
           />
@@ -138,9 +139,9 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
           <Dropdown
             value={sensorData?.available}
             onChange={(e) => setData((prev) => ({ ...prev, available: e.value }))}
-            options={staticData.switchState}
-            optionLabel="status"
-            optionValue="code"
+            options={staticData.availabeState}
+            optionLabel="name"
+            optionValue="available"
             placeholder="Select Status"
             className="w-full md:w-14rem"
           />
@@ -155,7 +156,9 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
                     <p className="m-0 mt-2">Updated:</p>
                   </td>
                   <td>
-                    <p className="m-0  mt-2 font-bold">{sensorData?.last_updated}</p>
+                    <p className="m-0  mt-2 font-bold">
+                      {moment(sensorData?.updated_at).format('LLL')}
+                    </p>
                   </td>
                 </tr>
                 <tr>
@@ -163,7 +166,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
                     <p className="m-0">Updated by:</p>
                   </td>
                   <td>
-                    <p className="m-0 font-bold">{sensorData?.modified_by}</p>
+                    <p className="m-0 font-bold">{sensorData?.updated_by}</p>
                   </td>
                 </tr>
               </tbody>
