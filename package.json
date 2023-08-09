@@ -22,7 +22,8 @@
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
     "electron-updater": "^6.1.1",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "prop-types": "^15.7.0"
   },
   "devDependencies": {
     "@electron/notarize": "^2.1.0",
