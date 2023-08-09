@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 
@@ -14,6 +15,7 @@ import ManageSensor from '../../components/ManageSensor'
 import ManageAccess from '../../components/ManageAccess'
 
 import { API_URL } from '../../utils/exports'
+import CopyText from '../../components/CopyText'
 import { catchHandler } from '../../utils/functions'
 
 const AccessPoints = () => {
@@ -21,15 +23,41 @@ const AccessPoints = () => {
 
   const { user } = useSelector((state) => state.auth)
   const token = user ? user.token : 'token'
-  const username = user ? user.username : 'username'
+  const name = user ? user.id_prefix + user.id : 'user-999999'
 
-  const [sensors, setSensors] = useState([])
+  const [sensors, setSensors] = useState([
+    {
+      id: 1000001,
+      id_prefix: 'sen-',
+      status: 0,
+      device_id: null,
+      available: 1,
+      updated_by: 'System',
+      updated_at: '2023-08-08T18:24:17.000Z',
+      created_by: 'system',
+      created_at: '2023-08-08T18:24:17.000Z'
+    }
+  ])
   const [loading, setLoading] = useState(false)
   const [addSensor, setAddSensor] = useState(false)
   const [addAccess, setAddAccess] = useState(false)
   const [selectedAccess, setAccess] = useState(null)
   const [selectedSensor, setSensor] = useState(null)
-  const [accessPoints, setAccessPoints] = useState([])
+  const [accessPoints, setAccessPoints] = useState([
+    {
+      id: 1000000,
+      id_prefix: 'acc-',
+      area_id: 1000000,
+      name: 'A1-1',
+      lat: '-26.260693',
+      longitude: '29.121075',
+      area_id_prefix: 'are-',
+      area_name: 'Shaft-A1',
+      location: '-26.260693,29.121075',
+      area_lat: '-26.260693',
+      area_longitude: '29.121075'
+    }
+  ])
 
   useEffect(() => {
     return fetchData()
@@ -59,8 +87,8 @@ const AccessPoints = () => {
         headers: { 'x-access-token': token }
       })
       .then((response) => {
-        setAccessPoints(response.data)
         setAccess(response.data[0])
+        setAccessPoints(response.data)
       })
       .catch((error) => {
         catchHandler(error, toast)
@@ -80,8 +108,8 @@ const AccessPoints = () => {
         headers: { 'x-access-token': token }
       })
       .then((response) => {
-        setSensors(response.data)
         setSensor(response.data[0])
+        setSensors(response.data)
       })
       .catch((error) => {
         catchHandler(error, toast)
@@ -100,12 +128,12 @@ const AccessPoints = () => {
   }
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full overflow-hidden" style={{ height: '97vh' }}>
       <Navbar activeIndex={3} />
       <Toast ref={toast} />
-      <div className="flex mt-1 " style={{ height: '95vh' }}>
+      <div className="flex">
         {/* Table div */}
-        <div className="w-8 px-3 h-full">
+        <div className="w-8 px-3" style={{ height: '95vh' }}>
           <DataTable
             value={accessPoints}
             header={() =>
@@ -119,15 +147,21 @@ const AccessPoints = () => {
             {...tableOptions}
             className="mb-2"
           >
-            <Column field="id" header="Name" body={nameTemplate} />
-            <Column field="active" header="Status" body={activeTemplate} />
+            <Column field="id" header="ID" body={nameTemplate} />
+            <Column field="name" header="Name" />
+            <Column field="status" header="Status" body={activeTemplate} />
+            <Column
+              field="location"
+              header="Location"
+              body={(e) => <CopyText text={e.location} />}
+            />
             <Column
               field="id"
               header="Action"
               body={(e) => actionBodyTemplate(e, selectAccessPoint)}
             />
           </DataTable>
-
+          <hr />
           <DataTable
             value={sensors}
             header={() =>
@@ -142,30 +176,39 @@ const AccessPoints = () => {
             paginator
             className="mt-2"
           >
-            <Column field="id" header="Name" body={nameTemplate} />
-            <Column field="active" header="Status" body={activeTemplate} />
+            <Column field="id" header="ID" body={nameTemplate} />
+            <Column field="status" header="Status" body={activeTemplate} />
             <Column field="available" header="Available" body={availableTemplate} />
-            <Column field="last_updated" header="Last Update" />
+            <Column
+              field="updated_at"
+              header="Last Update"
+              body={(e) => <>{moment(e.updated_at).fromNow()}</>}
+            />
+            <Column field="device_id" header="Device ID" />
             <Column field="id" header="Action" body={(e) => actionBodyTemplate(e, selectSensor)} />
           </DataTable>
         </div>
 
         {/* Right div */}
         <div className="flex flex-column w-4 px-3">
-          <ManageAccess
-            data={selectedAccess}
-            toastRef={toast}
-            token={token}
-            username={username}
-            refresh={getAccessPoints}
-          />
-          <ManageSensor
-            data={selectedSensor}
-            toastRef={toast}
-            token={token}
-            username={username}
-            refresh={getSensors}
-          />
+          {selectedAccess && (
+            <ManageAccess
+              data={selectedAccess}
+              toastRef={toast}
+              token={token}
+              username={name}
+              refresh={getAccessPoints}
+            />
+          )}
+          {selectedSensor && (
+            <ManageSensor
+              data={selectedSensor}
+              toastRef={toast}
+              token={token}
+              username={name}
+              refresh={getSensors}
+            />
+          )}
         </div>
         <NewAccess
           visible={addAccess}
@@ -189,17 +232,15 @@ const tableOptions = {
   rowsPerPageOptions: [10, 25, 50, 100],
   stripedRows: true,
   scrollable: true,
-  scrollHeight: 'calc(100vh - 15rem)',
+  scrollHeight: 'calc(100vh - 25rem)',
   removableSort: true,
-  style: { width: '100%', height: '48%' }
+  style: { width: '100%', height: '45%' }
 }
 
 const header = ({ text, action, isLoading, refresh }) => {
   return (
-    <div className="flex flex-wrap justify-content-between gap-2">
-      <div className="flex flex-wrap gap-2">
-        <h3 className="my-1">{text}</h3>
-      </div>
+    <div className="flex flex-wrap justify-content-between">
+      <h3 className="my-1">{text}</h3>
       <div className="flex flex-wrap justify-content-end gap-2">
         <Button icon={`pi pi-plus`} onClick={action} size="small" label="Add new" />
         <Button
@@ -207,6 +248,7 @@ const header = ({ text, action, isLoading, refresh }) => {
           icon={`pi pi-refresh ${isLoading && 'pi-spin'}`}
           onClick={refresh}
           text
+          size="small"
         />
       </div>
     </div>
@@ -216,8 +258,8 @@ const header = ({ text, action, isLoading, refresh }) => {
 const activeTemplate = (rowData) => {
   return (
     <div className="flex align-items-center">
-      <span className={`dot ${rowData.active === 1 ? 'dot-active' : 'dot-inactive'}`} />
-      <span className="ml-2">{rowData.active === 1 ? 'On' : 'Off'}</span>
+      <span className={`dot ${rowData.status === 1 ? 'dot-active' : 'dot-inactive'}`} />
+      <span className="ml-2">{rowData.status === 1 ? 'On' : 'Off'}</span>
     </div>
   )
 }
@@ -234,7 +276,7 @@ const availableTemplate = (rowData) => {
 const nameTemplate = (rowData) => {
   return (
     <div className="flex align-items-center">
-      <span className="ml-2">{rowData.id.substring(0, 10)}</span>
+      <span className="ml-2">{`${rowData.id_prefix}${rowData.id}`}</span>
     </div>
   )
 }
