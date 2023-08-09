@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { useState, useEffect, useRef } from 'react'
 
@@ -84,12 +85,12 @@ const Logs = () => {
       onClick={handleDownloadRequest}
     />
   )
-  const allowExpansion = (rowData) => rowData.massage.length > MESSAGE_LENGTH
+  const allowExpansion = (rowData) => rowData.message.length > MESSAGE_LENGTH
   const messageColTemplate = (data) => {
-    const massage = data.massage
+    const message = data.message
     return (
       <p className="m-0">
-        {massage.length > MESSAGE_LENGTH ? `${massage.substring(0, MESSAGE_LENGTH)}...` : massage}
+        {message.length > MESSAGE_LENGTH ? `${message.substring(0, MESSAGE_LENGTH)}...` : message}
       </p>
     )
   }
@@ -114,7 +115,7 @@ const Logs = () => {
     <div>
       <Navbar activeIndex={4} />
       <Toast ref={toast} />
-      <div className="mt-4">
+      <div>
         <DataTable
           rows={50}
           size="small"
@@ -123,13 +124,13 @@ const Logs = () => {
           header={header}
           value={logs}
           sortMode="multiple"
-          sortField="timestamp"
+          sortField="created_at"
           selectionMode="checkbox"
           selection={selectedLogs}
           expandedRows={expandedRow}
           paginatorLeft={paginatorLeft}
           paginatorRight={paginatorRight}
-          scrollHeight="calc(100vh - 15rem)"
+          scrollHeight="calc(100vh - 14rem)"
           rowsPerPageOptions={[50, 100, 250, 500]}
           onRowToggle={(e) => setExpandedRow(e.data)}
           rowExpansionTemplate={rowExpansionTemplate}
@@ -145,7 +146,7 @@ const Logs = () => {
           <Column field="id" selectionMode="multiple" style={{ width: '2rem' }} />
           {/* <Column field="generatee_id" filter filterPlaceholder="Search by id" header="Generatee Id" headerStyle={{ maxWidth: "5vw" }} /> */}
           <Column
-            field="generatee_name"
+            field="loger_name"
             filter
             filterPlaceholder="Search by name"
             sortable
@@ -153,18 +154,19 @@ const Logs = () => {
             headerStyle={{ width: '20vw' }}
           />
           <Column
-            field="timestamp"
+            field="created_at"
             filter
             filterPlaceholder="Search by date"
             sortable
-            sortField="timestamp"
+            sortField="created_at"
             header="Timestamp"
             headerStyle={{ width: '20vw' }}
+            body={(e) => <>{moment(e.created_at).format('LLL')}</>}
           />
           <Column
-            field="massage"
+            field="message"
             filter
-            filterPlaceholder="Search by massage"
+            filterPlaceholder="Search by message"
             header="Message"
             body={messageColTemplate}
           />
@@ -183,12 +185,12 @@ const rowExpansionTemplate = (data) => {
         <tr>
           <td className="p-2 font-bold ">Generatee Id:</td>
           <td className="p-2 font-italic">
-            <CopyText text={data.generatee_id} />
+            <CopyText text={data.loger_id} />
           </td>
         </tr>
         <tr>
           <td className="p-2 font-bold">Message:</td>
-          <td className="p-2">{data.massage}</td>
+          <td className="p-2">{data.message}</td>
         </tr>
       </tbody>
     </table>
