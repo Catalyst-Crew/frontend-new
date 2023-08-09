@@ -31,10 +31,7 @@ const Settings = () => {
   useEffect(() => {
     if (user) {
       setSettings({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone
+        id: user.id
       })
     }
 
@@ -69,6 +66,7 @@ const Settings = () => {
         if (res.status !== 200) {
           return
         }
+        getUserSettings()
         showToast('success', 'Success', res.data.message, toast)
       })
       .catch((err) => {
@@ -103,6 +101,7 @@ const Settings = () => {
         if (res.status !== 200) {
           return
         }
+        getUserSettings()
         showToast('success', 'Success', res.data.message, toast)
       })
       .catch((err) => {
