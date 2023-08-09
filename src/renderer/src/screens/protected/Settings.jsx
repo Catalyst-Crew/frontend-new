@@ -3,6 +3,7 @@ import { Toast } from 'primereact/toast'
 import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
+import { ScrollPanel } from 'primereact/scrollpanel'
 
 import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
@@ -17,12 +18,12 @@ const Settings = () => {
   const toast = useRef(null)
   const [settings, setSettings] = useState({
     id: '',
-    name: '',
-    useremail: '',
+    name: 'Axole Maranjana',
+    email: 'axolemaranjana4@gmail.com',
     phone: '',
-    app: 1,
-    email: 1,
-    mode: 1
+    app_notifications: 1,
+    email_notifications: 1,
+    dark_mode: 0
   })
 
   const { user } = useSelector((state) => state.auth)
@@ -32,7 +33,7 @@ const Settings = () => {
       setSettings({
         id: user.id,
         name: user.name,
-        useremail: user.email,
+        email: user.email,
         phone: user.phone
       })
     }
@@ -40,23 +41,21 @@ const Settings = () => {
     return getUserSettings()
   }, [])
 
-  const userId = user ? user.id : 'id'
+  const id = user ? user.id : 1_000_000
   const token = user ? user.token : 'token'
 
   const getUserSettings = () => {
     axios
-      .get(`${API_URL}/settings/${userId}`, { headers: { 'x-access-token': token } })
+      .get(`${API_URL}/settings/${id}`, { headers: { 'x-access-token': token } })
       .then((res) => {
         if (res.status !== 200) {
           return
         }
-        setSettings({
-          ...settings,
-          app: res.data.data.app,
-          email: res.data.data.email,
-          mode: res.data.data.darkMode
-        })
-        localStorage.setItem('settings', JSON.stringify(res.data.data))
+        setSettings((prev) => ({
+          ...prev,
+          ...res.data
+        }))
+        localStorage.setItem('settings', JSON.stringify(res.data))
       })
       .catch((err) => {
         catchHandler(err, toast)
@@ -64,14 +63,8 @@ const Settings = () => {
   }
 
   const updateUserSettings = () => {
-    const data = {
-      app: settings.app,
-      email: settings.email,
-      darkMode: settings.mode
-    }
-
     axios
-      .put(`${API_URL}/settings/${userId}`, data, { headers: { 'x-access-token': token } })
+      .put(`${API_URL}/settings/${id}`, settings, { headers: { 'x-access-token': token } })
       .then((res) => {
         if (res.status !== 200) {
           return
@@ -90,7 +83,7 @@ const Settings = () => {
     }
 
     axios
-      .put(`${API_URL}/users/${userId}`, data, { headers: { 'x-access-token': token } })
+      .put(`${API_URL}/users/${id}`, data, { headers: { 'x-access-token': token } })
       .then((res) => {
         if (res.status !== 200) {
           return
@@ -103,10 +96,10 @@ const Settings = () => {
   }
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className=" max-h-screen">
       <Navbar />
       <Toast ref={toast} />
-      <div className="overflow-scroll mt-3" style={{ height: '95vh' }}>
+      <ScrollPanel style={{ width: '100%', height: '88vh' }}>
         <Card title="User Setings" subTitle="Update your setting here." className="sidebar">
           <div className="mt-3">
             <div className="flex flex-column gap-4 w-4 pl-5 pb-3">
@@ -117,7 +110,7 @@ const Settings = () => {
                   aria-describedby="id-help"
                   className="p-inputtext-sm"
                   disabled
-                  value={settings.name}
+                  value={user?.identity}
                 />
               </div>
               <div className="flex flex-column gap-2">
@@ -126,17 +119,12 @@ const Settings = () => {
                   id="name"
                   className="p-inputtext-sm"
                   value={settings.name}
-                  onChange={(e) => setSettings({ ...settings, name: e.target.value })}
+                  onChange={(e) => setSettings((prev) => ({ ...prev, name: e.target.value }))}
                 />
               </div>
               <div className="flex flex-column gap-2">
                 <label htmlFor="Email">Email:</label>
-                <InputText
-                  id="Email"
-                  className="p-inputtext-sm"
-                  disabled
-                  value={settings.useremail}
-                />
+                <InputText id="Email" className="p-inputtext-sm" disabled value={settings.email} />
               </div>
               <div className="flex flex-column gap-2">
                 <label htmlFor="Phone">Phone number:</label>
@@ -144,7 +132,7 @@ const Settings = () => {
                   id="Phone"
                   className="p-inputtext-sm"
                   value={settings.phone}
-                  onChange={(e) => setSettings({ ...settings, name: e.target.value })}
+                  onChange={(e) => setSettings((prev) => ({ ...prev, phone: e.target.value }))}
                 />
               </div>
               <Button
@@ -155,19 +143,18 @@ const Settings = () => {
             </div>
           </div>
         </Card>
-
         <Card title="App settings" subTitle="Customise your preferences here." className="mt-5">
           <div className="flex flex-column gap-4 w-4 pl-5 mb-3 pt-3">
             <div className="flex flex-column gap-2">
               <label htmlFor="app">App Notifications:</label>
               <Dropdown
                 id="app"
-                value={settings.app}
-                onChange={(e) => setSettings({ ...settings, app: e.value })}
+                value={settings.app_notifications}
+                onChange={(e) => setSettings({ ...settings, app_notifications: e.value })}
                 options={staticData.switchState}
-                optionLabel="status"
-                optionValue="code"
-                placeholder="Status"
+                optionLabel="name"
+                optionValue="status"
+                placeholder="On"
                 className="w-full md:w-14rem"
               />
             </div>
@@ -175,12 +162,12 @@ const Settings = () => {
               <label htmlFor="email">Email Notifications:</label>
               <Dropdown
                 id="email"
-                value={settings.email}
-                onChange={(e) => setSettings({ ...settings, email: e.value })}
+                value={settings.email_notifications}
+                onChange={(e) => setSettings({ ...settings, email_notifications: e.value })}
                 options={staticData.switchState}
-                optionLabel="status"
-                optionValue="code"
-                placeholder="Status"
+                optionLabel="name"
+                optionValue="status"
+                placeholder="On"
                 className="w-full md:w-14rem"
               />
             </div>
@@ -188,12 +175,12 @@ const Settings = () => {
               <label htmlFor="mode">Dark Mode:</label>
               <Dropdown
                 id="mode"
-                value={settings.mode}
-                onChange={(e) => setSettings({ ...settings, mode: e.value })}
+                value={settings.dark_mode}
+                onChange={(e) => setSettings({ ...settings, dark_mode: e.value })}
                 options={staticData.switchState}
-                optionLabel="status"
-                optionValue="code"
-                placeholder="Status"
+                optionLabel="name"
+                optionValue="status"
+                placeholder="Off"
                 className="w-full md:w-14rem"
               />
             </div>
@@ -204,7 +191,7 @@ const Settings = () => {
             />
           </div>
         </Card>
-      </div>
+      </ScrollPanel>
     </div>
   )
 }
