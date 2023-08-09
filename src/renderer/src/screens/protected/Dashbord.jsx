@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { useNavigate } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 
@@ -11,6 +10,7 @@ import { OverlayPanel } from 'primereact/overlaypanel'
 import MyMap from '../../components/Map'
 import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
+import DateTime from '../../components/DateTime'
 
 const Dashbord = () => {
   const op = useRef(null)
@@ -67,8 +67,8 @@ const Dashbord = () => {
   return (
     <div className="max-h-screen max-w-screen overflow-hidden">
       <Navbar activeIndex={0} />
-      <div className="grid mt-4 text-sm">
-        <div className="col-9 flex flex-column  pr-2">
+      <div className="grid text-sm" style={{ height: '90vh' }}>
+        <div className="col-9 flex flex-column pr-2" style={{ height: '90vh' }}>
           {/* Map caontainer */}
           <div className="h-full">
             <div className="border-yellow-500 border-solid border-1 border-round-xs h-full w-full">
@@ -104,7 +104,7 @@ const Dashbord = () => {
                 </Button>
               </div>
               <div className="col-3 p-0 flex align-items-center">
-                <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
+                <DateTime format="ddd, MMMM Mo, Y, h:mm:ss A" />
               </div>
 
               <div className="col-1 flex justify-content-end p-0">
