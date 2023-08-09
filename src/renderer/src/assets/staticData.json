@@ -2,59 +2,77 @@
   "access": [
     {
       "name": "Grant",
-      "id": "granted"
+      "id": 1000000
     },
     {
       "name": "Block",
-      "id": "blocked"
+      "id": 1000002
     },
     {
       "name": "Delete",
-      "id": "deleted"
+      "id": 1000003
     }
   ],
   "accessLevel": [
     {
       "name": "Supervisor",
-      "id": "supervisor"
+      "id": 1000001
     },
     {
       "name": "Admin",
-      "id": "admin"
+      "id": 1000000
+    },
+    {
+      "name": "Viewer",
+      "id": 1000002
     }
   ],
   "accessArea": [
     {
       "name": "SHAFT-1",
-      "id": "AREA-W5pBL9Q7oS7BW41PYxBKxOZ0NXqvtFj"
+      "id": 1000000
     },
     {
       "name": "SHAFT-2",
-      "id": "AREA-W5pBL9Q7oS7BW41PYxBKxOZ0NXqvtFj"
+      "id": 1000001
     },
     {
       "name": "West-Wing",
-      "id": "AREA-W5pBL9Q7oS7BW41PYxBKxOZ0NXqvtFj"
+      "id": 1000002
     }
   ],
   "shift": [
     {
       "name": "Day",
-      "id": "day"
+      "id": 1000000
     },
     {
       "name": "Night",
-      "id": "night"
+      "id": 1000001
+    },
+    {
+      "name": "None",
+      "id": 1000002
     }
   ],
   "switchState": [
     {
-      "status": "On",
-      "code": 1
+      "name": "On",
+      "status": 1
     },
     {
-      "status": "Off",
-      "code": 0
+      "name": "Off",
+      "status": 0
+    }
+  ],
+  "availabeState": [
+    {
+      "name": "On",
+      "available": 1
+    },
+    {
+      "name": "Off",
+      "available": 0
     }
   ]
 }
