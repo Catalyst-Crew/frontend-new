@@ -1,8 +1,6 @@
 import { Card } from 'primereact/card'
-import { Badge } from 'primereact/badge'
 import { Toast } from 'primereact/toast'
 import { Button } from 'primereact/button'
-import { Avatar } from 'primereact/avatar'
 import { Column } from 'primereact/column'
 import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
@@ -10,11 +8,13 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 
 import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
-import { catchHandler, showToast } from '../../utils/functions'
+import username from '../../components/UserName'
 import staticData from '../../assets/staticData.json'
 import NewEmployee from '../../components/NewEmployee'
+import { catchHandler, showToast } from '../../utils/functions'
 
 import axios from 'axios'
+import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 
@@ -24,31 +24,59 @@ const Employee = () => {
 
   const [nodeId, setNodeId] = useState(null)
   const [visible, setVisible] = useState(false)
-  const [employess, setEmployees] = useState([])
-  const [supervisors, setSupervisors] = useState(null)
+  const [employess, setEmployees] = useState([
+    {
+      id: 1000001,
+      id_prefix: 'min-',
+      user_name: 'Karao',
+      email: 'Amail.com',
+      status: 1,
+      created_at: '2023-08-07T13:29:47.000Z',
+      created_by: 'System',
+      updated_at: '2023-08-07T13:29:47.000Z',
+      updated_by: 'System',
+      supervisor_id: 1000000,
+      shift_id: 1000000,
+      sensor_id: null,
+      supervisor_name: 'Axole Maranjana',
+      shift_name: 'Day'
+    }
+  ])
+  const [supervisors, setSupervisors] = useState([
+    {
+      user_id: 1000008,
+      user_id_prefix: 'user-',
+      user_name: 'Test Supervisor',
+      role_name: 'Supervisor',
+      role_id: 1000001
+    }
+  ])
   const [availabeNodes, setAvailabeNodes] = useState(null)
   const [selectedShift, setSelectedShift] = useState(null)
   const [selectedSupervisor, setSelectedSupervisor] = useState(null)
   const [selectedEmployee, setSelectEmloyee] = useState({
-    id: '',
-    name: '',
-    shift: '',
-    sensorsid: null,
-    created_by: '',
-    updated_by: '',
-    last_updated: '',
-    created: '',
-    supervisor_name: '',
-    supervisor_id: ''
+    id: 1000001,
+    id_prefix: 'min-',
+    user_name: 'Karao',
+    email: 'Amail.com',
+    status: 1,
+    created_at: '2023-08-07T13:29:47.000Z',
+    created_by: 'System',
+    updated_at: '2023-08-07T13:29:47.000Z',
+    updated_by: 'System',
+    supervisor_id: 1000000,
+    shift_id: 1000000,
+    sensor_id: null,
+    supervisor_name: 'Axole Maranjana',
+    shift_name: 'Day'
   })
 
   useEffect(() => {
     refresh()
   }, [])
 
-  //const userId = user ? user.id : 'USER-2096fd6e-eea0-4ec4-a4d9-e620933f83ab'
   const token = user ? user.token : 'token'
-  const name = user ? user.name : 'Admin'
+  const name = user ? user.id_prefix + user.id : 'user-999999'
 
   const refresh = () => {
     fetchNodes()
@@ -90,8 +118,8 @@ const Employee = () => {
       .then((res) => {
         setSelectEmloyee(res.data.data[0])
         setEmployees(res.data.data)
-        setNodeId(res.data.data[0].sensorsid)
-        setSelectedShift(res.data.data[0].shift)
+        setNodeId(res.data.data[0].sensor_id)
+        setSelectedShift(res.data.data[0].shift_id)
         setSelectedSupervisor(res.data.data[0].supervisor_id)
       })
       .catch((err) => {
@@ -134,9 +162,9 @@ const Employee = () => {
   const selectEmployee = (userData) => {
     const user = employess.find((user) => user.id === userData.id)
     setSelectEmloyee(user)
-    setNodeId(user.sensorsid)
+    setNodeId(user.sensor_id)
     setSelectedSupervisor(user.supervisor_id)
-    setSelectedShift(user.shift)
+    setSelectedShift(user.shift_id)
   }
 
   const fetchNodes = () => {
@@ -175,23 +203,23 @@ const Employee = () => {
       <Toast ref={toast} />
       <ConfirmDialog />
 
-      <div className="flex mt-3 h-max-h-full">
+      <div className="flex h-max-h-full">
         {/* Table div */}
         <div className="w-8 px-3 ">
           <DataTable
             value={employess}
             scrollable
             className="max-h-full"
-            scrollHeight="calc(100vh - 15rem)"
+            scrollHeight="calc(100vh - 5rem)"
           >
             <Column
               header="Name"
-              filterField="name"
+              filterField="user_name"
               filter
               filterPlaceholder="Search by name"
-              body={imageBodyTemplate}
+              body={username}
             />
-            <Column field="shift" sortable header="Shift" />
+            <Column field="shift_name" sortable header="Shift" />
             <Column field="supervisor_name" sortable header="Supervisor" />
             <Column header="Action" body={actionBodyTemplate} />
           </DataTable>
@@ -204,7 +232,7 @@ const Employee = () => {
           </Button>
 
           <Card className="sidebar">
-            {imageBodyTemplate(selectedEmployee)}
+            {username(selectedEmployee)}
 
             <div className="mt-4">
               <div className="flex flex-column gap-2 text-left">
@@ -239,8 +267,8 @@ const Employee = () => {
                   value={selectedSupervisor}
                   onChange={(e) => setSelectedSupervisor(e.value)}
                   options={supervisors}
-                  optionLabel="name"
-                  optionValue="id"
+                  optionLabel="user_name"
+                  optionValue="user_id"
                   placeholder="Select Supervisor"
                   className="w-full p-inputtext-sm"
                 />
@@ -257,7 +285,9 @@ const Employee = () => {
                           <p className="m-0 mt-4">Updated:</p>
                         </td>
                         <td>
-                          <p className="m-0  mt-4 font-bold">{selectedEmployee.last_updated}</p>
+                          <p className="m-0  mt-4 font-bold">
+                            {moment(selectedEmployee.updated_at).format('LLL')}
+                          </p>
                         </td>
                       </tr>
                       <tr>
@@ -274,7 +304,9 @@ const Employee = () => {
                           <p className="m-0 mt-4">Created:</p>
                         </td>
                         <td>
-                          <p className="m-0  mt-4 font-bold">{selectedEmployee.created}</p>
+                          <p className="m-0  mt-4 font-bold">
+                            {moment(selectedEmployee.created_at).format('LLL')}
+                          </p>
                         </td>
                       </tr>
                       <tr>
@@ -303,6 +335,7 @@ const Employee = () => {
           </Card>
         </div>
       </div>
+
       <NewEmployee
         visible={visible}
         setVisible={setVisible}
@@ -314,33 +347,3 @@ const Employee = () => {
 }
 
 export default Employee
-
-const imageBodyTemplate = (user) => {
-  let name = ''
-
-  if (user.name.includes(' ')) {
-    const nameArr = user.name.split(' ')
-    name = nameArr[0][0] + nameArr[1][0]
-  } else {
-    name = user.name.substring(0, 2)
-  }
-
-  return (
-    <div className="flex align-items-center">
-      <Avatar
-        className="p-overlay-badge"
-        label={name.toUpperCase()}
-        size="large"
-        style={{ backgroundColor: '#2196F3', color: '#ffffff' }}
-        shape="circle"
-      >
-        <Badge severity={user.sensorsid ? 'success' : 'danger'} />
-      </Avatar>
-      <div className="ml-2">
-        <p className="font-bold m-0 p-0">{user.name}</p>
-        <p className="text-sm m-0 p-0">{user.email}</p>
-        <p className="text-sm m-0 p-0 cursor-pointer">{`MID: ...${user.id.split('-')[4]}`}</p>
-      </div>
-    </div>
-  )
-}

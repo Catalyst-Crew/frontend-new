@@ -23,25 +23,28 @@ const Navbar = ({ activeIndex = 0 }) => {
   const dispatch = useDispatch()
 
   return (
-    <div className="flex justify-content-between">
-      <div className="flex">
-        <Image src={IconImage} width={40} />
-        <TabMenu
-          model={items}
-          activeIndex={activeIndex}
-          onTabChange={(e) => navigator(e.value.route)}
+    <div>
+      <div className="flex justify-content-between">
+        <div className="flex">
+          <Image src={IconImage} width={40} />
+          <TabMenu
+            model={items}
+            activeIndex={activeIndex}
+            onTabChange={(e) => navigator(e.value.route)}
+          />
+        </div>
+        <Button
+          className="logbutton"
+          size="small"
+          severity="warning"
+          label="Logout"
+          type="button"
+          onClick={() => {
+            dispatch(logout())
+          }}
         />
       </div>
-      <Button
-        className="logbutton"
-        size="small"
-        severity="warning"
-        label="Logout"
-        type="button"
-        onClick={() => {
-          dispatch(logout())
-        }}
-      />
+      <hr className="opacity-20" />
     </div>
   )
 }

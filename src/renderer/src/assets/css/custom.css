@@ -16,4 +16,26 @@
   background-color: #ff0000;
 }
 
+/* Style the scrollbar track */
+::-webkit-scrollbar {
+  width: 1px; /* Adjust the width as needed */
+  border-radius: 5px; /* Rounded corners for the thumb */
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #a0a0a0; /* Color of the thumb */
+  border-radius: 5px; /* Rounded corners for the thumb */
+}
+
+/* Style the scrollbar track on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #808080; /* Color of the thumb on hover */
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Color of the track */
+}
+
 /* Path: src\js\assets\css\custom.css */
