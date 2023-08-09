@@ -82,6 +82,21 @@ const Settings = () => {
       phone: settings.phone
     }
 
+    if (data.name === '' || data.phone === '') {
+      showToast('error', 'Error', 'Please fill in all fields.', toast)
+      return
+    }
+
+    if (data.phone.length !== 11) {
+      showToast('error', 'Error', 'Please enter a valid phone number.', toast)
+      return
+    }
+
+    if (data.name.length < 3) {
+      showToast('error', 'Error', 'Please enter a valid name.', toast)
+      return
+    }
+
     axios
       .put(`${API_URL}/users/update/${id}`, data, { headers: { 'x-access-token': token } })
       .then((res) => {
