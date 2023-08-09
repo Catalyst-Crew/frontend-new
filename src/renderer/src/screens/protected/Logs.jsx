@@ -24,7 +24,7 @@ const Logs = () => {
   const [selectedLogs, setSelectedLogs] = useState([])
 
   const token = user ? user.token : 'token'
-  const userId = user ? user.id : 'test-123456'
+  const name = user ? user.id_prefix + user.id : 'user-999999'
 
   useEffect(() => {
     return fetchLogs()
@@ -35,7 +35,7 @@ const Logs = () => {
     setIsLoading(true)
 
     axios({
-      url: `${API_URL}/logs/${userId}`,
+      url: `${API_URL}/logs/${name}`,
       method: 'POST',
       responseType: 'blob',
       data: {
@@ -44,14 +44,17 @@ const Logs = () => {
       timeout: 300_000,
       headers: { 'x-access-token': token }
     })
-      .then((response) => {
-        const filename = response.headers['content-disposition'].split('filename=')[1]
+      .then(async (response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]))
         const link = document.createElement('a')
+
         link.href = url
-        link.setAttribute('download', filename)
+        link.setAttribute('download', `${name}-logs-${Date.now()}.csv`)
+
         document.body.appendChild(link)
         link.click()
+
+        document.body.removeChild(link)
         showToast('success', 'Success', 'Download complete.', toast)
       })
       .catch((error) => {
