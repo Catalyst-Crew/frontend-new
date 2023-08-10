@@ -31,7 +31,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@vitejs/plugin-react": "^4.0.4",
     "axios": "^1.4.0",
-    "electron": "^25.4.0",
+    "electron": "^25.5.0",
     "electron-builder": "^24.6.3",
     "electron-squirrel-startup": "^1.0.0",
     "electron-vite": "^1.0.27",
