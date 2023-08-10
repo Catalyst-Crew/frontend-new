@@ -7,9 +7,9 @@ export const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,20}$
 export const emailRegex = new RegExp(/\S+@\S+\.\S+/)
 
 export const catchHandler = (error, toastRef) => {
-  if (error.response.data.message) {
+  try {
     showToast('error', 'Error', error.response.data.message, toastRef)
-  } else {
+  } catch (err) {
     showToast('error', 'Error', error.message, toastRef)
   }
 }
