@@ -30,7 +30,12 @@ export const selectUserToken = createSelector(selectAuth, (auth) =>
 export const selectUserState = createSelector(selectAuth, (auth) => auth.state)
 export const selectUsers = createSelector(selectUser, (user) => user)
 
-export const selectDashboard = createSelector(
+export const selectDashboard = createSelector(selectDashboardData, (dashboardData) => dashboardData)
+export const selectAreas = createSelector(
   selectDashboardData,
-  (dashboardData) => dashboardData.data
+  (dashboardData) => dashboardData.areas
+)
+export const selectAccessPoints = createSelector(
+  selectDashboardData,
+  (dashboardData) => dashboardData.accessPoints
 )

@@ -3,12 +3,14 @@ import { createSlice } from '@reduxjs/toolkit'
 export const dashboard = createSlice({
   name: 'dashboard',
   initialState: {
-    data: [],
+    areas: [],
+    accessPoints: [],
     state: false
   },
   reducers: {
     setDashboardData: (state, { payload }) => {
-      state.data = payload
+      state.areas = payload?.areas
+      state.accessPoints = payload?.access_points
       state.state = true
     }
   }
