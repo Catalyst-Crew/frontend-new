@@ -60,7 +60,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
         setZoom(zoom)
       }}
     >
-      {accessPoints?.map((point) => (
+      {accessPoints?.map((point, i) => (
         <Marker
           key={point.access_point_id}
           width={50}
@@ -77,7 +77,11 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
           }}
           className="pointer-events-auto"
         >
-          <CustomIcon status={point.access_point_status} count={point?.measurements?.length} />
+          <CustomIcon
+            key={point.access_point_id + i}
+            status={point.access_point_status}
+            count={point?.measurements?.length}
+          />
         </Marker>
       ))}
 
