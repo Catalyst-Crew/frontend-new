@@ -1,5 +1,7 @@
+import axios from 'axios'
 import { useNavigate } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Card } from 'primereact/card'
 import { Badge } from 'primereact/badge'
@@ -12,15 +14,25 @@ import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
 import DateTime from '../../components/DateTime'
 
+import { catchHandler } from '../../utils/functions'
+import { selectUserToken } from '../../store/store'
+import { setDashboardData } from '../../store/features/dashboadSlice'
+
 const Dashbord = () => {
+  const dispatch = useDispatch()
   const op = useRef(null)
   const navigator = useNavigate()
+
   const [zoom, setZoom] = useState(16.2)
   const [color, setColor] = useState('info')
   const [intervalTime, setIntervalTime] = useState(10_000)
   const [center, setCenter] = useState([-26.260693, 29.121075])
 
+  const userToken = useSelector(selectUserToken)
+
   useEffect(() => {
+    fetchDashboardData()
+
     const intervalTime = JSON.parse(localStorage.getItem('intervalTime'))
     if (intervalTime) {
       setIntervalTime(intervalTime)
@@ -34,6 +46,19 @@ const Dashbord = () => {
       clearInterval(intervalId)
     }
   }, [intervalTime])
+
+  const fetchDashboardData = () => {
+    axios
+      .get(`${API_URL}/dashboard`, { headers: { 'x-access-token': userToken } })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(setDashboardData(res.data))
+        }
+      })
+      .catch((err) => {
+        catchHandler(err)
+      })
+  }
 
   async function checkResponseTime(url) {
     try {
