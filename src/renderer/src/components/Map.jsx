@@ -5,18 +5,19 @@ import { Draggable, GeoJson, Map, Marker } from 'pigeon-maps'
 
 import CopyText from './CopyText'
 
-const accessPoints = [
-  { lat: -26.260693, lng: 29.121075, id: 1, nodes: 5 },
-  { lat: -26.261693, lng: 29.120075, id: 2, nodes: 3 },
-  { lat: -26.262693, lng: 29.121075, id: 3, nodes: 8 }
-]
+import { useSelector } from 'react-redux'
+import { selectAccessPoints } from '../store/store'
+import { Button } from 'primereact/button'
 
 export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
   const [overlayData, setOverlayData] = useState(null)
   const [showOverlay, setShowOverlay] = useState(false)
   const [anchor, setAnchor] = useState([-26.260693, 29.121075])
 
-  const CustomIcon = ({ count }) => {
+  //const dashboardData = useSelector(selectDashboard)
+  const accessPoints = useSelector(selectAccessPoints)
+
+  const CustomIcon = ({ count = 0, status }) => {
     const SIZE = '25'
     return (
       <svg
@@ -33,7 +34,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
           pointerEvents: 'all'
         }}
       >
-        <circle cx="25" cy="25" r="25" fill="#FFC107" />
+        <circle cx="25" cy="25" r="25" fill={status ? '#FFC107' : 'grey'} />
         <text x="50%" y="50%" textAnchor="middle" fill="black" fontSize="20px" dy=".3em">
           {count}
         </text>
@@ -42,7 +43,8 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
   }
 
   CustomIcon.propTypes = {
-    count: PropTypes.number
+    count: PropTypes.number,
+    status: PropTypes.number
   }
   return (
     <Map
@@ -58,11 +60,11 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
         setZoom(zoom)
       }}
     >
-      {accessPoints.map((point) => (
+      {accessPoints?.map((point, i) => (
         <Marker
-          key={point.id}
+          key={point.access_point_id}
           width={50}
-          anchor={[point.lat, point.lng]}
+          anchor={[point.access_point_latitude, point.access_point_longitude]}
           onClick={() => setZoom(16.2)}
           onMouseOver={({ anchor }) => {
             setShowOverlay(true)
@@ -75,7 +77,11 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
           }}
           className="pointer-events-auto"
         >
-          <CustomIcon count={point.nodes} />
+          <CustomIcon
+            key={point.access_point_id + i}
+            status={point.access_point_status}
+            count={point?.measurements?.length}
+          />
         </Marker>
       ))}
 
@@ -83,7 +89,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
         <Draggable
           anchor={anchor}
           onDragEnd={setAnchor}
-          offset={[120, anchor[1] + 150]}
+          offset={[120, anchor[1] + 200]}
           style={{
             padding: '10px',
             borderRadius: '5%',
@@ -104,29 +110,43 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
             <tbody>
               <tr>
                 <td>AP ID:</td>
-                <td>{overlayData.id}</td>
+                <td>{overlayData.access_point_id}</td>
+              </tr>
+              <tr>
+                <td>AP Name:</td>
+                <td>{overlayData.access_point_name}</td>
               </tr>
               <tr>
                 <td>Nodes:</td>
-                <td>{overlayData.nodes}</td>
+                <td>{overlayData?.measurements?.length || 0}</td>
               </tr>
               <tr>
-                <td>Lat/Log:</td>
+                <td>Area ID:</td>
+                <td>{overlayData.area_id}</td>
+              </tr>
+              <tr>
+                <td>Lat/Long:</td>
                 <td>
-                  <CopyText text={`${overlayData.lat}, ${overlayData.lng}`} />
+                  <CopyText
+                    text={`${overlayData.id_prefix_access_point}${overlayData.access_point_latitude}, ${overlayData.access_point_longitude}`}
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
-          <p
-            className="text-center pointer-events-auto cursor-pointer"
-            onClick={() => {
-              setZoom(16.2)
-              setCenter([overlayData.lat, overlayData.lng])
-            }}
-          >
-            Click to zoom
-          </p>
+          <div className="flex justify-content-center">
+            <Button
+              label="Click to zoom"
+              className=" m-2"
+              text
+              size="small"
+              onClick={() => {
+                setZoom(16.2)
+                setCenter([overlayData.access_point_latitude, overlayData.access_point_longitude])
+              }}
+            />
+            <Button label="View" className="mt" size="small" text />
+          </div>
         </Draggable>
       ) : null}
       <GeoJson

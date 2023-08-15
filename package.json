@@ -23,7 +23,8 @@
     "@electron-toolkit/utils": "^2.0.0",
     "electron-updater": "^6.1.1",
     "moment": "^2.29.4",
-    "prop-types": "^15.7.0"
+    "prop-types": "^15.7.0",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@electron/notarize": "^2.1.0",
