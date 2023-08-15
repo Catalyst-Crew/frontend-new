@@ -162,6 +162,8 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
                     [29.121075, -26.260693],
                     [29.120075, -26.261693],
                     [29.121075, -26.262693],
+                    [29.122075, -26.263693],
+                    [29.122075, -26.264693],
                     [29.122075, -26.261693],
                     [29.121075, -26.260693]
                   ]
@@ -171,6 +173,51 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
                 prop0: 'value0',
                 prop1: 0.0,
                 fill: 'lightcoral',
+                stroke: 'red',
+                'stroke-width': 2,
+                text: 'Block A',
+                'text-anchor': 'middle',
+                'text-offset': [0, 0]
+              }
+            }
+          ]
+        }}
+        styleCallback={(feature) => {
+          if (feature.geometry.type === 'LineString') {
+            return { strokeWidth: '1', stroke: 'black' }
+          }
+          return {
+            fill: '#d4e6ec99',
+            strokeWidth: '1',
+            stroke: 'white',
+            r: '20'
+          }
+        }}
+      />
+      <GeoJson
+        data={{
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [
+                  [
+                    [29.131075, -26.260693],
+                    [29.130075, -26.261693],
+                    [29.131075, -26.262693],
+                    [29.132075, -26.263693],
+                    [29.132075, -26.264693],
+                    [29.132075, -26.261693],
+                    [29.131075, -26.260693]
+                  ]
+                ]
+              },
+              properties: {
+                prop0: 'value0',
+                prop1: 0.0,
+                fill: 'red',
                 stroke: 'red',
                 'stroke-width': 2,
                 text: 'Block A',

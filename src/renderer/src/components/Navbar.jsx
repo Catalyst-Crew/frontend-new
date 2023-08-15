@@ -15,6 +15,7 @@ const items = [
   { label: 'Users', route: '/users' },
   { label: 'Employees', route: '/employees' },
   { label: 'Access Points', route: '/access-points' },
+  { label: 'Reports', route: '/reports' },
   { label: 'Logs', route: '/logs' }
 ]
 

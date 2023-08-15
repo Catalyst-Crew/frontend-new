@@ -116,7 +116,7 @@ const Logs = () => {
 
   return (
     <div>
-      <Navbar activeIndex={4} />
+      <Navbar activeIndex={5} />
       <Toast ref={toast} />
       <div>
         <DataTable

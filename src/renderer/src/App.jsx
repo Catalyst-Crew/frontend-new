@@ -6,6 +6,7 @@ import Help from './screens/Help'
 import Login from './screens/Login'
 import Logs from './screens/protected/Logs'
 import Users from './screens/protected/Users'
+import Reports from './screens/protected/Reports'
 import Dashbord from './screens/protected/Dashbord'
 import Settings from './screens/protected/Settings'
 import Employee from './screens/protected/Employee'
@@ -19,8 +20,8 @@ export default function App() {
   return (
     <HashRouter>
       {
-        //isLogged && user ? (
-        true ? (
+        isLogged && user ? (
+        //true ? (
           <Routes>
             <Route path="/" index element={<Dashbord />} />
             <Route path="/help" element={<Help />} />
@@ -29,7 +30,7 @@ export default function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/employees" element={<Employee />} />
             <Route path="/access-points" element={<AccessPoints />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="*" index element={<Dashbord />} />
           </Routes>
         ) : (
