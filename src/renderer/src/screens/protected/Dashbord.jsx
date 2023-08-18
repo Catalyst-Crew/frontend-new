@@ -265,7 +265,7 @@ const Dashbord = () => {
 
           {/* Cards caontainer */}
           <div className="col-3 pl-2 line-height-2" style={{ marginBottom: '1%' }}>
-            <Card title="Miner Details" className="text-sm">
+            {/* <Card title="Miner Details" className="text-sm">
               <table className="w-full">
                 <tbody>
                   <tr>
@@ -327,7 +327,7 @@ const Dashbord = () => {
                   className="cursor-pointer"
                 />
               </div>
-            </Card>
+            </Card> */}
 
             <Divider type="dotted" />
 
