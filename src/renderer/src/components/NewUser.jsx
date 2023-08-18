@@ -21,7 +21,7 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
   // get  user data from redux
   const { user } = useSelector((state) => state.auth)
 
-  const userId = user ? user.id : 'USER-9b140f6b-dd5d-4f1a-b8be-6700164a0522'
+  const userId = user ? user.id : 1_000_001
   const username = user ? user.name : 'Admin'
   const token = user ? user.token : 'token'
 
