@@ -404,10 +404,11 @@ const Dashbord = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td className="text-left">Last Update:</td>
+                    <td className="text-left">Created:</td>
                     <td className="font-bold text-right vertical-align-middle">
                       {moment(
-                        accessPoints[next.accessPoint]?.created_at || new Date(2000, 1, 1)
+                        accessPoints[next.accessPoint]?.access_point_created_at ||
+                          new Date(2000, 1, 1)
                       ).fromNow()}
                     </td>
                   </tr>
