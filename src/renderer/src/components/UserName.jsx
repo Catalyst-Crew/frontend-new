@@ -7,7 +7,7 @@ const username = (user) => {
   let name = ''
   let id = ''
 
-  id = user.id_prefix ? ` ${user.id_prefix}${user.id}` : user.user_id_prefix + user.user_id
+  id = user?.id_prefix ? ` ${user.id_prefix}${user.id}` : user.user_id_prefix + user.user_id
 
   if (user.user_name.includes(' ')) {
     const nameArr = user.user_name.split(' ')
@@ -28,9 +28,9 @@ const username = (user) => {
         {user.user_id_prefix === 'user-' ? (
           <Badge
             severity={
-              user.access_name === 'Granted'
+              user.access_name === 'GRANTED'
                 ? 'success'
-                : user.access === 'Blocked'
+                : user.access === 'BLOCKED'
                 ? 'warning'
                 : 'danger'
             }

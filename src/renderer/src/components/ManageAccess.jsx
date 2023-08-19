@@ -36,7 +36,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
   }, [data])
 
   const updateStatus = (status) => {
-    setAccess(status)
+    setLoading(status)
 
     axios
       .put(
@@ -52,6 +52,9 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
       })
       .catch((error) => {
         catchHandler(error, toastRef)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
