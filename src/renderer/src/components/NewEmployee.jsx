@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 import { Dialog } from 'primereact/dialog'
@@ -154,6 +155,7 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
                       email
                     })
                   }}
+                  className="pl-0 ml-3"
                 >
                   Use default
                 </Button>
@@ -163,7 +165,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
 
           <tr>
             <td>
-              {' '}
               <div className="mt-4">
                 <div className="flex flex-column gap-2 text-left">
                   <label htmlFor="username">Shift:</label>
@@ -177,32 +178,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
                     className="w-full p-inputtext-sm"
                   />
                 </div>
-
-                {/* <div className="flex flex-column gap-2 text-left mt-3">
-                <label htmlFor="username">Access Level:</label>
-                <Dropdown
-                  value={selectedShiftLevel}
-                  onChange={(e) => setShiftLevel(e.value)}
-                  options={staticData.accessLevel}
-                  optionLabel="name"
-                  optionValue="id"
-                  placeholder="Select Access Level"
-                  className="w-full p-inputtext-sm"
-                />
-              </div>
-
-              <div className="flex flex-column gap-2 text-left mt-3">
-                <label htmlFor="username">Access Area:</label>
-                <Dropdown
-                  value={selectedShiftArea}
-                  onChange={(e) => setShiftArea(e.value)}
-                  options={staticData.accessArea}
-                  optionLabel="name"
-                  optionValue="id"
-                  placeholder="Select Access Area"
-                  className="w-full p-inputtext-sm"
-                />
-              </div> */}
               </div>
             </td>
           </tr>
@@ -212,7 +187,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
   )
 }
 
-import PropTypes from 'prop-types'
 NewEmployee.propTypes = {
   visible: PropTypes.bool,
   user: PropTypes.object,
