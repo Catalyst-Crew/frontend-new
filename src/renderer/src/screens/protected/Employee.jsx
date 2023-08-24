@@ -23,10 +23,10 @@ const Employee = () => {
   const { user } = useSelector((state) => state.auth)
 
   const [nodeId, setNodeId] = useState(null)
-  const [visible, setVisible] = useState([])
+  const [visible, setVisible] = useState(false)
   const [employess, setEmployees] = useState([
     {
-      id: 1_000_001,
+      id: 999_999,
       id_prefix: 'min-',
       user_name: 'Test Employee',
       email: 'test@mail.com',
@@ -157,7 +157,12 @@ const Employee = () => {
   const actionBodyTemplate = (userId) => {
     return (
       <div className="flex align-items-center">
-        <Button label="Manage" onClick={() => selectEmployee(userId)} size="small" />
+        <Button
+          label="Manage"
+          onClick={() => selectEmployee(userId)}
+          size="small"
+          disabled={userId.id === 999_999}
+        />
       </div>
     )
   }
@@ -323,7 +328,13 @@ const Employee = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-content-end">
-                <Button className="w-9 mr-2" label="Save" size="small" onClick={updateEmployee} />
+                <Button
+                  className="w-9 mr-2"
+                  label="Save"
+                  size="small"
+                  onClick={updateEmployee}
+                  disabled={selectedEmployee.id === 999_999}
+                />
                 <Button
                   className="w-3 ml-2"
                   label="Delete"
@@ -332,6 +343,7 @@ const Employee = () => {
                   onClick={confirm}
                   severity="danger"
                   icon="pi pi-times"
+                  disabled={selectedEmployee.id === 999_999}
                 />
               </div>
             </div>
