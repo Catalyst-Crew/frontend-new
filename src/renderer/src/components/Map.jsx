@@ -60,6 +60,95 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
         setZoom(zoom)
       }}
     >
+      <GeoJson
+        data={{
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [
+                  [
+                    [29.1163, -26.2591],
+                    [29.1209, -26.2581],
+                    [29.1215, -26.2581],
+                    [29.1241, -26.2607],
+                    [29.1236, -26.2633],
+                    [29.1226, -26.2631],
+                    [29.1214, -26.2633],
+                    [29.1213, -26.2636],
+                    [29.1199, -26.2634],
+                    [29.1188, -26.2624],
+                    [29.1184, -26.2608],
+                    [29.1163, -26.2591]
+                  ]
+                ]
+              },
+              properties: {
+                prop0: 'value0',
+                prop1: 0.0,
+                stroke: 'red',
+                'stroke-width': 2,
+                text: 'Block A',
+                'text-anchor': 'middle',
+                'text-offset': [0, 0]
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [
+                  [
+                    [29.11521, -26.25773],
+                    [29.11619, -26.25772],
+                    [29.1165, -26.2573],
+                    [29.1176, -26.2573],
+                    [29.1176, -26.2561],
+                    [29.1176, -26.2543],
+                    [29.1191, -26.2545],
+                    [29.1201, -26.2546],
+                    [29.1211, -26.2553],
+                    [29.1203, -26.2561],
+                    [29.1209, -26.2562],
+                    [29.1209, -26.2572],
+                    [29.1209, -26.2581],
+                    [29.1163, -26.2591],
+                    [29.1157, -26.2595],
+                    [29.1154, -26.2592],
+                    [29.1152, -26.2595],
+                    [29.1147, -26.2591],
+                    [29.1142, -26.2586],
+                    [29.1146, -26.2582],
+                    [29.11521, -26.25773]
+                  ]
+                ]
+              },
+              properties: {
+                prop0: 'value0',
+                prop1: 0.0,
+                stroke: 'blue',
+                'stroke-width': 4,
+                text: 'Block B',
+                'text-anchor': 'middle',
+                'text-offset': [0, 0]
+              }
+            }
+          ]
+        }}
+        styleCallback={(feature) => {
+          if (feature.geometry.type === 'LineString') {
+            return { strokeWidth: '1', stroke: 'black' }
+          }
+          return {
+            fill: feature.properties.fill || '#d4e6ec99',
+            strokeWidth: '1',
+            stroke: feature.properties.stroke || 'white',
+            r: '20'
+          }
+        }}
+      />
       {accessPoints?.map((point, i) => (
         <Marker
           key={point.access_point_id}
@@ -149,49 +238,6 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
           </div>
         </Draggable>
       ) : null}
-      <GeoJson
-        data={{
-          type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  [
-                    [29.121075, -26.260693],
-                    [29.120075, -26.261693],
-                    [29.121075, -26.262693],
-                    [29.122075, -26.261693],
-                    [29.121075, -26.260693]
-                  ]
-                ]
-              },
-              properties: {
-                prop0: 'value0',
-                prop1: 0.0,
-                fill: 'lightcoral',
-                stroke: 'red',
-                'stroke-width': 2,
-                text: 'Block A',
-                'text-anchor': 'middle',
-                'text-offset': [0, 0]
-              }
-            }
-          ]
-        }}
-        styleCallback={(feature) => {
-          if (feature.geometry.type === 'LineString') {
-            return { strokeWidth: '1', stroke: 'black' }
-          }
-          return {
-            fill: '#d4e6ec99',
-            strokeWidth: '1',
-            stroke: 'white',
-            r: '20'
-          }
-        }}
-      />
     </Map>
   )
 }

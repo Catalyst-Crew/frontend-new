@@ -265,70 +265,114 @@ const Dashbord = () => {
 
           {/* Cards caontainer */}
           <div className="col-3 pl-2 line-height-2" style={{ marginBottom: '1%' }}>
-
-            {/* <Card title="Miner Details" className="text-sm">
-              <table className="w-full">
-                <tbody>
-                  <tr>
-                    <td className="text-left">Miner ID:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {`min-${
-                        accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
-                      }` || 'N/A'}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-left">Miner Name:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_name ||
-                        'N/A'}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-left">Shift:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {accessPoints[next.accessPoint]?.measurements[next.miner]?.shift_name ||
-                        'N/A'}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-left">Node ID:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {`sen-${
-                        accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
-                      }` || 'N/A'}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-left">Location:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {accessPoints[next.accessPoint]?.area_name || 'N/A'}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-left">Last Update:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {moment(
-                        accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
-                          new Date(2000, 1, 1)
-                      ).fromNow()}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div className="flex justify-content-between">
-                <IconButton
-                  icon={'angle-left'}
-                  onClick={handlePrevMiner}
-                  className="cursor-pointer"
-                />
-                <IconButton
-                  icon={'angle-right'}
-                  onClick={handleNextMiner}
-                  className="cursor-pointer"
-                />
-              </div>
-            </Card> */}
+            {accessPoints[next.accessPoint]?.measurements?.length > 0 ? (
+              <Card title="Miner Details" className="text-sm">
+                <table className="w-full">
+                  <tbody>
+                    <tr>
+                      <td className="text-left">Miner ID:</td>
+                      <td className="font-bold text-right vertical-align-middle">
+                        {`min-${
+                          accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
+                        }` || 'N/A'}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Miner Name:</td>
+                      <td className="font-bold text-right vertical-align-middle">
+                        {accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_name ||
+                          'N/A'}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Shift:</td>
+                      <td className="font-bold text-right vertical-align-middle">
+                        {accessPoints[next.accessPoint]?.measurements[next.miner]?.shift_name ||
+                          'N/A'}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Node ID:</td>
+                      <td className="font-bold text-right vertical-align-middle">
+                        {`sen-${
+                          accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
+                        }` || 'N/A'}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Location:</td>
+                      <td className="font-bold text-right vertical-align-middle">
+                        {accessPoints[next.accessPoint]?.area_name || 'N/A'}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Last Update:</td>
+                      <td className="font-bold text-right vertical-align-middle">
+                        {moment(
+                          accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
+                            new Date(2000, 1, 1)
+                        ).fromNow()}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="flex justify-content-between">
+                  <IconButton
+                    icon={'angle-left'}
+                    onClick={handlePrevMiner}
+                    className="cursor-pointer"
+                  />
+                  <IconButton
+                    icon={'angle-right'}
+                    onClick={handleNextMiner}
+                    className="cursor-pointer"
+                  />
+                </div>
+              </Card>
+            ) : (
+              <Card title="Miner Details" className="text-sm">
+                <table className="w-full">
+                  <tbody>
+                    <tr>
+                      <td className="text-left">Miner ID:</td>
+                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Miner Name:</td>
+                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Shift:</td>
+                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Node ID:</td>
+                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Location:</td>
+                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-left">Last Update:</td>
+                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="flex justify-content-between">
+                  <IconButton
+                    icon={'angle-left'}
+                    onClick={handlePrevMiner}
+                    className="cursor-pointer"
+                  />
+                  <IconButton
+                    icon={'angle-right'}
+                    onClick={handleNextMiner}
+                    className="cursor-pointer"
+                  />
+                </div>
+              </Card>
+            )}
 
             <Divider type="dotted" />
 
@@ -360,10 +404,11 @@ const Dashbord = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td className="text-left">Last Update:</td>
+                    <td className="text-left">Created:</td>
                     <td className="font-bold text-right vertical-align-middle">
                       {moment(
-                        accessPoints[next.accessPoint]?.created_at || new Date(2000, 1, 1)
+                        accessPoints[next.accessPoint]?.access_point_created_at ||
+                          new Date(2000, 1, 1)
                       ).fromNow()}
                     </td>
                   </tr>

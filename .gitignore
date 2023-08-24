@@ -3,3 +3,7 @@ dist
 out
 *.log*
 package-lock.json
+.vs/VSWorkspaceState.json
+.vs/frontend-new/v17/.wsuo
+.vs/slnx.sqlite
+yarn.lock
