@@ -239,7 +239,7 @@ const Employee = () => {
                   options={availabeNodes}
                   optionLabel="id"
                   optionValue="id"
-                  placeholder="Assign node"
+                  placeholder={nodeId ? nodeId : 'Assign node'}
                   className="w-full p-inputtext-sm"
                 />
               </div>
