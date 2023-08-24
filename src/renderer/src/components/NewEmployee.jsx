@@ -19,8 +19,8 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
   // get  user data from redux
   const { user } = useSelector((state) => state.auth)
 
-  const userId = user ? user.id : 'USER-9b140f6b-dd5d-4f1a-b8be-6700164a0522'
-  const username = user ? user.name : 'Admin'
+  const username = user ? user.id_prefix + user.id : 'user-999999'
+  const userId = user ? user.id : 999_999
   const token = user ? user.token : 'token'
 
   const handleNewEmployee = () => {
@@ -41,14 +41,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
       showToast('error', 'Error', 'Shift is required', toastRef)
       return setLoading(false)
     }
-    // if (!selectedShiftLevel) {
-    //   showToast("error", "Error", "Access Level is required", toastRef)
-    //   return setLoading(false);
-    // }
-    // if (!selectedShiftArea) {
-    //   showToast("error", "Error", "Access Area is required", toastRef)
-    //   return setLoading(false);
-    // }
 
     axios
       .post(
