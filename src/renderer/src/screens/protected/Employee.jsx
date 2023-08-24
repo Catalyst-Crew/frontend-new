@@ -18,30 +18,30 @@ import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 
+const testEmployee = {
+  id: 999_999,
+  id_prefix: 'min-',
+  user_name: 'Test Employee',
+  email: 'test@mail.com',
+  status: 1,
+  created_at: '2023-08-07T13:29:47.000Z',
+  created_by: 'System',
+  updated_at: '2023-08-07T13:29:47.000Z',
+  updated_by: 'System',
+  supervisor_id: 1_000_000,
+  shift_id: 1_000_000,
+  sensor_id: null,
+  supervisor_name: 'Test Supervisor',
+  shift_name: 'Day'
+}
+
 const Employee = () => {
   const toast = useRef(null)
   const { user } = useSelector((state) => state.auth)
 
   const [nodeId, setNodeId] = useState(null)
   const [visible, setVisible] = useState(false)
-  const [employess, setEmployees] = useState([
-    {
-      id: 999_999,
-      id_prefix: 'min-',
-      user_name: 'Test Employee',
-      email: 'test@mail.com',
-      status: 1,
-      created_at: '2023-08-07T13:29:47.000Z',
-      created_by: 'System',
-      updated_at: '2023-08-07T13:29:47.000Z',
-      updated_by: 'System',
-      supervisor_id: 1_000_000,
-      shift_id: 1_000_000,
-      sensor_id: null,
-      supervisor_name: 'Test Supervisor',
-      shift_name: 'Day'
-    }
-  ])
+  const [employess, setEmployees] = useState([testEmployee])
   const [supervisors, setSupervisors] = useState([
     {
       user_id: 1_000_008,
@@ -54,22 +54,7 @@ const Employee = () => {
   const [availabeNodes, setAvailabeNodes] = useState([])
   const [selectedShift, setSelectedShift] = useState(null)
   const [selectedSupervisor, setSelectedSupervisor] = useState(null)
-  const [selectedEmployee, setSelectEmloyee] = useState({
-    id: 1_000_001,
-    id_prefix: 'min-',
-    user_name: 'Karao',
-    email: 'Amail.com',
-    status: 1,
-    created_at: '2023-08-07T13:29:47.000Z',
-    created_by: 'System',
-    updated_at: '2023-08-07T13:29:47.000Z',
-    updated_by: 'System',
-    supervisor_id: 1_000_000,
-    shift_id: 1_000_000,
-    sensor_id: null,
-    supervisor_name: 'Axole Maranjana',
-    shift_name: 'Day'
-  })
+  const [selectedEmployee, setSelectEmloyee] = useState(testEmployee)
 
   useEffect(() => {
     refresh()
@@ -91,10 +76,13 @@ const Employee = () => {
       })
       .then((res) => {
         showToast('success', 'Success', res.data.message, toast)
-        fetchtEmployees()
       })
       .catch((err) => {
         catchHandler(err, toast)
+      })
+      .finally(() => {
+        fetchtEmployees()
+        fetchNodes()
       })
   }
 
