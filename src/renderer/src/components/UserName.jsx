@@ -30,7 +30,7 @@ const username = (user) => {
             severity={
               user.access_name === 'GRANTED'
                 ? 'success'
-                : user.access === 'BLOCKED'
+                : user.access_name === 'BLOCKED'
                 ? 'warning'
                 : 'danger'
             }
