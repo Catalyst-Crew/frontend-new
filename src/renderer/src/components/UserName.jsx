@@ -36,7 +36,7 @@ const username = (user) => {
             }
           />
         ) : (
-          <Badge severity={user.sensor_id ? 'success' : 'danger'} />
+          <Badge severity={user.sensor_id ? 'success' : user.status === 2 ? 'warning' : 'danger'} />
         )}
       </Avatar>
       <div className="ml-2">
