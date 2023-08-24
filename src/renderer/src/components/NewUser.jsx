@@ -17,6 +17,7 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
   const [selectedAccessLevel, setAccessLevel] = useState(null)
   const [selectedAccessArea, setAccessArea] = useState(null)
   const [userData, setUserData] = useState({ name: '', surname: '', email: '' })
+  const [areas, setAreas] = useState([])
 
   // get  user data from redux
   const { user } = useSelector((state) => state.auth)
@@ -80,6 +81,20 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
       })
       .finally(() => {
         setLoading(false)
+      })
+  }
+
+  const getAreas = () => {
+    axios
+      .get(`${API_URL}/areas`, { headers: { 'x-access-token': token } })
+      .then((res) => {
+        if (res.status !== 200) {
+          return
+        }
+        setAreas(res.data)
+      })
+      .catch((err) => {
+        catchHandler(err, toastRef)
       })
   }
 
@@ -162,8 +177,11 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
                   <label htmlFor="username">Access:</label>
                   <Dropdown
                     value={selectedAccess}
-                    onChange={(e) => setAccess(e.value)}
-                    options={staticData.access}
+                    onChange={(e) => {
+                      setAccess(e.value)
+                      getAreas()
+                    }}
+                    options={[staticData.access[0], staticData.access[1]]}
                     optionLabel="name"
                     optionValue="id"
                     placeholder="Select Access"
@@ -189,7 +207,7 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
                   <Dropdown
                     value={selectedAccessArea}
                     onChange={(e) => setAccessArea(e.value)}
-                    options={staticData.accessArea}
+                    options={areas.length > 0 ? areas : staticData.accessA}
                     optionLabel="name"
                     optionValue="id"
                     placeholder="Select Access Area"
