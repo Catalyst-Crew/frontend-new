@@ -147,10 +147,16 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
                   link
                   size="small"
                   severity="info"
-                  onClick={() => setUserData({ ...userData, email: user.email })}
+                  onClick={() => {
+                    const email = user?.email ? user?.email : 'system@mts.co.za'
+                    setUserData({
+                      ...userData,
+                      email
+                    })
+                  }}
                 >
                   Use default
-                </Button>{' '}
+                </Button>
               </div>
             </td>
           </tr>
