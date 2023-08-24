@@ -23,39 +23,39 @@ const Employee = () => {
   const { user } = useSelector((state) => state.auth)
 
   const [nodeId, setNodeId] = useState(null)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState([])
   const [employess, setEmployees] = useState([
     {
-      id: 1000001,
+      id: 1_000_001,
       id_prefix: 'min-',
-      user_name: 'Karao',
-      email: 'Amail.com',
+      user_name: 'Test Employee',
+      email: 'test@mail.com',
       status: 1,
       created_at: '2023-08-07T13:29:47.000Z',
       created_by: 'System',
       updated_at: '2023-08-07T13:29:47.000Z',
       updated_by: 'System',
-      supervisor_id: 1000000,
-      shift_id: 1000000,
+      supervisor_id: 1_000_000,
+      shift_id: 1_000_000,
       sensor_id: null,
-      supervisor_name: 'Axole Maranjana',
+      supervisor_name: 'Test Supervisor',
       shift_name: 'Day'
     }
   ])
   const [supervisors, setSupervisors] = useState([
     {
-      user_id: 1000008,
+      user_id: 1_000_008,
       user_id_prefix: 'user-',
       user_name: 'Test Supervisor',
       role_name: 'Supervisor',
-      role_id: 1000001
+      role_id: 1_000_001
     }
   ])
-  const [availabeNodes, setAvailabeNodes] = useState(null)
+  const [availabeNodes, setAvailabeNodes] = useState([])
   const [selectedShift, setSelectedShift] = useState(null)
   const [selectedSupervisor, setSelectedSupervisor] = useState(null)
   const [selectedEmployee, setSelectEmloyee] = useState({
-    id: 1000001,
+    id: 1_000_001,
     id_prefix: 'min-',
     user_name: 'Karao',
     email: 'Amail.com',
@@ -64,8 +64,8 @@ const Employee = () => {
     created_by: 'System',
     updated_at: '2023-08-07T13:29:47.000Z',
     updated_by: 'System',
-    supervisor_id: 1000000,
-    shift_id: 1000000,
+    supervisor_id: 1_000_000,
+    shift_id: 1_000_000,
     sensor_id: null,
     supervisor_name: 'Axole Maranjana',
     shift_name: 'Day'
@@ -116,6 +116,9 @@ const Employee = () => {
     axios
       .get(`${API_URL}/miners`, { headers: { 'x-access-token': token } })
       .then((res) => {
+        if (res.data.data.length === 0) {
+          return
+        }
         setSelectEmloyee(res.data.data[0])
         setEmployees(res.data.data)
         setNodeId(res.data.data[0].sensor_id)
