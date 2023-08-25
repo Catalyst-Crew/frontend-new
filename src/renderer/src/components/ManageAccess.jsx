@@ -22,7 +22,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
   const [accessPoint, setAccessPoint] = useState(null)
   const [areas, setAreas] = useState([
     {
-      id: 1000000,
+      id: 1_000_000,
       id_prefix: 'are-',
       name: 'Shaft-A1',
       lat: '-26.260693',
@@ -35,7 +35,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
       setAccess(data.status)
       setAccessPoint(data)
     }
-    return getAreas()
+    getAreas()
   }, [data])
 
   const updateStatus = (status) => {
@@ -137,7 +137,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="name"
               value={accessPoint?.name}
-              onClick={(e) => setAccessPoint((prev) => ({ ...prev, name: e.value }))}
+              onChange={(e) => setAccessPoint({ ...accessPoint, name: e.target.value })}
             />
           </div>
 
@@ -146,7 +146,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="device_id"
               value={accessPoint?.device_id}
-              onClick={(e) => setAccessPoint((prev) => ({ ...prev, device_id: e.value }))}
+              onChange={(e) => setAccessPoint((prev) => ({ ...prev, device_id: e.target.value }))}
             />
           </div>
 
@@ -155,7 +155,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <Dropdown
               id="area"
               value={accessPoint?.area_id}
-              onClick={(e) => selectedAccess((prev) => ({ ...prev, area_id: e.value }))}
+              onChange={(e) => setAccessPoint((prev) => ({ ...prev, area_id: e.value }))}
               options={areas}
               optionLabel="name"
               placeholder="Area"
@@ -168,8 +168,8 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="lat"
               value={accessPoint?.lat}
-              onClick={(e) => {
-                setAccessPoint((prev) => ({ ...prev, lat: e.value }))
+              onChange={(e) => {
+                setAccessPoint((prev) => ({ ...prev, lat: e.target.value }))
               }}
               max={90}
               maxLength={9}
@@ -181,10 +181,10 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="longitude"
               value={accessPoint?.longitude}
-              onClick={(e) => {
+              onChange={(e) => {
                 setAccessPoint((prev) => ({
                   ...prev,
-                  longitude: e.value
+                  longitude: e.target.value
                 }))
               }}
               max={180}
