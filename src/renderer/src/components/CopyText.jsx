@@ -1,7 +1,7 @@
 import { Button } from 'primereact/button'
 import PropTypes from 'prop-types'
 
-const CopyText = ({ text, className }) => {
+const CopyText = ({ text, className, label }) => {
   const copyText = () => {
     navigator.clipboard.writeText(text)
   }
@@ -9,7 +9,7 @@ const CopyText = ({ text, className }) => {
   return (
     <Button
       icon="pi pi-copy"
-      label={text}
+      label={label ? label : text}
       iconPos="right"
       onClick={copyText}
       text
@@ -20,7 +20,8 @@ const CopyText = ({ text, className }) => {
 
 CopyText.propTypes = {
   text: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  label: PropTypes.string
 }
 
 export default CopyText

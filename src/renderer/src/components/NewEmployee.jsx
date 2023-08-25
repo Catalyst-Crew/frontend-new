@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 import { Dialog } from 'primereact/dialog'
@@ -19,8 +20,8 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
   // get  user data from redux
   const { user } = useSelector((state) => state.auth)
 
-  const userId = user ? user.id : 'USER-9b140f6b-dd5d-4f1a-b8be-6700164a0522'
-  const username = user ? user.name : 'Admin'
+  const username = user ? user.id_prefix + user.id : 'user-999999'
+  const userId = user ? user.id : 999_999
   const token = user ? user.token : 'token'
 
   const handleNewEmployee = () => {
@@ -41,14 +42,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
       showToast('error', 'Error', 'Shift is required', toastRef)
       return setLoading(false)
     }
-    // if (!selectedShiftLevel) {
-    //   showToast("error", "Error", "Access Level is required", toastRef)
-    //   return setLoading(false);
-    // }
-    // if (!selectedShiftArea) {
-    //   showToast("error", "Error", "Access Area is required", toastRef)
-    //   return setLoading(false);
-    // }
 
     axios
       .post(
@@ -155,17 +148,23 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
                   link
                   size="small"
                   severity="info"
-                  onClick={() => setUserData({ ...userData, email: user.email })}
+                  onClick={() => {
+                    const email = user?.email ? user?.email : 'system@mts.co.za'
+                    setUserData({
+                      ...userData,
+                      email
+                    })
+                  }}
+                  className="pl-0 ml-3"
                 >
                   Use default
-                </Button>{' '}
+                </Button>
               </div>
             </td>
           </tr>
 
           <tr>
             <td>
-              {' '}
               <div className="mt-4">
                 <div className="flex flex-column gap-2 text-left">
                   <label htmlFor="username">Shift:</label>
@@ -179,32 +178,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
                     className="w-full p-inputtext-sm"
                   />
                 </div>
-
-                {/* <div className="flex flex-column gap-2 text-left mt-3">
-                <label htmlFor="username">Access Level:</label>
-                <Dropdown
-                  value={selectedShiftLevel}
-                  onChange={(e) => setShiftLevel(e.value)}
-                  options={staticData.accessLevel}
-                  optionLabel="name"
-                  optionValue="id"
-                  placeholder="Select Access Level"
-                  className="w-full p-inputtext-sm"
-                />
-              </div>
-
-              <div className="flex flex-column gap-2 text-left mt-3">
-                <label htmlFor="username">Access Area:</label>
-                <Dropdown
-                  value={selectedShiftArea}
-                  onChange={(e) => setShiftArea(e.value)}
-                  options={staticData.accessArea}
-                  optionLabel="name"
-                  optionValue="id"
-                  placeholder="Select Access Area"
-                  className="w-full p-inputtext-sm"
-                />
-              </div> */}
               </div>
             </td>
           </tr>
@@ -214,7 +187,6 @@ function NewEmployee({ visible, setVisible, toastRef, refresh }) {
   )
 }
 
-import PropTypes from 'prop-types'
 NewEmployee.propTypes = {
   visible: PropTypes.bool,
   user: PropTypes.object,

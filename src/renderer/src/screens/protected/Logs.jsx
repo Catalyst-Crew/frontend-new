@@ -24,7 +24,7 @@ const Logs = () => {
   const [selectedLogs, setSelectedLogs] = useState([])
 
   const token = user ? user.token : 'token'
-  const name = user ? user.id_prefix + user.id : 'user-999999'
+  const name = user ? user.id : 999_999
 
   useEffect(() => {
     return fetchLogs()

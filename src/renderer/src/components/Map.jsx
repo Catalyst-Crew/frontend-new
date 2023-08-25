@@ -1,20 +1,25 @@
-import { useState } from 'react'
+import axios from 'axios'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 
 import { Draggable, GeoJson, Map, Marker } from 'pigeon-maps'
 
-import CopyText from './CopyText'
-
-import { useSelector } from 'react-redux'
-import { selectAccessPoints } from '../store/store'
 import { Button } from 'primereact/button'
 
-export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
+import CopyText from './CopyText'
+import { API_URL } from '../utils/exports'
+import { catchHandler } from '../utils/functions'
+import { selectAccessPoints } from '../store/store'
+
+const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
+
+export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef }) {
+  const [areas, setAreas] = useState([])
   const [overlayData, setOverlayData] = useState(null)
   const [showOverlay, setShowOverlay] = useState(false)
   const [anchor, setAnchor] = useState([-26.260693, 29.121075])
 
-  //const dashboardData = useSelector(selectDashboard)
   const accessPoints = useSelector(selectAccessPoints)
 
   const CustomIcon = ({ count = 0, status }) => {
@@ -46,6 +51,24 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
     count: PropTypes.number,
     status: PropTypes.number
   }
+
+  useEffect(() => {
+    setAreas(JSON.parse(localStorage.getItem('areas')))
+    return getAreas()
+  }, [])
+
+  const getAreas = () => {
+    axios
+      .get(`${API_URL}/areas`)
+      .then((response) => {
+        localStorage.setItem('areas', JSON.stringify(response.data))
+        setAreas(response.data)
+      })
+      .catch((error) => {
+        catchHandler(error, toastRef)
+      })
+  }
+
   return (
     <Map
       minZoom={5}
@@ -60,95 +83,47 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
         setZoom(zoom)
       }}
     >
-      <GeoJson
-        data={{
-          type: 'FeatureCollection',
-          features: [
-            {
+      {areas ? (
+        <GeoJson
+          data={{
+            type: 'FeatureCollection',
+            features: areas.map((area, i) => ({
               type: 'Feature',
               geometry: {
                 type: 'Polygon',
-                coordinates: [
-                  [
-                    [29.1163, -26.2591],
-                    [29.1209, -26.2581],
-                    [29.1215, -26.2581],
-                    [29.1241, -26.2607],
-                    [29.1236, -26.2633],
-                    [29.1226, -26.2631],
-                    [29.1214, -26.2633],
-                    [29.1213, -26.2636],
-                    [29.1199, -26.2634],
-                    [29.1188, -26.2624],
-                    [29.1184, -26.2608],
-                    [29.1163, -26.2591]
-                  ]
-                ]
+                coordinates: [area.draw_coords],
+                fill: '#d4e6ec99'
               },
               properties: {
-                prop0: 'value0',
-                prop1: 0.0,
-                stroke: 'red',
-                'stroke-width': 2,
-                text: 'Block A',
-                'text-anchor': 'middle',
-                'text-offset': [0, 0]
+                stroke: colors[i],
+                name: area.name || 'Area',
+                lat: area.lat,
+                lng: area.longitude
               }
-            },
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  [
-                    [29.11521, -26.25773],
-                    [29.11619, -26.25772],
-                    [29.1165, -26.2573],
-                    [29.1176, -26.2573],
-                    [29.1176, -26.2561],
-                    [29.1176, -26.2543],
-                    [29.1191, -26.2545],
-                    [29.1201, -26.2546],
-                    [29.1211, -26.2553],
-                    [29.1203, -26.2561],
-                    [29.1209, -26.2562],
-                    [29.1209, -26.2572],
-                    [29.1209, -26.2581],
-                    [29.1163, -26.2591],
-                    [29.1157, -26.2595],
-                    [29.1154, -26.2592],
-                    [29.1152, -26.2595],
-                    [29.1147, -26.2591],
-                    [29.1142, -26.2586],
-                    [29.1146, -26.2582],
-                    [29.11521, -26.25773]
-                  ]
-                ]
-              },
-              properties: {
-                prop0: 'value0',
-                prop1: 0.0,
-                stroke: 'blue',
-                'stroke-width': 4,
-                text: 'Block B',
-                'text-anchor': 'middle',
-                'text-offset': [0, 0]
+            }))
+          }}
+          styleCallback={(feature) => {
+            if (feature.geometry.type === 'LineString') {
+              return { strokeWidth: '1', stroke: 'black' }
+            }
+            return {
+              fill: '#d4e6ec99',
+              strokeWidth: '1',
+              stroke: feature.properties.stroke || 'white',
+              r: '20',
+              label: {
+                text: feature.properties.name,
+                x: feature.properties.lng,
+                y: feature.properties.lat,
+                dy: '0.35em',
+                fontSize: '50px',
+                textAnchor: 'middle'
               }
             }
-          ]
-        }}
-        styleCallback={(feature) => {
-          if (feature.geometry.type === 'LineString') {
-            return { strokeWidth: '1', stroke: 'black' }
-          }
-          return {
-            fill: feature.properties.fill || '#d4e6ec99',
-            strokeWidth: '1',
-            stroke: feature.properties.stroke || 'white',
-            r: '20'
-          }
-        }}
-      />
+          }}
+        />
+      ) : null}
+
       {accessPoints?.map((point, i) => (
         <Marker
           key={point.access_point_id}
@@ -246,7 +221,8 @@ MyMap.propTypes = {
   defaultZoom: PropTypes.number,
   setZoom: PropTypes.func,
   defaultCenter: PropTypes.array,
-  setCenter: PropTypes.func
+  setCenter: PropTypes.func,
+  toastRef: PropTypes.object
 }
 
 export default MyMap
