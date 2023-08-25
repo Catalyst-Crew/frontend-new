@@ -50,13 +50,13 @@ const Dashbord = () => {
 
     audioRef.current = new Audio(audio)
     audioRef.current.volume = 1
-    audioRef.current.loop = true
+    //audioRef.current.loop = true
 
     const intervalTime = JSON.parse(localStorage.getItem('intervalTime'))
     if (intervalTime) {
       setIntervalTime(intervalTime)
     }
-    checkResponseTime(API_URL)
+    //checkResponseTime(API_URL)
     const intervalId = setInterval(() => {
       checkResponseTime(API_URL)
     }, intervalTime)
@@ -140,7 +140,7 @@ const Dashbord = () => {
   async function checkResponseTime(url) {
     try {
       const start = Date.now()
-      await fetch(url)
+      fetch(url)
       const end = Date.now()
       const responseTime = end - start
 
