@@ -1,20 +1,25 @@
-import { useState } from 'react'
+import axios from 'axios'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 
 import { Draggable, GeoJson, Map, Marker } from 'pigeon-maps'
 
-import CopyText from './CopyText'
-
-import { useSelector } from 'react-redux'
-import { selectAccessPoints } from '../store/store'
 import { Button } from 'primereact/button'
 
-export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
+import CopyText from './CopyText'
+import { API_URL } from '../utils/exports'
+import { catchHandler } from '../utils/functions'
+import { selectAccessPoints } from '../store/store'
+
+const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
+
+export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef }) {
+  const [areas, setAreas] = useState([])
   const [overlayData, setOverlayData] = useState(null)
   const [showOverlay, setShowOverlay] = useState(false)
   const [anchor, setAnchor] = useState([-26.260693, 29.121075])
 
-  //const dashboardData = useSelector(selectDashboard)
   const accessPoints = useSelector(selectAccessPoints)
 
   const CustomIcon = ({ count = 0, status }) => {
@@ -46,6 +51,24 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
     count: PropTypes.number,
     status: PropTypes.number
   }
+
+  useEffect(() => {
+    setAreas(JSON.parse(localStorage.getItem('areas')))
+    return getAreas()
+  }, [])
+
+  const getAreas = () => {
+    axios
+      .get(`${API_URL}/areas`)
+      .then((response) => {
+        localStorage.setItem('areas', JSON.stringify(response.data))
+        setAreas(response.data)
+      })
+      .catch((error) => {
+        catchHandler(error, toastRef)
+      })
+  }
+
   return (
     <Map
       minZoom={5}
@@ -60,6 +83,47 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
         setZoom(zoom)
       }}
     >
+      {areas ? (
+        <GeoJson
+          data={{
+            type: 'FeatureCollection',
+            features: areas.map((area, i) => ({
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [area.draw_coords],
+                fill: '#d4e6ec99'
+              },
+              properties: {
+                stroke: colors[i],
+                name: area.name || 'Area',
+                lat: area.lat,
+                lng: area.longitude
+              }
+            }))
+          }}
+          styleCallback={(feature) => {
+            if (feature.geometry.type === 'LineString') {
+              return { strokeWidth: '1', stroke: 'black' }
+            }
+            return {
+              fill: '#d4e6ec99',
+              strokeWidth: '1',
+              stroke: feature.properties.stroke || 'white',
+              r: '20',
+              label: {
+                text: feature.properties.name,
+                x: feature.properties.lng,
+                y: feature.properties.lat,
+                dy: '0.35em',
+                fontSize: '50px',
+                textAnchor: 'middle'
+              }
+            }
+          }}
+        />
+      ) : null}
+
       {accessPoints?.map((point, i) => (
         <Marker
           key={point.access_point_id}
@@ -149,49 +213,6 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter }) {
           </div>
         </Draggable>
       ) : null}
-      <GeoJson
-        data={{
-          type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  [
-                    [29.121075, -26.260693],
-                    [29.120075, -26.261693],
-                    [29.121075, -26.262693],
-                    [29.122075, -26.261693],
-                    [29.121075, -26.260693]
-                  ]
-                ]
-              },
-              properties: {
-                prop0: 'value0',
-                prop1: 0.0,
-                fill: 'lightcoral',
-                stroke: 'red',
-                'stroke-width': 2,
-                text: 'Block A',
-                'text-anchor': 'middle',
-                'text-offset': [0, 0]
-              }
-            }
-          ]
-        }}
-        styleCallback={(feature) => {
-          if (feature.geometry.type === 'LineString') {
-            return { strokeWidth: '1', stroke: 'black' }
-          }
-          return {
-            fill: '#d4e6ec99',
-            strokeWidth: '1',
-            stroke: 'white',
-            r: '20'
-          }
-        }}
-      />
     </Map>
   )
 }
@@ -200,7 +221,8 @@ MyMap.propTypes = {
   defaultZoom: PropTypes.number,
   setZoom: PropTypes.func,
   defaultCenter: PropTypes.array,
-  setCenter: PropTypes.func
+  setCenter: PropTypes.func,
+  toastRef: PropTypes.object
 }
 
 export default MyMap

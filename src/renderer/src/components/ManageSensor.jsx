@@ -34,10 +34,13 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
       )
       .then((response) => {
         showToast('success', 'Success', response.data.message, toastRef)
-        refresh()
+        setData({ ...sensorData, device_id: null })
       })
       .catch((error) => {
         catchHandler(error, toastRef)
+      })
+      .finally(() => {
+        refresh()
       })
   }
 
@@ -83,7 +86,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
         return (
           <div className="flex flex-column gap-2">
             <h4 className="p-danger">
-              You are about to Unassign a node from an employee or a device?
+              You are about to UNASSIGN a sensor from an employee or a device?
             </h4>
             <p>
               Unassigning this sensor from a device will automatically unassign this sensor from an
@@ -114,8 +117,8 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
             </InplaceDisplay>
             <InplaceContent>
               <InputText
-                value={sensorData?.deviceId}
-                onChange={(e) => setData((prev) => ({ ...prev, deviceId: e.value }))}
+                value={sensorData?.device_id}
+                onChange={(e) => setData((prev) => ({ ...prev, device_id: e.target.value }))}
                 autoFocus
               />
             </InplaceContent>
@@ -196,6 +199,6 @@ ManageSensor.propTypes = {
   data: PropTypes.object,
   toastRef: PropTypes.object,
   token: PropTypes.string,
-  username: PropTypes.string,
+  username: PropTypes.number,
   refresh: PropTypes.func
 }

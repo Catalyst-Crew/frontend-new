@@ -18,58 +18,43 @@ import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 
+const testEmployee = {
+  id: 999_999,
+  id_prefix: 'min-',
+  user_name: 'Test Employee',
+  email: 'test@mail.com',
+  status: 1,
+  created_at: '2023-08-07T13:29:47.000Z',
+  created_by: 'System',
+  updated_at: '2023-08-07T13:29:47.000Z',
+  updated_by: 'System',
+  supervisor_id: 1_000_000,
+  shift_id: 1_000_000,
+  sensor_id: null,
+  supervisor_name: 'Test Supervisor',
+  shift_name: 'Day'
+}
+
 const Employee = () => {
   const toast = useRef(null)
   const { user } = useSelector((state) => state.auth)
 
   const [nodeId, setNodeId] = useState(null)
   const [visible, setVisible] = useState(false)
-  const [employess, setEmployees] = useState([
-    {
-      id: 1000001,
-      id_prefix: 'min-',
-      user_name: 'Karao',
-      email: 'Amail.com',
-      status: 1,
-      created_at: '2023-08-07T13:29:47.000Z',
-      created_by: 'System',
-      updated_at: '2023-08-07T13:29:47.000Z',
-      updated_by: 'System',
-      supervisor_id: 1000000,
-      shift_id: 1000000,
-      sensor_id: null,
-      supervisor_name: 'Axole Maranjana',
-      shift_name: 'Day'
-    }
-  ])
+  const [employess, setEmployees] = useState([testEmployee])
   const [supervisors, setSupervisors] = useState([
     {
-      user_id: 1000008,
+      user_id: 1_000_008,
       user_id_prefix: 'user-',
       user_name: 'Test Supervisor',
       role_name: 'Supervisor',
-      role_id: 1000001
+      role_id: 1_000_001
     }
   ])
-  const [availabeNodes, setAvailabeNodes] = useState(null)
+  const [availabeNodes, setAvailabeNodes] = useState([])
   const [selectedShift, setSelectedShift] = useState(null)
   const [selectedSupervisor, setSelectedSupervisor] = useState(null)
-  const [selectedEmployee, setSelectEmloyee] = useState({
-    id: 1000001,
-    id_prefix: 'min-',
-    user_name: 'Karao',
-    email: 'Amail.com',
-    status: 1,
-    created_at: '2023-08-07T13:29:47.000Z',
-    created_by: 'System',
-    updated_at: '2023-08-07T13:29:47.000Z',
-    updated_by: 'System',
-    supervisor_id: 1000000,
-    shift_id: 1000000,
-    sensor_id: null,
-    supervisor_name: 'Axole Maranjana',
-    shift_name: 'Day'
-  })
+  const [selectedEmployee, setSelectEmloyee] = useState(testEmployee)
 
   useEffect(() => {
     refresh()
@@ -91,10 +76,13 @@ const Employee = () => {
       })
       .then((res) => {
         showToast('success', 'Success', res.data.message, toast)
-        fetchtEmployees()
       })
       .catch((err) => {
         catchHandler(err, toast)
+      })
+      .finally(() => {
+        fetchtEmployees()
+        fetchNodes()
       })
   }
 
@@ -116,6 +104,9 @@ const Employee = () => {
     axios
       .get(`${API_URL}/miners`, { headers: { 'x-access-token': token } })
       .then((res) => {
+        if (res.data.data.length === 0) {
+          return
+        }
         setSelectEmloyee(res.data.data[0])
         setEmployees(res.data.data)
         setNodeId(res.data.data[0].sensor_id)
@@ -154,7 +145,12 @@ const Employee = () => {
   const actionBodyTemplate = (userId) => {
     return (
       <div className="flex align-items-center">
-        <Button label="Manage" onClick={() => selectEmployee(userId)} size="small" />
+        <Button
+          label="Manage"
+          onClick={() => selectEmployee(userId)}
+          size="small"
+          disabled={userId.id === 999_999}
+        />
       </div>
     )
   }
@@ -243,7 +239,7 @@ const Employee = () => {
                   options={availabeNodes}
                   optionLabel="id"
                   optionValue="id"
-                  placeholder="Assign node"
+                  placeholder={nodeId ? nodeId : 'Assign node'}
                   className="w-full p-inputtext-sm"
                 />
               </div>
@@ -320,7 +316,13 @@ const Employee = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-content-end">
-                <Button className="w-9 mr-2" label="Save" size="small" onClick={updateEmployee} />
+                <Button
+                  className="w-9 mr-2"
+                  label="Save"
+                  size="small"
+                  onClick={updateEmployee}
+                  disabled={selectedEmployee.id === 999_999}
+                />
                 <Button
                   className="w-3 ml-2"
                   label="Delete"
@@ -329,6 +331,7 @@ const Employee = () => {
                   onClick={confirm}
                   severity="danger"
                   icon="pi pi-times"
+                  disabled={selectedEmployee.id === 999_999}
                 />
               </div>
             </div>

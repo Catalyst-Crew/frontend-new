@@ -7,6 +7,7 @@ import { Toast } from 'primereact/toast'
 import { Button } from 'primereact/button'
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
+import { Splitter, SplitterPanel } from 'primereact/splitter'
 
 import Navbar from '../../components/Navbar'
 import NewAccess from '../../components/NewAccess'
@@ -22,12 +23,13 @@ const AccessPoints = () => {
   const toast = useRef(null)
 
   const { user } = useSelector((state) => state.auth)
+
+  const name = user ? user.id : 999_999
   const token = user ? user.token : 'token'
-  const name = user ? user.id_prefix + user.id : 'user-999999'
 
   const [sensors, setSensors] = useState([
     {
-      id: 1000001,
+      id: 1_000_001,
       id_prefix: 'sen-',
       status: 0,
       device_id: null,
@@ -45,9 +47,9 @@ const AccessPoints = () => {
   const [selectedSensor, setSensor] = useState(null)
   const [accessPoints, setAccessPoints] = useState([
     {
-      id: 1000000,
+      id: 1_000_000,
       id_prefix: 'acc-',
-      area_id: 1000000,
+      area_id: 1_000_000,
       name: 'A1-1',
       lat: '-26.260693',
       longitude: '29.121075',
@@ -133,60 +135,75 @@ const AccessPoints = () => {
       <Toast ref={toast} />
       <div className="flex">
         {/* Table div */}
-        <div className="w-8 px-3" style={{ height: '95vh' }}>
-          <DataTable
-            value={accessPoints}
-            header={() =>
-              header({
-                text: 'Access Points',
-                refresh: getAccessPoints,
-                isLoading: loading,
-                action: () => setAddAccess(true)
-              })
-            }
-            {...tableOptions}
-            className="mb-2"
-          >
-            <Column field="id" header="ID" body={nameTemplate} />
-            <Column field="name" header="Name" />
-            <Column field="status" header="Status" body={activeTemplate} />
-            <Column
-              field="location"
-              header="Location"
-              body={(e) => <CopyText text={e.location} />}
-            />
-            <Column
-              field="id"
-              header="Action"
-              body={(e) => actionBodyTemplate(e, selectAccessPoint)}
-            />
-          </DataTable>
-          <hr />
-          <DataTable
-            value={sensors}
-            header={() =>
-              header({
-                text: 'Sensors',
-                refresh: getSensors,
-                isLoading: loading,
-                action: () => setAddSensor(true)
-              })
-            }
-            {...tableOptions}
-            paginator
-            className="mt-2"
-          >
-            <Column field="id" header="ID" body={nameTemplate} />
-            <Column field="status" header="Status" body={activeTemplate} />
-            <Column field="available" header="Available" body={availableTemplate} />
-            <Column
-              field="updated_at"
-              header="Last Update"
-              body={(e) => <>{moment(e.updated_at).fromNow()}</>}
-            />
-            <Column field="device_id" header="Device ID" />
-            <Column field="id" header="Action" body={(e) => actionBodyTemplate(e, selectSensor)} />
-          </DataTable>
+        <div className="w-8 ">
+          <Splitter layout="vertical">
+            <SplitterPanel
+              className="flex align-items-center justify-content-center"
+              size={20}
+              minSize={10}
+            >
+              <DataTable
+                value={accessPoints}
+                header={() =>
+                  header({
+                    text: 'Access Points',
+                    refresh: getAccessPoints,
+                    isLoading: loading,
+                    action: () => setAddAccess(true)
+                  })
+                }
+                {...tableOptions}
+              >
+                <Column field="id" header="ID" body={nameTemplate} />
+                <Column field="name" header="Name" />
+                <Column field="status" header="Status" body={activeTemplate} />
+                <Column
+                  field="location"
+                  header="Location"
+                  body={(e) => <CopyText text={e.location} label={e.area_name} />}
+                />
+                <Column
+                  field="id"
+                  header="Action"
+                  body={(e) => actionBodyTemplate(e, selectAccessPoint)}
+                />
+              </DataTable>
+            </SplitterPanel>
+            <SplitterPanel
+              className="flex align-items-center justify-content-center"
+              size={80}
+              minSize={30}
+            >
+              <DataTable
+                value={sensors}
+                header={() =>
+                  header({
+                    text: 'Sensors',
+                    refresh: getSensors,
+                    isLoading: loading,
+                    action: () => setAddSensor(true)
+                  })
+                }
+                {...tableOptions}
+                paginator
+              >
+                <Column field="id" header="ID" body={nameTemplate} />
+                <Column field="status" header="Status" body={activeTemplate} />
+                <Column field="available" header="Available" body={availableTemplate} />
+                <Column
+                  field="updated_at"
+                  header="Last Update"
+                  body={(e) => <>{moment(e.updated_at).fromNow()}</>}
+                />
+                <Column field="device_id" header="Device ID" />
+                <Column
+                  field="id"
+                  header="Action"
+                  body={(e) => actionBodyTemplate(e, selectSensor)}
+                />
+              </DataTable>
+            </SplitterPanel>
+          </Splitter>
         </div>
 
         {/* Right div */}
@@ -232,9 +249,10 @@ const tableOptions = {
   rowsPerPageOptions: [10, 25, 50, 100],
   stripedRows: true,
   scrollable: true,
-  scrollHeight: 'calc(100vh - 25rem)',
+  scrollHeight: 'calc(100vh - 10rem)',
   removableSort: true,
-  style: { width: '100%', height: '45%' }
+  style: { width: '100%' },
+  className: 'p-datatable-sm'
 }
 
 const header = ({ text, action, isLoading, refresh }) => {

@@ -30,13 +30,13 @@ const username = (user) => {
             severity={
               user.access_name === 'GRANTED'
                 ? 'success'
-                : user.access === 'BLOCKED'
+                : user.access_name === 'BLOCKED'
                 ? 'warning'
                 : 'danger'
             }
           />
         ) : (
-          <Badge severity={user.sensor_id ? 'success' : 'danger'} />
+          <Badge severity={user.sensor_id ? 'success' : user.status === 2 ? 'warning' : 'danger'} />
         )}
       </Avatar>
       <div className="ml-2">

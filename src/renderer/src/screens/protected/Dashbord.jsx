@@ -190,6 +190,7 @@ const Dashbord = () => {
                   setZoom={setZoom}
                   defaultCenter={center}
                   setCenter={setCenter}
+                  toastRef={toastRef}
                 />
               </div>
             </div>

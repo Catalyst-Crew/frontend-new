@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router-dom'
 const Help = () => {
   const navigator = useNavigate()
 
-  return <div onClick={() => navigator('/')}>Go Login</div>
+  return (
+    <div>
+      <div>code here</div>
+
+      <div onClick={() => navigator('/')}>Go Login</div>
+    </div>
+  )
 }
 
 export default Help
