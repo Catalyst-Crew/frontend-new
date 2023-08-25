@@ -8,11 +8,14 @@ import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 
-import { API_URL } from '../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import staticData from '../assets/staticData.json'
 import { catchHandler, showToast } from '../utils/functions'
+import { useSelector } from 'react-redux'
 
 const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
+  const { user } = useSelector((state) => state.auth)
+
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [selectedAccess, setAccess] = useState(null)
@@ -109,6 +112,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
               placeholder="Status"
               optionValue="status"
               className="w-full md:w-14rem"
+              disabled={user.user_role_id !== ADMIN_ROLE}
             />
           </div>
           <Button

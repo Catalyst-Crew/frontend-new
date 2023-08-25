@@ -7,7 +7,7 @@ import { DataTable } from 'primereact/datatable'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 
 import Navbar from '../../components/Navbar'
-import { API_URL } from '../../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import username from '../../components/UserName'
 import staticData from '../../assets/staticData.json'
 import NewEmployee from '../../components/NewEmployee'
@@ -223,7 +223,11 @@ const Employee = () => {
 
         {/* Right div */}
         <div className="flex flex-column w-4 px-3">
-          <Button onClick={() => setVisible(true)} className="add text-center mt-1 mb-2">
+          <Button
+            onClick={() => setVisible(true)}
+            className="add text-center mt-1 mb-2"
+            disabled={user.user_role_id !== ADMIN_ROLE}
+          >
             Add Employee
           </Button>
 
@@ -331,7 +335,7 @@ const Employee = () => {
                   onClick={confirm}
                   severity="danger"
                   icon="pi pi-times"
-                  disabled={selectedEmployee.id === 999_999}
+                  disabled={selectedEmployee.id === 999_999 || user.user_role_id !== ADMIN_ROLE}
                 />
               </div>
             </div>

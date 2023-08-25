@@ -171,7 +171,6 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
 
           <tr>
             <td>
-              {' '}
               <div className="mt-4">
                 <div className="flex flex-column gap-2 text-left">
                   <label htmlFor="username">Access:</label>

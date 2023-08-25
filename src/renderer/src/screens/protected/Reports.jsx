@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import { useState, useEffect, useRef } from 'react'
 
 import Navbar from '../../components/Navbar'
-import { API_URL } from '../../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import { catchHandler, showToast } from '../../utils/functions'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
@@ -156,6 +156,7 @@ const Reports = () => {
                 label="Download"
                 className="p-button-sm p-button-outlined"
                 onClick={() => downloadReport(rowData.file_name)}
+                disabled={user.user_role_id !== ADMIN_ROLE}
               />
             )}
           />
@@ -207,6 +208,7 @@ const Reports = () => {
                 className="p-button-sm p-button-filled mt-2"
                 onClick={() => generateReport()}
                 loading={isLoading}
+                disabled={user.user_role_id !== ADMIN_ROLE}
               />
             </div>
           </Card>

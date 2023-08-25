@@ -10,12 +10,14 @@ import { InputText } from 'primereact/inputtext'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace'
 
-import { API_URL } from '../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import staticData from '../assets/staticData.json'
 import { catchHandler, showToast } from '../utils/functions'
+import { useSelector } from 'react-redux'
 
 export default function ManageSensor({ data, toastRef, token, username, refresh }) {
   const [sensorData, setData] = useState(null)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     if (data) {
@@ -111,7 +113,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
       <div className="card flex flex-column gap-2 mt-3 ml-2">
         <div className="flex flex-column gap-2 ">
           <label htmlFor="access">Device ID:</label>
-          <Inplace closable>
+          <Inplace closable disabled={user.user_role_id !== ADMIN_ROLE}>
             <InplaceDisplay>
               <p className="my-1">{sensorData?.device_id || 'Click to edit'}</p>
             </InplaceDisplay>
@@ -187,6 +189,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
             onClick={confirm}
             severity="danger"
             icon="pi pi-times"
+            disabled={user.user_role_id !== ADMIN_ROLE}
           />
         </div>
       </div>

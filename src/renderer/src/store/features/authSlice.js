@@ -3,7 +3,20 @@ import { createSlice } from '@reduxjs/toolkit'
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: null,
+    user: {
+      token:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMwNTEwOTUsImRhdGEiOjEwMDAwMDEsImlhdCI6MTY5Mjk2NDY5NX0.mspDfSR2VtGeZbFmweRziQJpzm72piO2qursT7Lre1s',
+      identity: 'user-1000001',
+      id: 1_000_001,
+      id_prefix: 'user-',
+      name: 'Axole Maranjana',
+      email: 'axolemaranjana4@gmail.com',
+      password: '',
+      user_role_id: 1_000_000,
+      phone: '0681721606',
+      access_id: 1_000_000,
+      area_id: 1_000_000
+    },
     state: false
   },
   reducers: {
