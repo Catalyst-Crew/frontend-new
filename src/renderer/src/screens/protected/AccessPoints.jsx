@@ -251,7 +251,8 @@ const tableOptions = {
   scrollable: true,
   scrollHeight: 'calc(100vh - 10rem)',
   removableSort: true,
-  style: { width: '100%' }
+  style: { width: '100%' },
+  className: 'p-datatable-sm'
 }
 
 const header = ({ text, action, isLoading, refresh }) => {
