@@ -31,12 +31,15 @@ const Settings = () => {
   useEffect(() => {
     if (user) {
       setSettings({
-        id: user.id
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone
       })
     }
 
     return getUserSettings()
-  }, [])
+  }, [user])
 
   const id = user ? user.id : 1_000_000
   const token = user ? user.token : 'token'
