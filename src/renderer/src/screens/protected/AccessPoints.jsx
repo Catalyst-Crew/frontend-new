@@ -15,7 +15,7 @@ import NewSensor from '../../components/NewSensor'
 import ManageSensor from '../../components/ManageSensor'
 import ManageAccess from '../../components/ManageAccess'
 
-import { API_URL } from '../../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import CopyText from '../../components/CopyText'
 import { catchHandler } from '../../utils/functions'
 
@@ -256,11 +256,18 @@ const tableOptions = {
 }
 
 const header = ({ text, action, isLoading, refresh }) => {
+  const { user } = useSelector((state) => state.auth)
   return (
     <div className="flex flex-wrap justify-content-between">
       <h3 className="my-1">{text}</h3>
       <div className="flex flex-wrap justify-content-end gap-2">
-        <Button icon={`pi pi-plus`} onClick={action} size="small" label="Add new" />
+        <Button
+          icon={`pi pi-plus`}
+          onClick={action}
+          size="small"
+          label="Add new"
+          disabled={user.user_role_id !== ADMIN_ROLE}
+        />
         <Button
           disabled={isLoading}
           icon={`pi pi-refresh ${isLoading && 'pi-spin'}`}

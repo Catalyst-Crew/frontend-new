@@ -6,7 +6,7 @@ import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
 
 import Navbar from '../../components/Navbar'
-import { API_URL } from '../../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import NewUser from '../../components/NewUser'
 import username from '../../components/UserName'
 import staticData from '../../assets/staticData.json'
@@ -65,7 +65,7 @@ const Users = () => {
   }, [])
 
   const token = user ? user.token : 'token'
-  const name = user ? user.id_prefix + user.id : 'user-999999'
+  const name = user ? user.id : 999_999
 
   const fetchtUsers = () => {
     axios
@@ -74,11 +74,12 @@ const Users = () => {
         if (res.status !== 200) {
           return
         }
-        setUser(res.data.data[0])
-        setUsers(res.data.data)
-        setAccess(res.data.data[0].access_id)
-        setAccessArea(res.data.data[0].access_id)
-        setAccessLevel(res.data.data[0].role_id)
+        const newData = res.data.data.filter((item) => item.user_id !== user.id)
+        setUser(newData[0])
+        setUsers(newData)
+        setAccess(newData[0].access_id)
+        setAccessArea(newData[0].access_id)
+        setAccessLevel(newData[0].role_id)
       })
       .catch((err) => {
         catchHandler(err, toast)
@@ -112,7 +113,12 @@ const Users = () => {
   const actionBodyTemplate = (userId) => {
     return (
       <div className="flex align-items-center">
-        <Button label="Manage" onClick={() => selectUser(userId)} size="small" />
+        <Button
+          label="Manage"
+          onClick={() => selectUser(userId)}
+          size="small"
+          disabled={user.user_role_id !== ADMIN_ROLE}
+        />
       </div>
     )
   }
@@ -154,7 +160,11 @@ const Users = () => {
 
         {/* Right div */}
         <div className="flex flex-column w-4 px-3">
-          <Button onClick={() => setVisible(true)} className="add text-center mt-1 mb-2">
+          <Button
+            onClick={() => setVisible(true)}
+            className="add text-center mt-1 mb-2"
+            disabled={user.user_role_id !== ADMIN_ROLE}
+          >
             Add new user
           </Button>
 
@@ -247,7 +257,13 @@ const Users = () => {
               </div>
 
               <div className="mt-3 flex justify-content-end">
-                <Button className="w-full" label="Save" size="small" onClick={updateUser} />
+                <Button
+                  className="w-full"
+                  label="Save"
+                  size="small"
+                  onClick={updateUser}
+                  disabled={user.user_role_id !== ADMIN_ROLE}
+                />
               </div>
             </div>
           </Card>

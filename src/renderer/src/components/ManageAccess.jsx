@@ -8,18 +8,21 @@ import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 
-import { API_URL } from '../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import staticData from '../assets/staticData.json'
 import { catchHandler, showToast } from '../utils/functions'
+import { useSelector } from 'react-redux'
 
 const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
+  const { user } = useSelector((state) => state.auth)
+
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [selectedAccess, setAccess] = useState(null)
   const [accessPoint, setAccessPoint] = useState(null)
   const [areas, setAreas] = useState([
     {
-      id: 1000000,
+      id: 1_000_000,
       id_prefix: 'are-',
       name: 'Shaft-A1',
       lat: '-26.260693',
@@ -32,7 +35,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
       setAccess(data.status)
       setAccessPoint(data)
     }
-    return getAreas()
+    getAreas()
   }, [data])
 
   const updateStatus = (status) => {
@@ -109,6 +112,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
               placeholder="Status"
               optionValue="status"
               className="w-full md:w-14rem"
+              disabled={user.user_role_id !== ADMIN_ROLE}
             />
           </div>
           <Button
@@ -133,7 +137,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="name"
               value={accessPoint?.name}
-              onClick={(e) => setAccessPoint((prev) => ({ ...prev, name: e.value }))}
+              onChange={(e) => setAccessPoint({ ...accessPoint, name: e.target.value })}
             />
           </div>
 
@@ -142,7 +146,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="device_id"
               value={accessPoint?.device_id}
-              onClick={(e) => setAccessPoint((prev) => ({ ...prev, device_id: e.value }))}
+              onChange={(e) => setAccessPoint((prev) => ({ ...prev, device_id: e.target.value }))}
             />
           </div>
 
@@ -151,7 +155,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <Dropdown
               id="area"
               value={accessPoint?.area_id}
-              onClick={(e) => selectedAccess((prev) => ({ ...prev, area_id: e.value }))}
+              onChange={(e) => setAccessPoint((prev) => ({ ...prev, area_id: e.value }))}
               options={areas}
               optionLabel="name"
               placeholder="Area"
@@ -164,8 +168,8 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="lat"
               value={accessPoint?.lat}
-              onClick={(e) => {
-                setAccessPoint((prev) => ({ ...prev, lat: e.value }))
+              onChange={(e) => {
+                setAccessPoint((prev) => ({ ...prev, lat: e.target.value }))
               }}
               max={90}
               maxLength={9}
@@ -177,10 +181,10 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
             <InputText
               id="longitude"
               value={accessPoint?.longitude}
-              onClick={(e) => {
+              onChange={(e) => {
                 setAccessPoint((prev) => ({
                   ...prev,
-                  longitude: e.value
+                  longitude: e.target.value
                 }))
               }}
               max={180}

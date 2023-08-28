@@ -9,7 +9,7 @@ import { Button } from 'primereact/button'
 import { DataTable } from 'primereact/datatable'
 
 import Navbar from '../../components/Navbar'
-import { API_URL } from '../../utils/exports'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import CopyText from '../../components/CopyText'
 import { catchHandler, showToast } from '../../utils/functions'
 
@@ -64,16 +64,18 @@ const Logs = () => {
   }
 
   const fetchLogs = () => {
-    setIsLoading(true)
-    axios
-      .get(`${API_URL}/logs`, { headers: { 'x-access-token': token } }) // 5 minutes timeout
-      .then((response) => {
-        setLogs(response.data)
-      })
-      .catch((error) => {
-        catchHandler(error, toast)
-      })
-      .finally(() => setIsLoading(false))
+    if (user.user_role_id == ADMIN_ROLE) {
+      setIsLoading(true)
+      axios
+        .get(`${API_URL}/logs`, { headers: { 'x-access-token': token } }) // 5 minutes timeout
+        .then((response) => {
+          setLogs(response.data)
+        })
+        .catch((error) => {
+          catchHandler(error, toast)
+        })
+        .finally(() => setIsLoading(false))
+    }
   }
 
   const paginatorLeft = (
@@ -121,11 +123,16 @@ const Logs = () => {
       <div>
         <DataTable
           rows={50}
+          paginator
+          scrollable
+          stripedRows
           size="small"
           dataKey="id"
+          value={logs}
+          showGridlines
+          removableSort
           sortOrder={-1}
           header={header}
-          value={logs}
           sortMode="multiple"
           sortField="created_at"
           selectionMode="checkbox"
@@ -138,11 +145,6 @@ const Logs = () => {
           onRowToggle={(e) => setExpandedRow(e.data)}
           rowExpansionTemplate={rowExpansionTemplate}
           onSelectionChange={(e) => setSelectedLogs(e.value)}
-          removableSort
-          showGridlines
-          stripedRows
-          paginator
-          scrollable
           virtualScrollerOptions={{}} //left empty on purpose
         >
           <Column expander={allowExpansion} style={{ width: '1rem' }} />
