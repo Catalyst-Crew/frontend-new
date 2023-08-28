@@ -131,7 +131,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
           <label htmlFor="reason">Status:</label>
           <Dropdown
             value={sensorData?.status}
-            onChange={(e) => setData((prev) => ({ ...prev, active: e.value }))}
+            onChange={(e) => setData((prev) => ({ ...prev, status: e.value }))}
             options={staticData.switchState}
             optionLabel="name"
             optionValue="status"
