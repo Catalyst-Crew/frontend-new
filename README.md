@@ -1,4 +1,4 @@
-# miners-tracker
+# Rescue Radar
 
 An Electron application with React
 

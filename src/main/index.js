@@ -1,6 +1,7 @@
-import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
+import { app, shell, BrowserWindow } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+
 import icon from '../../resources/icon.png?asset'
 
 function createWindow() {
@@ -10,7 +11,7 @@ function createWindow() {
     width: 1200,
     minHeight: 720,
     minWidth: 1200,
-    backgroundColor: 'white',
+    backgroundColor: '#0e1315',
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -18,8 +19,8 @@ function createWindow() {
       sandbox: false
     },
     center: true,
-    title: 'Miners Tracker Software',
-    tabbingIdentifier: 'miners-tracker'
+    title: 'RescueRadar',
+    tabbingIdentifier: 'rescue-radar'
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -45,7 +46,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.miners-tracker.app')
+  electronApp.setAppUserModelId('com.rescue-radar.app')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
