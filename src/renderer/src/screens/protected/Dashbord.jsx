@@ -9,7 +9,6 @@ import { Card } from 'primereact/card'
 import { Badge } from 'primereact/badge'
 import { Toast } from 'primereact/toast'
 import { Button } from 'primereact/button'
-import { Divider } from 'primereact/divider'
 import { OverlayPanel } from 'primereact/overlaypanel'
 
 import MyMap from '../../components/Map'
@@ -180,8 +179,9 @@ const Dashbord = () => {
         <Navbar activeIndex={0} />
         <Toast ref={toastRef} />
         <audio hidden ref={audioRef} controls />
-        <div className="grid text-sm" style={{ height: '90vh' }}>
-          <div className="col-9 flex flex-column pr-2" style={{ height: '90vh' }}>
+
+        <div className="grid text-sm" style={{ height: '89vh' }}>
+          <div className="col-9 flex flex-column pr-2" style={{ height: '100%' }}>
             {/* Map caontainer */}
             <div className="h-full">
               <div className="border-yellow-500 border-solid border-1 border-round-xs h-full w-full">
@@ -196,7 +196,7 @@ const Dashbord = () => {
             </div>
 
             {/* Footer caontainer */}
-            <div className="mt-3">
+            <div className="mt-2">
               <div className="grid m-0">
                 <div className="col-4 flex p-0">
                   <span className="p-buttonset">
@@ -265,7 +265,7 @@ const Dashbord = () => {
           </div>
 
           {/* Cards caontainer */}
-          <div className="col-3 pl-2 line-height-2" style={{ marginBottom: '1%' }}>
+          <div className="col-3 pl-2 line-height-2 flex flex-column gap-2">
             {accessPoints[next.accessPoint]?.measurements?.length > 0 ? (
               <Card title="Miner Details" className="text-sm">
                 <table className="w-full">
@@ -375,8 +375,6 @@ const Dashbord = () => {
               </Card>
             )}
 
-            <Divider type="dotted" />
-
             <Card title="Access Point" className="text-sm">
               <table className="w-full">
                 <tbody>
@@ -428,8 +426,6 @@ const Dashbord = () => {
                 />
               </div>
             </Card>
-
-            <Divider type="dotted" />
 
             <Card title="Area Details" className="text-sm">
               <table className="w-full">
@@ -484,41 +480,42 @@ const Dashbord = () => {
             </Card>
           </div>
         </div>
+
         <OverlayPanel ref={op}>
           <div>
             <Button
               size="small"
-              className="p-button-rounded p-button-text text-gray-900"
+              className="p-button-rounded p-button-text text-gray-100"
               label="3 sec"
               onClick={() => updateInterval(3_000)}
             />
             <Button
               size="small"
-              className="p-button-rounded p-button-text text-gray-900"
+              className="p-button-rounded p-button-text text-gray-100"
               label="10 sec"
               onClick={() => updateInterval(10_000)}
             />
             <Button
               size="small"
-              className="p-button-rounded p-button-text text-gray-900"
+              className="p-button-rounded p-button-text text-gray-100"
               label="30 sec"
               onClick={() => updateInterval(30_000)}
             />
             <Button
               size="small"
-              className="p-button-rounded p-button-text text-gray-900"
+              className="p-button-rounded p-button-text text-gray-100"
               label="1 min"
               onClick={() => updateInterval(60_000)}
             />
             <Button
               size="small"
-              className="p-button-rounded p-button-text text-gray-900"
+              className="p-button-rounded p-button-text text-gray-100"
               label="5 min"
               onClick={() => updateInterval(300_000)}
             />
             <Button
               size="small"
-              className="p-button-rounded p-button-text text-gray-900"
+              className="p-button-rounded p-button-text text-gray-100"
               label="Stop alert"
               onClick={() => {
                 setPlay(false)
