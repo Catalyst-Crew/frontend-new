@@ -16,7 +16,7 @@ import audio from '../../assets/audio.wav'
 import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
 import DateTime from '../../components/DateTime'
-import { useGlobalAudioPlayer } from 'react-use-audio-player';
+import { useGlobalAudioPlayer } from 'react-use-audio-player'
 
 import { catchHandler } from '../../utils/functions'
 import { setDashboardData } from '../../store/features/dashboadSlice'
@@ -27,7 +27,7 @@ const Dashbord = () => {
   const toastRef = useRef(null)
   const dispatch = useDispatch()
   const navigator = useNavigate()
-  const { load, pause, play } = useGlobalAudioPlayer();
+  const { load, pause, play } = useGlobalAudioPlayer()
 
   const [zoom, setZoom] = useState(16.2)
   const [color, setColor] = useState('info')
@@ -46,11 +46,9 @@ const Dashbord = () => {
 
   useEffect(() => {
     if (localStorage.getItem('audio_alerts')) {
-      if (localStorage.getItem('audio_alerts') === 'false') {
-        setPlay(false)
-      }
+      setPlay(JSON.parse(localStorage.getItem('audio_alerts')))
     }
-    load(audio);
+    load(audio)
 
     let intvlTime = 3_000
     if (localStorage.getItem('intervalTime')) {
@@ -141,7 +139,6 @@ const Dashbord = () => {
   }
 
   async function checkResponseTime(url) {
-
     const start = Date.now()
     fetch(url)
       .then(() => {
@@ -153,8 +150,8 @@ const Dashbord = () => {
         } else if (responseTime < 5000) {
           setColor('warning')
         }
-      }).catch((e) => {
-
+      })
+      .catch((e) => {
         if (plays) {
           play()
         }
@@ -167,8 +164,7 @@ const Dashbord = () => {
           },
           toastRef
         )
-      }
-      )
+      })
   }
 
   const updateInterval = (time) => {
@@ -183,7 +179,6 @@ const Dashbord = () => {
 
       <div className="grid text-sm" style={{ height: '89vh' }}>
         <div className="col-9 flex flex-column pr-2" style={{ height: '100%' }}>
-          
           {/* Map caontainer */}
           <div className="h-full">
             <div className="border-blue-500 border-solid border-1 border-round-xs h-full w-full">
@@ -275,8 +270,9 @@ const Dashbord = () => {
                   <tr>
                     <td className="text-left">Miner ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`min-${accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
-                        }` || 'N/A'}
+                      {`min-${
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
+                      }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
@@ -296,8 +292,9 @@ const Dashbord = () => {
                   <tr>
                     <td className="text-left">Node ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`sen-${accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
-                        }` || 'N/A'}
+                      {`sen-${
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
+                      }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
@@ -311,7 +308,7 @@ const Dashbord = () => {
                     <td className="font-bold text-right vertical-align-middle">
                       {moment(
                         accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
-                        new Date(2000, 1, 1)
+                          new Date(2000, 1, 1)
                       ).fromNow()}
                     </td>
                   </tr>
@@ -407,7 +404,7 @@ const Dashbord = () => {
                   <td className="font-bold text-right vertical-align-middle">
                     {moment(
                       accessPoints[next.accessPoint]?.access_point_created_at ||
-                      new Date(2000, 1, 1)
+                        new Date(2000, 1, 1)
                     ).fromNow()}
                   </td>
                 </tr>
