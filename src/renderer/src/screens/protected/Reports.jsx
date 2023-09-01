@@ -266,7 +266,6 @@ const Reports = () => {
               </div>
             </div>
           </Card>
-
         </div>
       </div>
     </div>
