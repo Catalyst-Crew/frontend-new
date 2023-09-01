@@ -158,6 +158,7 @@ const AccessPoints = () => {
                   header="Location"
                   body={(e) => <CopyText text={e.location} label={e.area_name} />}
                 />
+                <Column field="device_id" header="Device ID" />
                 <Column
                   field="id"
                   header="Action"
@@ -166,7 +167,7 @@ const AccessPoints = () => {
               </DataTable>
             </SplitterPanel>
 
-            <SplitterPanel className="flex align-items-center justify-content-center" size={75}>
+            <SplitterPanel className="flex justify-content-center" size={75}>
               <DataTable
                 value={sensors}
                 header={() =>
@@ -178,7 +179,7 @@ const AccessPoints = () => {
                   })
                 }
                 {...tableOptions}
-                paginator
+                // paginator
               >
                 <Column field="id" header="ID" body={nameTemplate} />
                 <Column field="status" header="Status" body={activeTemplate} />
@@ -239,10 +240,10 @@ const AccessPoints = () => {
 
 const tableOptions = {
   rows: 10,
-  rowsPerPageOptions: [10, 25, 50, 100],
+  //rowsPerPageOptions: [10, 25, 50, 100],
   stripedRows: true,
   scrollable: true,
-  scrollHeight: 'calc(100vh - 10rem)',
+  scrollHeight: 'calc(100vh - 25rem)',
   removableSort: true,
   style: { width: '100%' },
   className: 'p-datatable-sm'
