@@ -14,6 +14,9 @@ afterSign: build/notarize.js
 win:
   executableName: rescueradar
   icon: build/icon.ico
+  publish:
+    - provider: github
+      protocol: https
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -37,7 +40,6 @@ linux:
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
-npmRebuild: false
-publish:
-  provider: generic
-  url: https://example.com/auto-updates
+npmRebuild: true
+compression: maximum
+copyright: Copyright © 2023 Catalyst Crew
