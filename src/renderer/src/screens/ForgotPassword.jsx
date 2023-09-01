@@ -127,12 +127,13 @@ const ForgotPassword = () => {
       </div>
 
       <Button
-        onClick={() => navigator('/')}
+        onClick={() => navigator('/login')}
         text
         className="p-mt-2 mt-5"
-        //loading={loading}
+        loading={loading}
         label="Go to Login"
       />
+
       <Dialog
         header="Reset Password"
         visible={showPopUp}
