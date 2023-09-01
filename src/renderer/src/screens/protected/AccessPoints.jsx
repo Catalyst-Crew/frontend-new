@@ -59,7 +59,7 @@ const AccessPoints = () => {
       area_lat: '-26.260693',
       area_longitude: '29.121075'
     }
-  ]) 
+  ])
 
   useEffect(() => {
     return fetchData()
@@ -134,15 +134,10 @@ const AccessPoints = () => {
       <Navbar activeIndex={3} />
       <Toast ref={toast} />
       <div className="flex">
-
         {/* Table div */}
-        <div className="w-8" style={{height:"87vh"}}>
-
-          <Splitter layout="vertical" className='h-full'>
-            <SplitterPanel
-              className="flex justify-content-center"
-              size={25} minSize={10}
-            >
+        <div className="w-8" style={{ height: '87vh' }}>
+          <Splitter layout="vertical" className="h-full">
+            <SplitterPanel className="flex justify-content-center" size={25} minSize={10}>
               <DataTable
                 value={accessPoints}
                 header={() =>
@@ -171,10 +166,7 @@ const AccessPoints = () => {
               </DataTable>
             </SplitterPanel>
 
-            <SplitterPanel
-              className="flex align-items-center justify-content-center"
-              size={75}
-            >
+            <SplitterPanel className="flex align-items-center justify-content-center" size={75}>
               <DataTable
                 value={sensors}
                 header={() =>
@@ -205,7 +197,6 @@ const AccessPoints = () => {
               </DataTable>
             </SplitterPanel>
           </Splitter>
-
         </div>
 
         {/* Right div */}

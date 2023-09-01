@@ -194,7 +194,7 @@ const Employee = () => {
   }
 
   return (
-    <div className="overflow-hidden" style={{ height: "97vh" }}>
+    <div className="overflow-hidden" style={{ height: '97vh' }}>
       <Navbar activeIndex={2} />
       <Toast ref={toast} />
       <ConfirmDialog />
@@ -339,7 +339,6 @@ const Employee = () => {
                 />
               </div>
             </div>
-
           </Card>
         </div>
       </div>

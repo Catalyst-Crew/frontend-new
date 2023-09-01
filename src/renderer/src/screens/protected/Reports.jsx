@@ -127,7 +127,7 @@ const Reports = () => {
     <div className="max-h-screen overflow-hidden">
       <Navbar activeIndex={4} />
       <Toast ref={toast} />
-      <div className="flex gap-4" style={{ height: "87vh" }}>
+      <div className="flex gap-4" style={{ height: '87vh' }}>
         <DataTable
           value={reports}
           rows={20}
@@ -228,7 +228,7 @@ const Reports = () => {
                   className="p-inputtext-sm"
                   value={fileName}
                   onChange={(e) => setFileName(e.target.value)}
-                  placeholder='my-report'
+                  placeholder="my-report"
                 />
               </div>
               <div className="flex flex-column gap-2 mt-2">
@@ -254,14 +254,14 @@ const Reports = () => {
           </Card>
 
           <Card>
-            <div className='flex justify-content-between'>
-              <div className='flex justify-content-between'>
-                <p className='m-0'>Total files:</p>
-                <p className='ml-5 m-0'>{reports?.length || 0}</p>
+            <div className="flex justify-content-between">
+              <div className="flex justify-content-between">
+                <p className="m-0">Total files:</p>
+                <p className="ml-5 m-0">{reports?.length || 0}</p>
               </div>
-              <div className='flex justify-content-between'>
-                <p className='m-0'>Current reports queue:</p>
-                <p className='ml-5 m-0'>{Math.floor(Math.random() * 10)}</p>
+              <div className="flex justify-content-between">
+                <p className="m-0">Current reports queue:</p>
+                <p className="ml-5 m-0">{Math.floor(Math.random() * 10)}</p>
               </div>
             </div>
           </Card>

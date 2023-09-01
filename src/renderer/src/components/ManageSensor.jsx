@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 
 import { Card } from 'primereact/card'
@@ -10,10 +11,9 @@ import { InputText } from 'primereact/inputtext'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace'
 
-import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import staticData from '../assets/staticData.json'
+import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import { catchHandler, showToast } from '../utils/functions'
-import { useSelector } from 'react-redux'
 
 export default function ManageSensor({ data, toastRef, token, username, refresh }) {
   const [sensorData, setData] = useState(null)

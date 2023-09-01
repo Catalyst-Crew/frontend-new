@@ -123,7 +123,7 @@ const Logs = () => {
     <div>
       <Navbar activeIndex={5} />
       <Toast ref={toast} />
-      <div style={{height:"80vh"}}>
+      <div style={{ height: '80vh' }}>
         <DataTable
           rows={50}
           paginator

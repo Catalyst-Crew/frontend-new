@@ -132,7 +132,7 @@ const Users = () => {
   }
 
   return (
-    <div className="overflow-hidden" style={{height:"97vh"}}>
+    <div className="overflow-hidden" style={{ height: '97vh' }}>
       <Navbar activeIndex={1} />
       <Toast ref={toast} />
 
