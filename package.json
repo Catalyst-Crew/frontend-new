@@ -1,6 +1,6 @@
 {
-  "name": "miners-tracker",
-  "version": "0.0.1",
+  "name": "rescueradar",
+  "version": "0.0.2",
   "description": "Final year project",
   "main": "./out/main/index.js",
   "author": "Catalyst Crew",
