@@ -23,23 +23,4 @@ export const { login, logout } = authSlice.actions
 
 export default authSlice.reducer
 
-// interface IAuthState {
-//   user: IUser | null
-//   state: boolean
-// }
-
-// interface IUser {
-//   token: string
-//   identity: string
-//   id: number
-//   id_prefix: string
-//   name: string
-//   email: string
-//   password: string
-//   user_role_id: number
-//   phone: string
-//   access_id: number
-//   area_id: number
-// }
-
 // Path: src\renderer\src\store\features\authSlice.ts
