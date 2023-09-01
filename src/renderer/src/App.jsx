@@ -40,7 +40,7 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/help" element={<Help />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="*" element={<Login />} />
+              <Route path="*" element={<Help />} />
             </Routes>
           )
         }
