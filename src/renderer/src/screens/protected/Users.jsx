@@ -65,13 +65,12 @@ const Users = () => {
     return fetchtUsers()
   }, [])
 
-
   const token = user ? user.token : 'token'
   const name = user ? user.id : 999_999
 
   const getAreas = () => {
     if (localStorage.getItem('areasData')) {
-      setAreas(JSON.parse(localStorage.getItem('areasData')));
+      setAreas(JSON.parse(localStorage.getItem('areasData')))
     }
     axios
       .get(`${API_URL}/areas`, {
@@ -88,7 +87,7 @@ const Users = () => {
 
   const fetchtUsers = () => {
     if (localStorage.getItem('usersData')) {
-      const data = JSON.parse(localStorage.getItem('usersData'));
+      const data = JSON.parse(localStorage.getItem('usersData'))
       setUser(data[0])
       setUsers(data)
       setAccess(data[0].access_id)
@@ -111,7 +110,6 @@ const Users = () => {
         setAccessArea(newData[0].access_id)
         setAccessLevel(newData[0].role_id)
         localStorage.setItem('usersData', JSON.stringify(res.data.data))
-
       })
       .catch((err) => {
         catchHandler(err, toast)

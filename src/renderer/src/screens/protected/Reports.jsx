@@ -41,7 +41,7 @@ const Reports = () => {
 
   const getReports = () => {
     if (localStorage.getItem('reportsData')) {
-      setReports(JSON.parse(localStorage.getItem('reportsData')));
+      setReports(JSON.parse(localStorage.getItem('reportsData')))
     }
     setIsLoading(true)
     axios

@@ -63,7 +63,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
 
   const getAreas = () => {
     if (localStorage.getItem('areasData')) {
-      setAreas(JSON.parse(localStorage.getItem('areasData')));
+      setAreas(JSON.parse(localStorage.getItem('areasData')))
     }
 
     axios

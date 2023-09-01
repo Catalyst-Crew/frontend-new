@@ -32,7 +32,7 @@ const NewAccess = ({ visible, setVisible, refresh, toastRef }) => {
 
   const getAreas = () => {
     if (localStorage.getItem('areasData')) {
-      setAreas(JSON.parse(localStorage.getItem('areasData')));
+      setAreas(JSON.parse(localStorage.getItem('areasData')))
     }
     axios
       .get(`${API_URL}/areas`, {

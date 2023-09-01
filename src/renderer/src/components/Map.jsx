@@ -15,7 +15,6 @@ import { selectAccessPoints } from '../store/store'
 const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
 
 export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef }) {
-
   const [areas, setAreas] = useState([])
   const [overlayData, setOverlayData] = useState(null)
   const [showOverlay, setShowOverlay] = useState(false)
@@ -33,8 +32,9 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{
-          transform: `translate(-${count.toString().length * 2}px, -${count.toString().length * 2
-            }px)`,
+          transform: `translate(-${count.toString().length * 2}px, -${
+            count.toString().length * 2
+          }px)`,
           cursor: 'pointer',
           pointerEvents: 'all'
         }}

@@ -70,13 +70,13 @@ const Employee = () => {
     fetchSupervisor()
   }
 
-  const loadFromCache = ()=>{
+  const loadFromCache = () => {
     if (localStorage.getItem('supervisorsData')) {
-      setSupervisors(JSON.parse(localStorage.getItem('supervisorsData')));
+      setSupervisors(JSON.parse(localStorage.getItem('supervisorsData')))
     }
-    
+
     if (localStorage.getItem('employeesData')) {
-      const data = JSON.parse(localStorage.getItem('employeesData'));
+      const data = JSON.parse(localStorage.getItem('employeesData'))
       setEmployees(data)
       setSelectEmloyee(data[0])
       setNodeId(data[0].sensor_id)
