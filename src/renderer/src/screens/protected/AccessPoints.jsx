@@ -15,9 +15,9 @@ import NewSensor from '../../components/NewSensor'
 import ManageSensor from '../../components/ManageSensor'
 import ManageAccess from '../../components/ManageAccess'
 
-import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import CopyText from '../../components/CopyText'
 import { catchHandler } from '../../utils/functions'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 
 const AccessPoints = () => {
   const toast = useRef(null)
@@ -59,7 +59,7 @@ const AccessPoints = () => {
       area_lat: '-26.260693',
       area_longitude: '29.121075'
     }
-  ])
+  ]) 
 
   useEffect(() => {
     return fetchData()
@@ -134,13 +134,14 @@ const AccessPoints = () => {
       <Navbar activeIndex={3} />
       <Toast ref={toast} />
       <div className="flex">
+
         {/* Table div */}
-        <div className="w-8 ">
-          <Splitter layout="vertical">
+        <div className="w-8" style={{height:"87vh"}}>
+
+          <Splitter layout="vertical" className='h-full'>
             <SplitterPanel
-              className="flex align-items-center justify-content-center"
-              size={20}
-              minSize={10}
+              className="flex justify-content-center"
+              size={25} minSize={10}
             >
               <DataTable
                 value={accessPoints}
@@ -169,10 +170,10 @@ const AccessPoints = () => {
                 />
               </DataTable>
             </SplitterPanel>
+
             <SplitterPanel
               className="flex align-items-center justify-content-center"
-              size={80}
-              minSize={30}
+              size={75}
             >
               <DataTable
                 value={sensors}
@@ -204,6 +205,7 @@ const AccessPoints = () => {
               </DataTable>
             </SplitterPanel>
           </Splitter>
+
         </div>
 
         {/* Right div */}
