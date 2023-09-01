@@ -65,11 +65,16 @@ const Logs = () => {
 
   const fetchLogs = () => {
     if (user.user_role_id == ADMIN_ROLE) {
+      if (localStorage.getItem('logsData')) {
+        setLogs(JSON.parse(localStorage.getItem('logsData')))
+      }
+
       setIsLoading(true)
       axios
         .get(`${API_URL}/logs`, { headers: { 'x-access-token': token } }) // 5 minutes timeout
         .then((response) => {
           setLogs(response.data)
+          localStorage.setItem('logsData', JSON.stringify(response.data))
         })
         .catch((error) => {
           catchHandler(error, toast)
@@ -81,6 +86,7 @@ const Logs = () => {
   const paginatorLeft = (
     <Button loading={isLoading} type="button" icon="pi pi-refresh" text onClick={fetchLogs} />
   )
+
   const paginatorRight = (
     <Button
       loading={isLoading}
@@ -90,7 +96,9 @@ const Logs = () => {
       onClick={handleDownloadRequest}
     />
   )
+
   const allowExpansion = (rowData) => rowData.message.length > MESSAGE_LENGTH
+
   const messageColTemplate = (data) => {
     const message = data.message
     return (
@@ -120,7 +128,7 @@ const Logs = () => {
     <div>
       <Navbar activeIndex={5} />
       <Toast ref={toast} />
-      <div>
+      <div style={{ height: '80vh' }}>
         <DataTable
           rows={50}
           paginator

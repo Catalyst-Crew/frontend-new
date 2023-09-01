@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 
 import { Card } from 'primereact/card'
@@ -10,10 +11,9 @@ import { InputText } from 'primereact/inputtext'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace'
 
-import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import staticData from '../assets/staticData.json'
+import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import { catchHandler, showToast } from '../utils/functions'
-import { useSelector } from 'react-redux'
 
 export default function ManageSensor({ data, toastRef, token, username, refresh }) {
   const [sensorData, setData] = useState(null)
@@ -111,7 +111,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
   return (
     <Card title="Manage Sensor" className="mt-2" subTitle={`${data?.id_prefix}${data.id}`}>
       <div className="card flex flex-column gap-2 mt-3 ml-2">
-        <div className="flex flex-column gap-2 ">
+        <div className="flex gap-2 align-items-center h-2rem">
           <label htmlFor="access">Device ID:</label>
           <Inplace closable disabled={user.user_role_id !== ADMIN_ROLE}>
             <InplaceDisplay>

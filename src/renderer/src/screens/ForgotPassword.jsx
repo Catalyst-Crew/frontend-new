@@ -80,16 +80,18 @@ const ForgotPassword = () => {
       .patch(`${API_URL}/auth/forgot-password/${email}/${cleanCode}`, { password })
       .then((response) => {
         showToast('success', 'Success', response.data.message, toast)
+        setCode('')
         setEmail('')
-        navigator('/')
+        setPassword('')
+        setTimeout(() => {
+          navigator('/')
+        }, 1000)
       })
       .catch((error) => {
         catchHandler(error, toast)
       })
       .finally(() => {
         setLoading(false)
-        setPassword('')
-        setCode('')
       })
   }
 
@@ -104,45 +106,47 @@ const ForgotPassword = () => {
           <h1>Forgot Password</h1>
           <p>Enter your email to reset your password:</p>
           <div className="flex flex-column align-items-center">
-            <span className="flex flex-column gap-2">
+            <span className="flex flex-column gap-2 w-20rem">
               {/* <label htmlFor="email">Email:</label> */}
               <InputText
                 id="email"
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
+                placeholder="Enter your email"
               />
             </span>
           </div>
           <Button
             onClick={initialisePasswordReset}
             label="Submit"
-            className="p-mt-2 mt-5"
+            className="p-mt-2 mt-5 w-20rem"
             loading={loading}
           />
         </div>
       </div>
 
       <Button
-        onClick={() => navigator('/')}
+        onClick={() => navigator('/login')}
         text
         className="p-mt-2 mt-5"
         loading={loading}
         label="Go to Login"
       />
+
       <Dialog
         header="Reset Password"
         visible={showPopUp}
-        style={{ width: '50vw' }}
+        style={{ width: '30vw' }}
         onHide={() => setShowPopUp(false)}
       >
         <div className="flex flex-column align-items-center">
-          <div className="flex flex-column mt-4 gap-2 w-8">
+          <div className="flex flex-column mt-4 gap-2 w-7 align-items-center">
             <label htmlFor="code">Enter 6 digit code:</label>
             <InputMask
               id="code"
               value={code}
-              className="text-center"
+              className="text-center w-full ml-2"
               mask="**-**-**"
               slotChar="**-**-**"
               placeholder="**-**-**"
@@ -152,7 +156,7 @@ const ForgotPassword = () => {
               }}
             />
           </div>
-          <div className="flex flex-column mt-4 gap-2 w-8">
+          <div className="flex flex-column mt-4 gap-2 w-8 align-items-center">
             <label htmlFor="password">Enter new password:</label>
             <Password
               toggleMask
@@ -176,7 +180,7 @@ const ForgotPassword = () => {
             onClick={resetPassword}
             disabled={disabled.button}
           />
-          <div className="flex flex-column mt-4 gap-2 w-8">
+          <div className="flex flex-column mt-4 gap-2 w-8 align-items-center">
             <Button
               text
               disabled={disabled.resend}
@@ -185,6 +189,7 @@ const ForgotPassword = () => {
                 setDisabled({ ...disabled, resend: true })
                 initialisePasswordReset()
               }}
+              className="w-max"
             >
               Resend code: {formatTime(timeRemaining)}
             </Button>

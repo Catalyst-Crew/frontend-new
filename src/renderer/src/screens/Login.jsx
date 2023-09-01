@@ -1,16 +1,16 @@
 import axios from 'axios'
+import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useRef, useState } from 'react'
 
 import { Toast } from 'primereact/toast'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 
 import { API_URL } from '../utils/exports'
+import DateTime from '../components/DateTime'
 import { login } from '../store/features/authSlice'
 import { catchHandler, showToast } from '../utils/functions'
-import DateTime from '../components/DateTime'
 
 const Login = () => {
   const toast = useRef(null)
@@ -54,65 +54,67 @@ const Login = () => {
   }
 
   return (
-    <div className="column text-center py-6">
-      <Toast ref={toast} />
-      <DateTime />
+    <div className="flex align-items-center align-content-center" style={{ height: '95vh' }}>
+      <div className="flex flex-column w-full text-center">
+        <Toast ref={toast} />
+        <DateTime />
 
-      <h1>Login</h1>
-      <p className="m-4">Welcome back! Please enter your details.</p>
+        <h1>Login</h1>
+        <p className="m-4">Welcome back! Please enter your details.</p>
 
-      <div className="card column justify-content-center w-4 mx-auto">
-        <div className="flex flex-column gap-2 text-left">
-          <label htmlFor="username">Email</label>
-          <InputText
-            className="p-inputtext-sm"
-            placeholder="Enter your email"
-            type="email"
-            value={username}
-            required
-            onChange={(e) => setUsername(e.target.value)}
+        <div className="card column justify-content-center w-4 mx-auto">
+          <div className="flex flex-column gap-2 text-left">
+            <label htmlFor="username">Email</label>
+            <InputText
+              className="p-inputtext-sm"
+              placeholder="Enter your email"
+              type="email"
+              value={username}
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-column gap-2 text-left mt-5">
+            <label htmlFor="username">Password</label>
+            <InputText
+              className="p-inputtext-sm"
+              placeholder="********"
+              type="password"
+              value={password}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <small id="username-help">This is the password that was sent to your email.</small>
+          </div>
+
+          <Button
+            loading={loading}
+            type="submit"
+            className="mt-4 w-full text-center"
+            label="Sign in"
+            onClick={handleSubmit}
+          />
+
+          <Button
+            className="mt-4"
+            onClick={() => navigator('/forgot-password')}
+            label="Forgot your password?"
+            text
+          />
+          <br />
+          <Button
+            className="mt-2"
+            onClick={() => navigator('/help')}
+            icon="pi pi-info-circle"
+            link
+            severity="info"
+            rounded
+            text
+            raised
+            aria-label="Information"
           />
         </div>
-
-        <div className="flex flex-column gap-2 text-left mt-5">
-          <label htmlFor="username">Password</label>
-          <InputText
-            className="p-inputtext-sm"
-            placeholder="********"
-            type="password"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <small id="username-help">This is the password that was sent to your email.</small>
-        </div>
-
-        <Button
-          loading={loading}
-          type="submit"
-          className="mt-4 w-full text-center"
-          label="Sign in"
-          onClick={handleSubmit}
-        />
-
-        <Button
-          className="mt-4"
-          onClick={() => navigator('/forgot-password')}
-          label="Forgot your password?"
-          text
-        />
-        <br />
-        <Button
-          className="mt-2"
-          onClick={() => navigator('/help')}
-          icon="pi pi-info-circle"
-          link
-          severity="info"
-          rounded
-          text
-          raised
-          aria-label="Information"
-        />
       </div>
     </div>
   )

@@ -6,10 +6,10 @@ import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
 
 import Navbar from '../../components/Navbar'
-import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import NewUser from '../../components/NewUser'
 import username from '../../components/UserName'
 import staticData from '../../assets/staticData.json'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import { catchHandler, showToast } from '../../utils/functions'
 
 import axios from 'axios'
@@ -41,6 +41,7 @@ const Users = () => {
   ])
   const [visible, setVisible] = useState(false)
   const [selectedAccess, setAccess] = useState(null)
+  const [areas, setAreas] = useState([])
   const [selectedAccessArea, setAccessArea] = useState(null)
   const [selectedAccessLevel, setAccessLevel] = useState(null)
   const [selectedUser, setUser] = useState({
@@ -67,7 +68,35 @@ const Users = () => {
   const token = user ? user.token : 'token'
   const name = user ? user.id : 999_999
 
+  const getAreas = () => {
+    if (localStorage.getItem('areasData')) {
+      setAreas(JSON.parse(localStorage.getItem('areasData')))
+    }
+    axios
+      .get(`${API_URL}/areas`, {
+        headers: { 'x-access-token': user.token }
+      })
+      .then((response) => {
+        setAreas(response.data)
+        localStorage.setItem('areasData', JSON.stringify(response.data))
+      })
+      .catch((error) => {
+        catchHandler(error, toastRef)
+      })
+  }
+
   const fetchtUsers = () => {
+    if (localStorage.getItem('usersData')) {
+      const data = JSON.parse(localStorage.getItem('usersData'))
+      setUser(data[0])
+      setUsers(data)
+      setAccess(data[0].access_id)
+      setAccessArea(data[0].access_id)
+      setAccessLevel(data[0].role_id)
+    }
+
+    getAreas()
+
     axios
       .get(`${API_URL}/users`, { headers: { 'x-access-token': token } })
       .then((res) => {
@@ -80,6 +109,7 @@ const Users = () => {
         setAccess(newData[0].access_id)
         setAccessArea(newData[0].access_id)
         setAccessLevel(newData[0].role_id)
+        localStorage.setItem('usersData', JSON.stringify(res.data.data))
       })
       .catch((err) => {
         catchHandler(err, toast)
@@ -132,7 +162,7 @@ const Users = () => {
   }
 
   return (
-    <div className="max-h-screen overflow-hidden">
+    <div className="overflow-hidden" style={{ height: '97vh' }}>
       <Navbar activeIndex={1} />
       <Toast ref={toast} />
 
@@ -159,7 +189,7 @@ const Users = () => {
         </div>
 
         {/* Right div */}
-        <div className="flex flex-column w-4 px-3">
+        <div className="flex flex-column w-4 px-3 gap-3">
           <Button
             onClick={() => setVisible(true)}
             className="add text-center mt-1 mb-2"
@@ -203,7 +233,7 @@ const Users = () => {
                 <Dropdown
                   value={selectedAccessArea}
                   onChange={(e) => setAccessArea(e.value)}
-                  options={staticData.accessArea}
+                  options={areas}
                   optionLabel="name"
                   optionValue="id"
                   placeholder="Select Access Area"
@@ -275,36 +305,3 @@ const Users = () => {
 }
 
 export default Users
-
-// const imageBodyTemplate = (user) => {
-//   let name = ''
-
-//   if (user.user_name.includes(' ')) {
-//     const nameArr = user.user_name.split(' ')
-//     name = nameArr[0][0] + nameArr[1][0]
-//   } else {
-//     name = user.user_name.substring(0, 2)
-//   }
-
-//   return (
-//     <div className="flex align-items-center">
-//       <Avatar
-//         className="p-overlay-badge"
-//         label={name.toUpperCase()}
-//         size="large"
-//         style={{ backgroundColor: '#2196F3', color: '#ffffff' }}
-//         shape="circle"
-//       >
-//         <Badge
-//           severity={
-//             user.access_name === 'Granted' ? 'success' : user.access === 'Blocked' ? 'warning' : 'danger'
-//           }
-//         />
-//       </Avatar>
-//       <div className="ml-2">
-//         <p className="font-bold m-0 p-0">{user.user_name}</p>
-//         <p className="text-sm m-0 p-0">{user.email}</p>
-//       </div>
-//     </div>
-//   )
-// }

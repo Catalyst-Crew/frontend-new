@@ -27,7 +27,7 @@ const Navbar = ({ activeIndex = 0 }) => {
     <div>
       <div className="flex justify-content-between">
         <div className="flex">
-          <Image src={IconImage} width={40} />
+          <Image src={IconImage} width={50} style={{ marginRight: '10px' }} />
           <TabMenu
             model={items}
             activeIndex={activeIndex}
@@ -35,11 +35,9 @@ const Navbar = ({ activeIndex = 0 }) => {
           />
         </div>
         <Button
-          className="logbutton"
           size="small"
           severity="warning"
           label="Logout"
-          type="button"
           onClick={() => {
             dispatch(logout())
           }}

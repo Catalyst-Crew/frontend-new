@@ -57,6 +57,7 @@ const Employee = () => {
   const [selectedEmployee, setSelectEmloyee] = useState(testEmployee)
 
   useEffect(() => {
+    loadFromCache()
     refresh()
   }, [])
 
@@ -67,6 +68,21 @@ const Employee = () => {
     fetchNodes()
     fetchtEmployees()
     fetchSupervisor()
+  }
+
+  const loadFromCache = () => {
+    if (localStorage.getItem('supervisorsData')) {
+      setSupervisors(JSON.parse(localStorage.getItem('supervisorsData')))
+    }
+
+    if (localStorage.getItem('employeesData')) {
+      const data = JSON.parse(localStorage.getItem('employeesData'))
+      setEmployees(data)
+      setSelectEmloyee(data[0])
+      setNodeId(data[0].sensor_id)
+      setSelectedShift(data[0].shift_id)
+      setSelectedSupervisor(data[0].supervisor_id)
+    }
   }
 
   const deleteEmployee = (action) => {
@@ -107,11 +123,12 @@ const Employee = () => {
         if (res.data.data.length === 0) {
           return
         }
-        setSelectEmloyee(res.data.data[0])
         setEmployees(res.data.data)
+        setSelectEmloyee(res.data.data[0])
         setNodeId(res.data.data[0].sensor_id)
         setSelectedShift(res.data.data[0].shift_id)
         setSelectedSupervisor(res.data.data[0].supervisor_id)
+        localStorage.setItem('employeesData', JSON.stringify(res.data.data))
       })
       .catch((err) => {
         catchHandler(err, toast)
@@ -184,7 +201,7 @@ const Employee = () => {
       .then((res) => {
         if (res.status == 200) {
           setSupervisors(res.data.data)
-          return
+          return localStorage.setItem('supervisorsData', JSON.stringify(res.data.data))
         }
         showToast('warn', 'Attention', res.data.message, toast)
       })
@@ -194,7 +211,7 @@ const Employee = () => {
   }
 
   return (
-    <div className="max-h-screen overflow-hidden">
+    <div className="overflow-hidden" style={{ height: '97vh' }}>
       <Navbar activeIndex={2} />
       <Toast ref={toast} />
       <ConfirmDialog />
@@ -222,7 +239,7 @@ const Employee = () => {
         </div>
 
         {/* Right div */}
-        <div className="flex flex-column w-4 px-3">
+        <div className="flex flex-column w-4 px-3 gap-3">
           <Button
             onClick={() => setVisible(true)}
             className="add text-center mt-1 mb-2"
