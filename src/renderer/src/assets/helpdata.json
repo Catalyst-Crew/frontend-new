@@ -1,0 +1,97 @@
+{
+  "questions": [
+    {
+      "questionText": "What is the capital of France?",
+      "answer": "Paris"
+    },
+    {
+      "questionText": "Who is CEO of Tesla?",
+      "answer": "Elon Musk"
+    },
+    {
+      "questionText": "The iPhone was created by which company?",
+      "answer": "Apple"
+    },
+    {
+      "questionText": "What is the capital of France?",
+      "answer": "Paris"
+    },
+    {
+      "questionText": "Who is CEO of Tesla?",
+      "answer": "Elon Musk"
+    },
+    {
+      "questionText": "The iPhone was created by which company?",
+      "answer": "Apple"
+    },
+    {
+      "questionText": "What is the capital of France?",
+      "answer": "Paris"
+    },
+    {
+      "questionText": "Who is CEO of Tesla?",
+      "answer": "Elon Musk"
+    },
+    {
+      "questionText": "The iPhone was created by which company?",
+      "answer": "Apple"
+    },
+    {
+      "questionText": "What is the capital of France?",
+      "answer": "Paris"
+    }
+  ],
+
+  "mobile": [
+    {
+      "questionText": "Is there an app available ?",
+      "answer": "Yes we have an app available for both Android and IOS"
+    },
+    {
+      "questionText": "How do I get the app?",
+      "answer": "You can download the app from the App Store or Google Play Store"
+    },
+    {
+      "questionText": "Do you have a QR code for the app?",
+      "answer": "Yes we have a QR code for the app"
+    },
+    {
+      "questionText": "Does the app work offline?",
+      "answer": "No the app  does not work offline,Wifi/Data is required to use the app"
+    }
+  ],
+  "tutorial": [
+    {
+      "questionText": "How do I use the map in the desktop application?",
+      "answer": "first you need to click on the map icon on the left side of the screen,then you can use the map"
+    },
+    {
+      "questionText": "Who is CEO of Tesla?",
+      "answer": "Elon Musk"
+    },
+    {
+      "questionText": "The iPhone was created by which company?",
+      "answer": "Apple"
+    },
+    {
+      "questionText": "What is the capital of France?",
+      "answer": "Paris"
+    },
+    {
+      "questionText": "Who is CEO of Tesla?",
+      "answer": "Elon Musk"
+    },
+    {
+      "questionText": "The iPhone was created by which company?",
+      "answer": "Apple"
+    },
+    {
+      "questionText": "What is the capital of France?",
+      "answer": "Paris"
+    },
+    {
+      "questionText": "How do I assign access ?",
+      "answer": "You can assign access by clicking on the user icon on the left side of the screen"
+    }
+  ]
+}

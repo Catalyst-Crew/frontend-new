@@ -38,4 +38,16 @@
   background-color: #f0f0f0; /* Color of the track */
 }
 
+.p-tabview-nav {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 1fr !important ;
+}
+
+.p-tabview-nav-link {
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 /* Path: src\js\assets\css\custom.css */
