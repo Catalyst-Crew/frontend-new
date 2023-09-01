@@ -194,7 +194,7 @@ const Employee = () => {
   }
 
   return (
-    <div className="max-h-screen overflow-hidden">
+    <div className="overflow-hidden" style={{ height: "97vh" }}>
       <Navbar activeIndex={2} />
       <Toast ref={toast} />
       <ConfirmDialog />
@@ -222,7 +222,7 @@ const Employee = () => {
         </div>
 
         {/* Right div */}
-        <div className="flex flex-column w-4 px-3">
+        <div className="flex flex-column w-4 px-3 gap-3">
           <Button
             onClick={() => setVisible(true)}
             className="add text-center mt-1 mb-2"
@@ -339,6 +339,7 @@ const Employee = () => {
                 />
               </div>
             </div>
+
           </Card>
         </div>
       </div>

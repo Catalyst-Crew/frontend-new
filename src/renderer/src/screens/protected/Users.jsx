@@ -132,7 +132,7 @@ const Users = () => {
   }
 
   return (
-    <div className="max-h-screen overflow-hidden">
+    <div className="overflow-hidden" style={{height:"97vh"}}>
       <Navbar activeIndex={1} />
       <Toast ref={toast} />
 
@@ -159,7 +159,7 @@ const Users = () => {
         </div>
 
         {/* Right div */}
-        <div className="flex flex-column w-4 px-3">
+        <div className="flex flex-column w-4 px-3 gap-3">
           <Button
             onClick={() => setVisible(true)}
             className="add text-center mt-1 mb-2"
