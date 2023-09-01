@@ -74,6 +74,16 @@ const AccessPoints = () => {
   }
 
   const fetchData = () => {
+    if (localStorage.getItem('AccessPointsData')) {
+      const data = JSON.parse(localStorage.getItem('AccessPointsData'))
+      setAccess(data[0])
+      setAccessPoints(data);
+    }
+    if (localStorage.getItem('SensorsData')) {
+      const data = JSON.parse(localStorage.getItem('SensorsData'))
+      setSensor(data[0])
+      setSensors(data);
+    }
     setLoading(true)
     getAccessPoints(true)
     getSensors(true)
@@ -91,6 +101,7 @@ const AccessPoints = () => {
       .then((response) => {
         setAccess(response.data[0])
         setAccessPoints(response.data)
+        localStorage.setItem('AccessPointsData', JSON.stringify(response.data))        
       })
       .catch((error) => {
         catchHandler(error, toast)
@@ -112,6 +123,7 @@ const AccessPoints = () => {
       .then((response) => {
         setSensor(response.data[0])
         setSensors(response.data)
+        localStorage.setItem('SensorsData', JSON.stringify(response.data))
       })
       .catch((error) => {
         catchHandler(error, toast)

@@ -65,11 +65,16 @@ const Logs = () => {
 
   const fetchLogs = () => {
     if (user.user_role_id == ADMIN_ROLE) {
+      if (localStorage.getItem('logsData')) {
+        setLogs(JSON.parse(localStorage.getItem('logsData')));
+      }
+
       setIsLoading(true)
       axios
         .get(`${API_URL}/logs`, { headers: { 'x-access-token': token } }) // 5 minutes timeout
         .then((response) => {
           setLogs(response.data)
+          localStorage.setItem('logsData', JSON.stringify(response.data));
         })
         .catch((error) => {
           catchHandler(error, toast)

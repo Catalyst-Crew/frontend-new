@@ -15,6 +15,7 @@ import { selectAccessPoints } from '../store/store'
 const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
 
 export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef }) {
+
   const [areas, setAreas] = useState([])
   const [overlayData, setOverlayData] = useState(null)
   const [showOverlay, setShowOverlay] = useState(false)
@@ -32,9 +33,8 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{
-          transform: `translate(-${count.toString().length * 2}px, -${
-            count.toString().length * 2
-          }px)`,
+          transform: `translate(-${count.toString().length * 2}px, -${count.toString().length * 2
+            }px)`,
           cursor: 'pointer',
           pointerEvents: 'all'
         }}
@@ -126,7 +126,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
 
       {accessPoints?.map((point, i) => (
         <Marker
-          key={point.access_point_id}
+          key={point.access_point_id + i}
           width={50}
           anchor={[point.access_point_latitude, point.access_point_longitude]}
           onClick={() => setZoom(16.2)}
@@ -142,7 +142,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
           className="pointer-events-auto"
         >
           <CustomIcon
-            key={point.access_point_id + i}
+            key={point.access_point_id + i * 2}
             status={point.access_point_status}
             count={point?.measurements?.length}
           />

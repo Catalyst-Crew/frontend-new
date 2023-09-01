@@ -37,20 +37,25 @@ const Settings = () => {
         phone: user.phone
       })
     }
-
-    return getUserSettings()
+    getUserSettings()
   }, [user])
 
   const id = user ? user.id : 1_000_000
   const token = user ? user.token : 'token'
 
   const getUserSettings = () => {
+    if (localStorage.getItem('settings')) {
+      setSettings((prev) => ({
+        ...prev, ...JSON.parse(localStorage.getItem('settings'))
+      }));
+    }
     axios
       .get(`${API_URL}/settings/${id}`, { headers: { 'x-access-token': token } })
       .then((res) => {
         if (res.status !== 200) {
           return
         }
+        console.log(res.data)
         setSettings((prev) => ({
           ...prev,
           ...res.data

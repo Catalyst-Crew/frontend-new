@@ -31,12 +31,16 @@ const NewAccess = ({ visible, setVisible, refresh, toastRef }) => {
   }, [])
 
   const getAreas = () => {
+    if (localStorage.getItem('areasData')) {
+      setAreas(JSON.parse(localStorage.getItem('areasData')));
+    }
     axios
       .get(`${API_URL}/areas`, {
         headers: { 'x-access-token': user.token }
       })
       .then((response) => {
         setAreas(response.data)
+        localStorage.setItem('areasData', JSON.stringify(response.data))
       })
       .catch((error) => {
         catchHandler(error, toastRef)

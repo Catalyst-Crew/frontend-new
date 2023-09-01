@@ -1,5 +1,6 @@
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 
 import { Card } from 'primereact/card'
@@ -8,10 +9,9 @@ import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 
-import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import staticData from '../assets/staticData.json'
+import { ADMIN_ROLE, API_URL } from '../utils/exports'
 import { catchHandler, showToast } from '../utils/functions'
-import { useSelector } from 'react-redux'
 
 const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
   const { user } = useSelector((state) => state.auth)
@@ -62,12 +62,17 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
   }
 
   const getAreas = () => {
+    if (localStorage.getItem('areasData')) {
+      setAreas(JSON.parse(localStorage.getItem('areasData')));
+    }
+
     axios
       .get(`${API_URL}/areas`, {
         headers: { 'x-access-token': token }
       })
       .then((response) => {
         setAreas(response.data)
+        localStorage.setItem('areasData', JSON.stringify(response.data))
       })
       .catch((error) => {
         catchHandler(error, toastRef)

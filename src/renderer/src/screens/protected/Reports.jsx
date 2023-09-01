@@ -40,11 +40,17 @@ const Reports = () => {
   }, [])
 
   const getReports = () => {
+    if (localStorage.getItem('reportsData')) {
+      setReports(JSON.parse(localStorage.getItem('reportsData')));
+    }
     setIsLoading(true)
     axios
       .get(`${API_URL}/reports`, { headers: { 'x-access-token': token } })
-      .then((res) => setReports(res.data))
-      .catch((error) => catchHandler(error))
+      .then((res) => {
+        setReports(res.data)
+        localStorage.setItem('reportsData', JSON.stringify(res.data))
+      })
+      .catch((error) => catchHandler(error, toast))
       .finally(() => setIsLoading(false))
   }
 
