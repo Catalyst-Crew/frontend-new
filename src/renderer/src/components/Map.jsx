@@ -166,11 +166,11 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
           <div className="flex justify-content-end">
             <span
               icon="pi pi-times"
-              className="cursor-pointer pi pi-times"
+              className="cursor-pointer pi pi-times text-0"
               onClick={() => setShowOverlay(false)}
             />
           </div>
-          <table>
+          <table className="text-0">
             <tbody>
               <tr>
                 <td>AP ID:</td>
