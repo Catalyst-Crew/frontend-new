@@ -174,228 +174,131 @@ const Dashbord = () => {
   }
 
   return (
-    <SocketDashboardWrapper>
-      <div className="max-h-screen max-w-screen overflow-hidden">
-        <Navbar activeIndex={0} />
-        <Toast ref={toastRef} />
-        <audio hidden ref={audioRef} controls />
+    <div className="max-h-screen max-w-screen overflow-hidden">
+      <Navbar activeIndex={0} />
+      <Toast ref={toastRef} />
+      <audio hidden ref={audioRef} controls />
 
-        <div className="grid text-sm" style={{ height: '89vh' }}>
-          <div className="col-9 flex flex-column pr-2" style={{ height: '100%' }}>
-            {/* Map caontainer */}
-            <div className="h-full">
-              <div className="border-yellow-500 border-solid border-1 border-round-xs h-full w-full">
-                <MyMap
-                  defaultZoom={zoom}
-                  setZoom={setZoom}
-                  defaultCenter={center}
-                  setCenter={setCenter}
-                  toastRef={toastRef}
-                />
-              </div>
-            </div>
-
-            {/* Footer caontainer */}
-            <div className="mt-2">
-              <div className="grid m-0">
-                <div className="col-4 flex p-0">
-                  <span className="p-buttonset">
-                    <Button className="button" label="Map" />
-                    <Button className="button" label="Cards" />
-                    <Button className="button" label="List" />
-                  </span>
-                </div>
-
-                <div className="col-1 p-0 flex align-items-center">
-                  <Button
-                    text
-                    size="small"
-                    tooltip={`Ping every: ${intervalTime / 1000} sec. Click to change`}
-                    tooltipOptions={{ position: 'top' }}
-                    onClick={(e) => op.current.toggle(e)}
-                  >
-                    <Badge value="" severity={color} />
-                  </Button>
-                </div>
-                <div className="col-3 p-0 flex align-items-center">
-                  <DateTime format="ddd, MMMM Mo, Y, h:mm:ss A" />
-                </div>
-
-                <div className="col-1 flex justify-content-end p-0">
-                  <Button
-                    icon="pi pi-cog"
-                    text
-                    raised
-                    size="small"
-                    onClick={() => navigator('/settings')}
-                  />
-                </div>
-
-                <div className="col-3 flex justify-content-end p-0 ">
-                  <span className="p-buttonset">
-                    <Button
-                      icon="pi pi-plus"
-                      text
-                      raised
-                      size="small"
-                      onClick={() => setZoom(zoom + 0.2 < 20 ? zoom + 0.2 : 20)}
-                    />
-                    <Button
-                      icon="pi pi-refresh"
-                      text
-                      raised
-                      size="small"
-                      onClick={() => {
-                        setZoom(16.2)
-                        fetchDashboardData()
-                        setCenter([-26.260693, 29.121075])
-                      }}
-                    />
-                    <Button
-                      icon="pi pi-minus"
-                      text
-                      raised
-                      size="small"
-                      onClick={() => setZoom(zoom - 0.2 > 0 ? zoom - 0.2 : 0.2)}
-                    />
-                  </span>
-                </div>
-              </div>
+      <div className="grid text-sm" style={{ height: '89vh' }}>
+        <div className="col-9 flex flex-column pr-2" style={{ height: '100%' }}>
+          {/* Map caontainer */}
+          <div className="h-full">
+            <div className="border-blue-500 border-solid border-1 border-round-xs h-full w-full">
+              <MyMap
+                defaultZoom={zoom}
+                setZoom={setZoom}
+                defaultCenter={center}
+                setCenter={setCenter}
+                toastRef={toastRef}
+              />
             </div>
           </div>
 
-          {/* Cards caontainer */}
-          <div className="col-3 pl-2 line-height-2 flex flex-column gap-2">
-            {accessPoints[next.accessPoint]?.measurements?.length > 0 ? (
-              <Card title="Miner Details" className="text-sm">
-                <table className="w-full">
-                  <tbody>
-                    <tr>
-                      <td className="text-left">Miner ID:</td>
-                      <td className="font-bold text-right vertical-align-middle">
-                        {`min-${
-                          accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
-                        }` || 'N/A'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Miner Name:</td>
-                      <td className="font-bold text-right vertical-align-middle">
-                        {accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_name ||
-                          'N/A'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Shift:</td>
-                      <td className="font-bold text-right vertical-align-middle">
-                        {accessPoints[next.accessPoint]?.measurements[next.miner]?.shift_name ||
-                          'N/A'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Node ID:</td>
-                      <td className="font-bold text-right vertical-align-middle">
-                        {`sen-${
-                          accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
-                        }` || 'N/A'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Location:</td>
-                      <td className="font-bold text-right vertical-align-middle">
-                        {accessPoints[next.accessPoint]?.area_name || 'N/A'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Last Update:</td>
-                      <td className="font-bold text-right vertical-align-middle">
-                        {moment(
-                          accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
-                            new Date(2000, 1, 1)
-                        ).fromNow()}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="flex justify-content-between">
-                  <IconButton
-                    icon={'angle-left'}
-                    onClick={handlePrevMiner}
-                    className="cursor-pointer"
-                  />
-                  <IconButton
-                    icon={'angle-right'}
-                    onClick={handleNextMiner}
-                    className="cursor-pointer"
-                  />
-                </div>
-              </Card>
-            ) : (
-              <Card title="Miner Details" className="text-sm">
-                <table className="w-full">
-                  <tbody>
-                    <tr>
-                      <td className="text-left">Miner ID:</td>
-                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Miner Name:</td>
-                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Shift:</td>
-                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Node ID:</td>
-                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Location:</td>
-                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td className="text-left">Last Update:</td>
-                      <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="flex justify-content-between">
-                  <IconButton
-                    icon={'angle-left'}
-                    onClick={handlePrevMiner}
-                    className="cursor-pointer"
-                  />
-                  <IconButton
-                    icon={'angle-right'}
-                    onClick={handleNextMiner}
-                    className="cursor-pointer"
-                  />
-                </div>
-              </Card>
-            )}
+          {/* Footer caontainer */}
+          <div className="mt-2">
+            <div className="grid m-0">
+              <div className="col-4 flex p-0">
+                <span className="p-buttonset">
+                  <Button className="button" label="Map" />
+                  <Button className="button" label="Cards" />
+                  <Button className="button" label="List" />
+                </span>
+              </div>
 
-            <Card title="Access Point" className="text-sm">
+              <div className="col-1 p-0 flex align-items-center">
+                <Button
+                  text
+                  size="small"
+                  tooltip={`Ping every: ${intervalTime / 1000} sec. Click to change`}
+                  tooltipOptions={{ position: 'top' }}
+                  onClick={(e) => op.current.toggle(e)}
+                >
+                  <Badge value="" severity={color} />
+                </Button>
+              </div>
+              <div className="col-3 p-0 flex align-items-center">
+                <DateTime format="ddd, MMMM Mo, Y, h:mm:ss A" />
+              </div>
+
+              <div className="col-1 flex justify-content-end p-0">
+                <Button
+                  icon="pi pi-cog"
+                  text
+                  raised
+                  size="small"
+                  onClick={() => navigator('/settings')}
+                />
+              </div>
+
+              <div className="col-3 flex justify-content-end p-0 ">
+                <span className="p-buttonset">
+                  <Button
+                    icon="pi pi-plus"
+                    text
+                    raised
+                    size="small"
+                    onClick={() => setZoom(zoom + 0.2 < 20 ? zoom + 0.2 : 20)}
+                  />
+                  <Button
+                    icon="pi pi-refresh"
+                    text
+                    raised
+                    size="small"
+                    onClick={() => {
+                      setZoom(16.2)
+                      fetchDashboardData()
+                      setCenter([-26.260693, 29.121075])
+                    }}
+                  />
+                  <Button
+                    icon="pi pi-minus"
+                    text
+                    raised
+                    size="small"
+                    onClick={() => setZoom(zoom - 0.2 > 0 ? zoom - 0.2 : 0.2)}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Cards caontainer */}
+        <div className="col-3 pl-2 line-height-2 flex flex-column gap-2">
+          {accessPoints[next.accessPoint]?.measurements?.length > 0 ? (
+            <Card title="Miner Details" className="text-sm">
               <table className="w-full">
                 <tbody>
                   <tr>
-                    <td className="text-left w-">ID:</td>
+                    <td className="text-left">Miner ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`acc-${accessPoints[next.accessPoint]?.access_point_id}` || 'N/A'}
+                      {`min-${
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
+                      }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
-                    <td className="text-left w-">Nodes:</td>
+                    <td className="text-left">Miner Name:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {accessPoints[next.accessPoint]?.measurements?.length || 'N/A'}
+                      {accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_name ||
+                        'N/A'}
                     </td>
                   </tr>
-                  {/* <tr>
-                  <td className="text-left">Total Connections:</td>
-                  <td className="font-bold text-right vertical-align-middle">
-                    {accessPoints?.reduce((acc, curr) => acc + curr.measurements, 0) || 'N/A'}
-                  </td>
-                </tr> */}
+                  <tr>
+                    <td className="text-left">Shift:</td>
+                    <td className="font-bold text-right vertical-align-middle">
+                      {accessPoints[next.accessPoint]?.measurements[next.miner]?.shift_name ||
+                        'N/A'}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="text-left">Node ID:</td>
+                    <td className="font-bold text-right vertical-align-middle">
+                      {`sen-${
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
+                      }` || 'N/A'}
+                    </td>
+                  </tr>
                   <tr>
                     <td className="text-left">Location:</td>
                     <td className="font-bold text-right vertical-align-middle">
@@ -403,10 +306,10 @@ const Dashbord = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td className="text-left">Created:</td>
+                    <td className="text-left">Last Update:</td>
                     <td className="font-bold text-right vertical-align-middle">
                       {moment(
-                        accessPoints[next.accessPoint]?.access_point_created_at ||
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
                           new Date(2000, 1, 1)
                       ).fromNow()}
                     </td>
@@ -416,116 +319,207 @@ const Dashbord = () => {
               <div className="flex justify-content-between">
                 <IconButton
                   icon={'angle-left'}
-                  onClick={handlePrevAccessPoint}
+                  onClick={handlePrevMiner}
                   className="cursor-pointer"
                 />
                 <IconButton
                   icon={'angle-right'}
-                  onClick={handleNextAccessPoint}
+                  onClick={handleNextMiner}
                   className="cursor-pointer"
                 />
               </div>
             </Card>
-
-            <Card title="Area Details" className="text-sm">
+          ) : (
+            <Card title="Miner Details" className="text-sm">
               <table className="w-full">
                 <tbody>
                   <tr>
-                    <td className="text-left">ID:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {`area-${areas[next.area]?.area_id}` || 'N/A'}
-                    </td>
+                    <td className="text-left">Miner ID:</td>
+                    <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
                   </tr>
                   <tr>
-                    <td className="text-left">Supervisor Name:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {areas[next.area]?.supervisor || 'N/A'}
-                    </td>
+                    <td className="text-left">Miner Name:</td>
+                    <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
                   </tr>
                   <tr>
-                    <td className="text-left">Nodes:</td>
-                    <td className="font-bold text-right vertical-align-middle">22</td>
+                    <td className="text-left">Shift:</td>
+                    <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
                   </tr>
-                  {/* <tr>
-                  <td className="text-left">Total connections:</td>
-                  <td className="font-bold text-right vertical-align-middle">45</td>
-                </tr> */}
+                  <tr>
+                    <td className="text-left">Node ID:</td>
+                    <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
+                  </tr>
                   <tr>
                     <td className="text-left">Location:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {' '}
-                      {`area-${areas[next.area]?.area_name}` || 'N/A'}
-                    </td>
+                    <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
                   </tr>
                   <tr>
                     <td className="text-left">Last Update:</td>
-                    <td className="font-bold text-right vertical-align-middle">
-                      {moment(areas[next.area]?.area_created_at || new Date(2000, 1, 1)).fromNow()}
-                    </td>
+                    <td className="font-bold text-right vertical-align-middle">{'N/A'}</td>
                   </tr>
                 </tbody>
               </table>
               <div className="flex justify-content-between">
                 <IconButton
                   icon={'angle-left'}
-                  onClick={handlePrevArea}
+                  onClick={handlePrevMiner}
                   className="cursor-pointer"
                 />
                 <IconButton
                   icon={'angle-right'}
-                  onClick={handleNextArea}
+                  onClick={handleNextMiner}
                   className="cursor-pointer"
                 />
               </div>
             </Card>
-          </div>
-        </div>
+          )}
 
-        <OverlayPanel ref={op}>
-          <div>
-            <Button
-              size="small"
-              className="p-button-rounded p-button-text text-gray-100"
-              label="3 sec"
-              onClick={() => updateInterval(3_000)}
-            />
-            <Button
-              size="small"
-              className="p-button-rounded p-button-text text-gray-100"
-              label="10 sec"
-              onClick={() => updateInterval(10_000)}
-            />
-            <Button
-              size="small"
-              className="p-button-rounded p-button-text text-gray-100"
-              label="30 sec"
-              onClick={() => updateInterval(30_000)}
-            />
-            <Button
-              size="small"
-              className="p-button-rounded p-button-text text-gray-100"
-              label="1 min"
-              onClick={() => updateInterval(60_000)}
-            />
-            <Button
-              size="small"
-              className="p-button-rounded p-button-text text-gray-100"
-              label="5 min"
-              onClick={() => updateInterval(300_000)}
-            />
-            <Button
-              size="small"
-              className="p-button-rounded p-button-text text-gray-100"
-              label="Stop alert"
-              onClick={() => {
-                setPlay(false)
-                audioRef.current.pause()
-              }}
-            />
-          </div>
-        </OverlayPanel>
+          <Card title="Access Point" className="text-sm">
+            <table className="w-full">
+              <tbody>
+                <tr>
+                  <td className="text-left w-">ID:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {`acc-${accessPoints[next.accessPoint]?.access_point_id}` || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left w-">Nodes:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {accessPoints[next.accessPoint]?.measurements?.length || 'N/A'}
+                  </td>
+                </tr>
+                {/* <tr>
+                  <td className="text-left">Total Connections:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {accessPoints?.reduce((acc, curr) => acc + curr.measurements, 0) || 'N/A'}
+                  </td>
+                </tr> */}
+                <tr>
+                  <td className="text-left">Location:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {accessPoints[next.accessPoint]?.area_name || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Created:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {moment(
+                      accessPoints[next.accessPoint]?.access_point_created_at ||
+                        new Date(2000, 1, 1)
+                    ).fromNow()}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="flex justify-content-between">
+              <IconButton
+                icon={'angle-left'}
+                onClick={handlePrevAccessPoint}
+                className="cursor-pointer"
+              />
+              <IconButton
+                icon={'angle-right'}
+                onClick={handleNextAccessPoint}
+                className="cursor-pointer"
+              />
+            </div>
+          </Card>
+
+          <Card title="Area Details" className="text-sm">
+            <table className="w-full">
+              <tbody>
+                <tr>
+                  <td className="text-left">ID:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {`area-${areas[next.area]?.area_id}` || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Supervisor Name:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {areas[next.area]?.supervisor || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Nodes:</td>
+                  <td className="font-bold text-right vertical-align-middle">22</td>
+                </tr>
+                {/* <tr>
+                  <td className="text-left">Total connections:</td>
+                  <td className="font-bold text-right vertical-align-middle">45</td>
+                </tr> */}
+                <tr>
+                  <td className="text-left">Location:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {' '}
+                    {`area-${areas[next.area]?.area_name}` || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Last Update:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {moment(areas[next.area]?.area_created_at || new Date(2000, 1, 1)).fromNow()}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="flex justify-content-between">
+              <IconButton icon={'angle-left'} onClick={handlePrevArea} className="cursor-pointer" />
+              <IconButton
+                icon={'angle-right'}
+                onClick={handleNextArea}
+                className="cursor-pointer"
+              />
+            </div>
+          </Card>
+        </div>
       </div>
-    </SocketDashboardWrapper>
+
+      <OverlayPanel ref={op}>
+        <div>
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-100"
+            label="3 sec"
+            onClick={() => updateInterval(3_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-100"
+            label="10 sec"
+            onClick={() => updateInterval(10_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-100"
+            label="30 sec"
+            onClick={() => updateInterval(30_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-100"
+            label="1 min"
+            onClick={() => updateInterval(60_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-100"
+            label="5 min"
+            onClick={() => updateInterval(300_000)}
+          />
+          <Button
+            size="small"
+            className="p-button-rounded p-button-text text-gray-100"
+            label="Stop alert"
+            onClick={() => {
+              setPlay(false)
+              audioRef.current.pause()
+            }}
+          />
+        </div>
+      </OverlayPanel>
+    </div>
   )
 }
 
@@ -534,7 +528,7 @@ export default Dashbord
 const IconButton = ({ icon, onClick, className }) => (
   <i
     aria-label="Filter"
-    className={`px-3 py-1 pi pi-${icon} ${className}`}
+    className={`px-3 py-1 pi pi-${icon} ${className} text-blue-200`}
     size="small"
     onClick={onClick}
   />
