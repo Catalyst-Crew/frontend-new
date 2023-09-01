@@ -126,7 +126,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
 
       {accessPoints?.map((point, i) => (
         <Marker
-          key={point.access_point_id}
+          key={point.access_point_id + i}
           width={50}
           anchor={[point.access_point_latitude, point.access_point_longitude]}
           onClick={() => setZoom(16.2)}
@@ -142,7 +142,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
           className="pointer-events-auto"
         >
           <CustomIcon
-            key={point.access_point_id + i}
+            key={point.access_point_id + i * 2}
             status={point.access_point_status}
             count={point?.measurements?.length}
           />
@@ -166,11 +166,11 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
           <div className="flex justify-content-end">
             <span
               icon="pi pi-times"
-              className="cursor-pointer pi pi-times"
+              className="cursor-pointer pi pi-times text-0"
               onClick={() => setShowOverlay(false)}
             />
           </div>
-          <table>
+          <table className="text-0">
             <tbody>
               <tr>
                 <td>AP ID:</td>

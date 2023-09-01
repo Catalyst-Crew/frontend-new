@@ -15,9 +15,9 @@ import NewSensor from '../../components/NewSensor'
 import ManageSensor from '../../components/ManageSensor'
 import ManageAccess from '../../components/ManageAccess'
 
-import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import CopyText from '../../components/CopyText'
 import { catchHandler } from '../../utils/functions'
+import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 
 const AccessPoints = () => {
   const toast = useRef(null)
@@ -74,6 +74,16 @@ const AccessPoints = () => {
   }
 
   const fetchData = () => {
+    if (localStorage.getItem('AccessPointsData')) {
+      const data = JSON.parse(localStorage.getItem('AccessPointsData'))
+      setAccess(data[0])
+      setAccessPoints(data)
+    }
+    if (localStorage.getItem('SensorsData')) {
+      const data = JSON.parse(localStorage.getItem('SensorsData'))
+      setSensor(data[0])
+      setSensors(data)
+    }
     setLoading(true)
     getAccessPoints(true)
     getSensors(true)
@@ -91,6 +101,7 @@ const AccessPoints = () => {
       .then((response) => {
         setAccess(response.data[0])
         setAccessPoints(response.data)
+        localStorage.setItem('AccessPointsData', JSON.stringify(response.data))
       })
       .catch((error) => {
         catchHandler(error, toast)
@@ -112,6 +123,7 @@ const AccessPoints = () => {
       .then((response) => {
         setSensor(response.data[0])
         setSensors(response.data)
+        localStorage.setItem('SensorsData', JSON.stringify(response.data))
       })
       .catch((error) => {
         catchHandler(error, toast)
@@ -135,13 +147,9 @@ const AccessPoints = () => {
       <Toast ref={toast} />
       <div className="flex">
         {/* Table div */}
-        <div className="w-8 ">
-          <Splitter layout="vertical">
-            <SplitterPanel
-              className="flex align-items-center justify-content-center"
-              size={20}
-              minSize={10}
-            >
+        <div className="w-8" style={{ height: '87vh' }}>
+          <Splitter layout="vertical" className="h-full">
+            <SplitterPanel className="flex justify-content-center" size={25} minSize={10}>
               <DataTable
                 value={accessPoints}
                 header={() =>
@@ -162,6 +170,7 @@ const AccessPoints = () => {
                   header="Location"
                   body={(e) => <CopyText text={e.location} label={e.area_name} />}
                 />
+                <Column field="device_id" header="Device ID" />
                 <Column
                   field="id"
                   header="Action"
@@ -169,11 +178,8 @@ const AccessPoints = () => {
                 />
               </DataTable>
             </SplitterPanel>
-            <SplitterPanel
-              className="flex align-items-center justify-content-center"
-              size={80}
-              minSize={30}
-            >
+
+            <SplitterPanel className="flex justify-content-center" size={75}>
               <DataTable
                 value={sensors}
                 header={() =>
@@ -185,7 +191,7 @@ const AccessPoints = () => {
                   })
                 }
                 {...tableOptions}
-                paginator
+                // paginator
               >
                 <Column field="id" header="ID" body={nameTemplate} />
                 <Column field="status" header="Status" body={activeTemplate} />
@@ -246,10 +252,10 @@ const AccessPoints = () => {
 
 const tableOptions = {
   rows: 10,
-  rowsPerPageOptions: [10, 25, 50, 100],
+  //rowsPerPageOptions: [10, 25, 50, 100],
   stripedRows: true,
   scrollable: true,
-  scrollHeight: 'calc(100vh - 10rem)',
+  scrollHeight: 'calc(100vh - 25rem)',
   removableSort: true,
   style: { width: '100%' },
   className: 'p-datatable-sm'

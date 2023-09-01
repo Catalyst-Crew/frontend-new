@@ -4,6 +4,7 @@ import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 import { ScrollPanel } from 'primereact/scrollpanel'
+import { InputSwitch } from 'primereact/inputswitch'
 
 import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
@@ -25,10 +26,14 @@ const Settings = () => {
     email_notifications: 1,
     dark_mode: 0
   })
+  const [checked, setChecked] = useState(false)
 
   const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
+    if (localStorage.getItem('audio_alerts')) {
+      setChecked(JSON.parse(localStorage.getItem('audio_alerts')))
+    }
     if (user) {
       setSettings({
         id: user.id,
@@ -37,20 +42,26 @@ const Settings = () => {
         phone: user.phone
       })
     }
-
-    return getUserSettings()
+    getUserSettings()
   }, [user])
 
   const id = user ? user.id : 1_000_000
   const token = user ? user.token : 'token'
 
   const getUserSettings = () => {
+    if (localStorage.getItem('settings')) {
+      setSettings((prev) => ({
+        ...prev,
+        ...JSON.parse(localStorage.getItem('settings'))
+      }))
+    }
     axios
       .get(`${API_URL}/settings/${id}`, { headers: { 'x-access-token': token } })
       .then((res) => {
         if (res.status !== 200) {
           return
         }
+        console.log(res.data)
         setSettings((prev) => ({
           ...prev,
           ...res.data
@@ -209,6 +220,19 @@ const Settings = () => {
               className="p-button-raised p-button-rounded"
               onClick={updateUserSettings}
             />
+
+            <br />
+
+            <div className="flex flex-column gap-2">
+              <label htmlFor="mode">Audio Alerts:</label>
+              <InputSwitch
+                checked={checked}
+                onChange={(e) => {
+                  setChecked(e.value)
+                  localStorage.setItem('audio_alerts', JSON.stringify(e.value))
+                }}
+              />
+            </div>
           </div>
         </Card>
       </ScrollPanel>

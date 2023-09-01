@@ -7,3 +7,4 @@ package-lock.json
 .vs/frontend-new/v17/.wsuo
 .vs/slnx.sqlite
 yarn.lock
+.vscode

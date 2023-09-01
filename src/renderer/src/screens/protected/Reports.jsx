@@ -40,11 +40,17 @@ const Reports = () => {
   }, [])
 
   const getReports = () => {
+    if (localStorage.getItem('reportsData')) {
+      setReports(JSON.parse(localStorage.getItem('reportsData')))
+    }
     setIsLoading(true)
     axios
       .get(`${API_URL}/reports`, { headers: { 'x-access-token': token } })
-      .then((res) => setReports(res.data))
-      .catch((error) => catchHandler(error))
+      .then((res) => {
+        setReports(res.data)
+        localStorage.setItem('reportsData', JSON.stringify(res.data))
+      })
+      .catch((error) => catchHandler(error, toast))
       .finally(() => setIsLoading(false))
   }
 
@@ -71,7 +77,7 @@ const Reports = () => {
         const link = document.createElement('a')
 
         link.href = url
-        link.setAttribute('download', `${name}-report-${Date.now()}.csv`)
+        link.setAttribute('download', `${file_name}.csv`)
 
         document.body.appendChild(link)
         link.click()
@@ -118,6 +124,7 @@ const Reports = () => {
       .catch((error) => catchHandler(error))
       .finally(() => setIsLoading(false))
   }
+
   const paginatorRight = (
     <Button loading={isLoading} type="button" icon="pi pi-refresh" text onClick={getReports} />
   )
@@ -127,7 +134,7 @@ const Reports = () => {
     <div className="max-h-screen overflow-hidden">
       <Navbar activeIndex={4} />
       <Toast ref={toast} />
-      <div className="flex gap-4">
+      <div className="flex gap-4" style={{ height: '87vh' }}>
         <DataTable
           value={reports}
           rows={20}
@@ -161,6 +168,7 @@ const Reports = () => {
             )}
           />
         </DataTable>
+
         <div className="flex-column flex w-4 gap-2">
           <Card
             title="Generate a reports"
@@ -227,10 +235,8 @@ const Reports = () => {
                   className="p-inputtext-sm"
                   value={fileName}
                   onChange={(e) => setFileName(e.target.value)}
+                  placeholder="my-report"
                 />
-                <small id="file-help">
-                  Do not include file extension. Example: <code>my-report</code>
-                </small>
               </div>
               <div className="flex flex-column gap-2 mt-2">
                 <FileUpload
@@ -255,18 +261,16 @@ const Reports = () => {
           </Card>
 
           <Card>
-            <table className="w-full">
-              <tbody>
-                <tr>
-                  <td>Total files:</td>
-                  <td>{reports?.length || 0}</td>
-                </tr>
-                <tr>
-                  <td>Current reports queue:</td>
-                  <td>{Math.floor(Math.random() * 10)}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="flex justify-content-between">
+              <div className="flex justify-content-between">
+                <p className="m-0">Total files:</p>
+                <p className="ml-5 m-0">{reports?.length || 0}</p>
+              </div>
+              <div className="flex justify-content-between">
+                <p className="m-0">Current reports queue:</p>
+                <p className="ml-5 m-0">{Math.floor(Math.random() * 10)}</p>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
