@@ -71,7 +71,7 @@ const Reports = () => {
         const link = document.createElement('a')
 
         link.href = url
-        link.setAttribute('download', `${name}-report-${Date.now()}.csv`)
+        link.setAttribute('download', `${file_name}.csv`)
 
         document.body.appendChild(link)
         link.click()
@@ -118,6 +118,7 @@ const Reports = () => {
       .catch((error) => catchHandler(error))
       .finally(() => setIsLoading(false))
   }
+
   const paginatorRight = (
     <Button loading={isLoading} type="button" icon="pi pi-refresh" text onClick={getReports} />
   )
@@ -265,6 +266,7 @@ const Reports = () => {
               </div>
             </div>
           </Card>
+
         </div>
       </div>
     </div>
