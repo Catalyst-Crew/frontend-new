@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react'
 import { API_URL, serverEvents } from '../utils/exports'
 import {
   setAccessPointStatus,
-  updateAccessPoint
+  updateAccessPoint,
+  updateAccessPointMeasurements
 } from '../store/features/dashboadSlice'
 
 const SocketDashboardWrapper = (props) => {
@@ -33,6 +34,10 @@ const SocketDashboardWrapper = (props) => {
     newSocket.on(serverEvents.ACCESS_POINT_FULL, (data) => {
       console.log(data)
       dispatch(updateAccessPoint(data))
+    })
+    newSocket.on(serverEvents.NEW_MEASUREMENT, (data) => {
+      console.log(data)
+      dispatch(updateAccessPointMeasurements(data))
     })
 
     // newSocket.on('message', (newMessage) => {
