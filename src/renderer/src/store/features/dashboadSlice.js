@@ -20,9 +20,12 @@ export const dashboard = createSlice({
         }
       })
     },
-    updateAccessPointLocation: (state, { payload }) => {
+    updateAccessPoint: (state, { payload }) => {
       state.accessPoints.forEach((ap) => {
         if (ap.access_point_id === payload.access_point_id) {
+          ap.area_id = payload.area_id
+          ap.area_name = payload.area_name
+          ap.access_point_name = payload.access_point_name
           ap.access_point_latitude = payload.access_point_latitude
           ap.access_point_longitude = payload.access_point_longitude
         }
@@ -53,7 +56,7 @@ export const dashboard = createSlice({
 export const {
   setDashboardData,
   setAccessPointStatus,
-  updateAccessPointLocation,
+  updateAccessPoint,
   updateAccessPointMeasurements
 } = dashboard.actions
 

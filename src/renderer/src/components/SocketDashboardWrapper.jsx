@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 
 import { API_URL, serverEvents } from '../utils/exports'
-import { setAccessPointStatus, setDashboardData } from '../store/features/dashboadSlice'
+import {
+  setAccessPointStatus,
+  updateAccessPoint
+} from '../store/features/dashboadSlice'
 
 const SocketDashboardWrapper = (props) => {
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch()
 
   const [socket, setSocket] = useState(null)
 
@@ -25,8 +27,12 @@ const SocketDashboardWrapper = (props) => {
     setSocket(socket)
 
     newSocket.on(serverEvents.ACCESS_POINT, (data) => {
+      dispatch(setAccessPointStatus({ access_point_status: data.status, access_point_id: data.id }))
+    })
+
+    newSocket.on(serverEvents.ACCESS_POINT_FULL, (data) => {
       console.log(data)
-      dispatch(setAccessPointStatus({access_point_status: data.status, access_point_id: data.id}))
+      dispatch(updateAccessPoint(data))
     })
 
     // newSocket.on('message', (newMessage) => {
