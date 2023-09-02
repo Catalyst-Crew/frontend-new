@@ -127,7 +127,7 @@ const ForgotPassword = () => {
       </div>
 
       <Button
-        onClick={() => navigator('/login')}
+        onClick={() => navigator('/')}
         text
         className="p-mt-2 mt-5"
         loading={loading}
