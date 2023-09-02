@@ -32,6 +32,7 @@ $ yarn build:mac
 # For Linux
 $ yarn build:linux
 ```
+
 ## Todo
 
 - [ ] Notifications
