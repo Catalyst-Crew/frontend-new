@@ -230,6 +230,7 @@ const Settings = () => {
                 onChange={(e) => {
                   setChecked(e.value)
                   localStorage.setItem('audio_alerts', JSON.stringify(e.value))
+                  showToast('success', 'Setting saved', 'Audio alerts sucessfully updated.', toast)
                 }}
               />
             </div>

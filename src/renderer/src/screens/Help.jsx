@@ -16,7 +16,7 @@ const Help = () => {
     <div className="flex flex-column align-items-center overflow-hidden" style={{ height: '97vh' }}>
       <div className="text-center mb-3">
         <h1>Help</h1>
-        <Button onClick={() => navigator('/login')}>Go To Login</Button>
+        <Button onClick={() => navigator('/')}>Go To Login</Button>
       </div>
 
       <TabView>

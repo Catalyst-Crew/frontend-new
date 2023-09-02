@@ -1,4 +1,4 @@
-# miners-tracker
+# Rescue Radar
 
 An Electron application with React
 
@@ -32,3 +32,11 @@ $ yarn build:mac
 # For Linux
 $ yarn build:linux
 ```
+
+## Todo
+
+- [ ] Notifications
+- [ ] Announcements
+- [ ] Generate reporsts live queue
+- [ ] Generate reporsts live queue
+- [ ] Access Points card next/prev

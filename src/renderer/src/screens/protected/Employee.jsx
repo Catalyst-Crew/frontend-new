@@ -188,6 +188,7 @@ const Employee = () => {
           setAvailabeNodes(res.data.data)
           return
         }
+        setAvailabeNodes([])
         showToast('warn', 'Attention', res.data.message, toast)
       })
       .catch((err) => {

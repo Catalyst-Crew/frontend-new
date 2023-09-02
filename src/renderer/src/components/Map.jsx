@@ -126,9 +126,9 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
 
       {accessPoints?.map((point, i) => (
         <Marker
-          key={point.access_point_id + i}
+          key={point?.access_point_id + i}
           width={50}
-          anchor={[point.access_point_latitude, point.access_point_longitude]}
+          anchor={[point?.access_point_latitude, point?.access_point_longitude]}
           onClick={() => setZoom(16.2)}
           onMouseOver={({ anchor }) => {
             setShowOverlay(true)
@@ -142,8 +142,8 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
           className="pointer-events-auto"
         >
           <CustomIcon
-            key={point.access_point_id + i * 2}
-            status={point.access_point_status}
+            key={point?.access_point_id + i * 2}
+            status={point?.access_point_status}
             count={point?.measurements?.length}
           />
         </Marker>
@@ -174,11 +174,11 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
             <tbody>
               <tr>
                 <td>AP ID:</td>
-                <td>{overlayData.access_point_id}</td>
+                <td>{overlayData?.access_point_id}</td>
               </tr>
               <tr>
                 <td>AP Name:</td>
-                <td>{overlayData.access_point_name}</td>
+                <td>{overlayData?.access_point_name}</td>
               </tr>
               <tr>
                 <td>Nodes:</td>
@@ -186,13 +186,13 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
               </tr>
               <tr>
                 <td>Area ID:</td>
-                <td>{overlayData.area_id}</td>
+                <td>{overlayData?.area_id}</td>
               </tr>
               <tr>
                 <td>Lat/Long:</td>
                 <td>
                   <CopyText
-                    text={`${overlayData.id_prefix_access_point}${overlayData.access_point_latitude}, ${overlayData.access_point_longitude}`}
+                    text={`${overlayData?.id_prefix_access_point}${overlayData?.access_point_latitude}, ${overlayData?.access_point_longitude}`}
                   />
                 </td>
               </tr>
@@ -206,7 +206,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
               size="small"
               onClick={() => {
                 setZoom(16.2)
-                setCenter([overlayData.access_point_latitude, overlayData.access_point_longitude])
+                setCenter([overlayData?.access_point_latitude, overlayData?.access_point_longitude])
               }}
             />
             <Button label="View" className="mt" size="small" text />
