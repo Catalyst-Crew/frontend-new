@@ -32,23 +32,7 @@ export const dashboard = createSlice({
       })
     },
     updateAccessPointMeasurements: (state, { payload }) => {
-      state.accessPoints.forEach((ap) => {
-        if (ap.access_point_id === payload.access_point_id) {
-          if (payload.measurements) {
-            ap.measurements = ap.measurements || []
-            payload.measurements.forEach((measurement) => {
-              const index = ap.measurements.findIndex((m) => m.id === measurement.id)
-              if (index !== -1) {
-                ap.measurements[index] = measurement
-              } else {
-                ap.measurements.push(measurement)
-              }
-            })
-          } else {
-            ap.measurements = null
-          }
-        }
-      })
+      state.accessPoints = payload
     }
   }
 })
