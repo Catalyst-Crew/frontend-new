@@ -25,8 +25,7 @@ export const selectUserAccess = createSelector(selectAuth, (auth) =>
   auth.user ? auth.user.access_id : null
 )
 export const selectUserToken = createSelector(selectAuth, (auth) =>
-  auth.user ? auth.user.token :
-    'token'
+  auth.user ? auth.user.token : 'token'
 )
 export const selectUserState = createSelector(selectAuth, (auth) => auth.state)
 export const selectUsers = createSelector(selectUser, (user) => user)

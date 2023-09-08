@@ -134,8 +134,8 @@ const Reports = () => {
       .then((res) => {
         showToast('success', 'Success', res.data.message, toast)
       })
-      .catch((error) => {catchHandler(error, toast)
-      console.log(error);
+      .catch((error) => {
+        catchHandler(error, toast)
       })
       .finally(() => setIsLoading(false))
   }
