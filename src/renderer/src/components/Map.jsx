@@ -10,7 +10,7 @@ import { Button } from 'primereact/button'
 import CopyText from './CopyText'
 import { API_URL } from '../utils/exports'
 import { catchHandler } from '../utils/functions'
-import { selectAccessPoints } from '../store/store'
+import { selectAccessPoints, selectUserToken } from '../store/store'
 
 const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
 
@@ -20,6 +20,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
   const [showOverlay, setShowOverlay] = useState(false)
   const [anchor, setAnchor] = useState([-26.260693, 29.121075])
 
+  const token = useSelector(selectUserToken)
   const accessPoints = useSelector(selectAccessPoints)
 
   const CustomIcon = ({ count = 0, status }) => {
@@ -59,7 +60,9 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
 
   const getAreas = () => {
     axios
-      .get(`${API_URL}/areas`)
+      .get(`${API_URL}/areas`, {
+        headers: { 'x-access-token': token }
+      })
       .then((response) => {
         localStorage.setItem('areas', JSON.stringify(response.data))
         setAreas(response.data)
