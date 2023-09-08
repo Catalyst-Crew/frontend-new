@@ -151,7 +151,7 @@ const Dashbord = () => {
           setColor('warning')
         }
       })
-      .catch((e) => {
+      .catch(() => {
         if (plays) {
           play()
         }
@@ -387,12 +387,6 @@ const Dashbord = () => {
                     {accessPoints[next.accessPoint]?.measurements?.length || 'N/A'}
                   </td>
                 </tr>
-                {/* <tr>
-                  <td className="text-left">Total Connections:</td>
-                  <td className="font-bold text-right vertical-align-middle">
-                    {accessPoints?.reduce((acc, curr) => acc + curr.measurements, 0) || 'N/A'}
-                  </td>
-                </tr> */}
                 <tr>
                   <td className="text-left">Location:</td>
                   <td className="font-bold text-right vertical-align-middle">
@@ -443,10 +437,6 @@ const Dashbord = () => {
                   <td className="text-left">Nodes:</td>
                   <td className="font-bold text-right vertical-align-middle">22</td>
                 </tr>
-                {/* <tr>
-                  <td className="text-left">Total connections:</td>
-                  <td className="font-bold text-right vertical-align-middle">45</td>
-                </tr> */}
                 <tr>
                   <td className="text-left">Location:</td>
                   <td className="font-bold text-right vertical-align-middle">

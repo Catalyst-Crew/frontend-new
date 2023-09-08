@@ -4,7 +4,9 @@ import { Button } from 'primereact/button'
 import { Column } from 'primereact/column'
 import { Checkbox } from 'primereact/checkbox'
 import { Calendar } from 'primereact/calendar'
+import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
+import { InputText } from 'primereact/inputtext'
 import { FileUpload } from 'primereact/fileupload'
 
 import axios from 'axios'
@@ -15,8 +17,6 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/Navbar'
 import { ADMIN_ROLE, API_URL } from '../../utils/exports'
 import { catchHandler, showToast } from '../../utils/functions'
-import { Dropdown } from 'primereact/dropdown'
-import { InputText } from 'primereact/inputtext'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 
@@ -55,12 +55,25 @@ const Reports = () => {
   }
 
   const generateReport = () => {
+    if (!reportType) {
+      return showToast('error', 'Error', 'Please select a report type and date range.', toast)
+    }
     setIsLoading(true)
     axios
-      .post(`${API_URL}/reports/${reportType}`, { headers: { 'x-access-token': token } })
+      .post(
+        `${API_URL}/reports/${reportType}`,
+        {
+          date_range: [
+            moment(dates[0]).format('YYYY-MM-DD'),
+            moment(dates[1]).format('YYYY-MM-DD')
+          ],
+          notify_user: checked,
+          user_id: name
+        },
+        { headers: { 'x-access-token': token } }
+      )
       .then((res) => {
         showToast('success', 'Success', res.data.message, toast)
-        getReports()
       })
       .catch((error) => catchHandler(error))
       .finally(() => setIsLoading(false))
@@ -110,7 +123,7 @@ const Reports = () => {
     setIsLoading(true)
     axios
       .post(
-        `${API_URL}/reports/upload`,
+        `${API_URL}/reports/upload/new`,
         { file, file_name: fileName, user_id: name },
         {
           headers: {
@@ -121,7 +134,9 @@ const Reports = () => {
       .then((res) => {
         showToast('success', 'Success', res.data.message, toast)
       })
-      .catch((error) => catchHandler(error))
+      .catch((error) => {
+        catchHandler(error, toast)
+      })
       .finally(() => setIsLoading(false))
   }
 
@@ -180,6 +195,7 @@ const Reports = () => {
                 value={reportType}
                 options={[
                   { label: 'Access Points', value: 'access_points' },
+                  { label: 'Areas', value: 'areas' },
                   { label: 'Logs', value: 'logs' },
                   { label: 'Measurements', value: 'measurements' },
                   { label: 'Miners', value: 'miners' },
@@ -194,11 +210,12 @@ const Reports = () => {
 
               <Calendar
                 value={dates}
-                onChange={(e) => setDates(e.value)}
                 readOnlyInput
+                dateFormat="yy-mm-dd"
                 selectionMode="range"
-                placeholder="Select a date range"
                 className="p-inputtext-sm"
+                placeholder="Select a date range"
+                onChange={(e) => setDates(e.value)}
               />
               <div className="flex align-items-center">
                 <Checkbox
@@ -253,6 +270,7 @@ const Reports = () => {
                     }
                     setFileName(e.files[0].name.split('.')[0])
                   }}
+                  loading={isLoading}
                   onError={() => showToast('error', 'Error', 'Upload failed.', toast)}
                 />
                 <small id="file-help">Please upload a CSV file only. Max file size is 10MB.</small>

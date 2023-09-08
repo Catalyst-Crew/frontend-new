@@ -81,7 +81,7 @@ const Users = () => {
         localStorage.setItem('areasData', JSON.stringify(response.data))
       })
       .catch((error) => {
-        catchHandler(error, toastRef)
+        catchHandler(error, toast)
       })
   }
 
@@ -299,7 +299,7 @@ const Users = () => {
           </Card>
         </div>
       </div>
-      <NewUser visible={visible} setVisible={setVisible} toastRef={toast} refresh={fetchtUsers} />
+      <NewUser visible={visible} setVisible={setVisible} toast={toast} refresh={fetchtUsers} />
     </div>
   )
 }

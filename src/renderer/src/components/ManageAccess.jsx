@@ -230,7 +230,7 @@ ManageAccess.propTypes = {
   data: PropTypes.object,
   toastRef: PropTypes.object,
   token: PropTypes.string,
-  username: PropTypes.string,
+  username: PropTypes.number,
   refresh: PropTypes.func
 }
 
