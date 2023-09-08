@@ -123,7 +123,7 @@ const Reports = () => {
     setIsLoading(true)
     axios
       .post(
-        `${API_URL}/reports/upload`,
+        `${API_URL}/reports/upload/new`,
         { file, file_name: fileName, user_id: name },
         {
           headers: {
@@ -134,7 +134,9 @@ const Reports = () => {
       .then((res) => {
         showToast('success', 'Success', res.data.message, toast)
       })
-      .catch((error) => catchHandler(error))
+      .catch((error) => {catchHandler(error, toast)
+      console.log(error);
+      })
       .finally(() => setIsLoading(false))
   }
 
