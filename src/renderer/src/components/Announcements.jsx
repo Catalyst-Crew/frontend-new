@@ -81,7 +81,7 @@ const Announcements = ({ visible, setVisible, toastRef }) => {
     <Dialog
       header={<Header handleClick={showNewAnn} hide={user.user_role_id === 1_000_000} />}
       visible={visible}
-      style={{ width: '35vw' }}
+      style={{ width: '40vw' }}
       onHide={setVisible}
       position="top-right"
       draggable={false}
@@ -105,7 +105,7 @@ const Announcements = ({ visible, setVisible, toastRef }) => {
         onHide={showNewAnn}
         draggable={false}
         position="center"
-        style={{ width: '35vw' }}
+        style={{ width: '40vw' }}
       >
         <div className="flex flex-column gap-4">
           <div className="flex flex-column gap-2">
@@ -153,7 +153,6 @@ const Announcement = ({ announcement }) => {
 
   return (
     <li>
-      <hr className="border-200" />
       <div className="flex flex-column">
         <div className="flex gap-3">
           <Avatar
@@ -164,10 +163,14 @@ const Announcement = ({ announcement }) => {
           />
           <Panel collapsed={true} toggleable={true} header={announcement.name} className="w-full">
             <p className="m-0 p-0">{announcement.message}</p>
+            <p className="mb-0 font-italic">Posted by: {announcement.user_name}</p>
           </Panel>
         </div>
-        <p className="ml-7">{moment(announcement.created_at).fromNow()}</p>
-      </div>
+        <div className="flex gap-2 mt-2">
+          <p className="m-0 ml-7">{moment(announcement.created_at).fromNow()}</p>
+        </div>
+      </div>{' '}
+      <hr className="border-200" />
     </li>
   )
 }
