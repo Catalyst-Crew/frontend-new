@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useGlobalAudioPlayer } from 'react-use-audio-player'
 
 import { Card } from 'primereact/card'
 import { Badge } from 'primereact/badge'
@@ -16,7 +17,7 @@ import audio from '../../assets/audio.wav'
 import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
 import DateTime from '../../components/DateTime'
-import { useGlobalAudioPlayer } from 'react-use-audio-player'
+import Announcements from '../../components/Announcements'
 
 import { catchHandler } from '../../utils/functions'
 import { setDashboardData } from '../../store/features/dashboadSlice'
@@ -31,6 +32,7 @@ const Dashbord = () => {
 
   const [zoom, setZoom] = useState(16.2)
   const [color, setColor] = useState('info')
+  const [showAnn, setShowAnn] = useState(true)
   const [intervalTime, setIntervalTime] = useState(10_000)
   const [center, setCenter] = useState([-26.260693, 29.121075])
   const [next, setNext] = useState({ area: 0, miner: 0, accessPoint: 0 })
@@ -50,10 +52,9 @@ const Dashbord = () => {
     }
     load(audio)
 
-    let intvlTime = 3_000
-    if (localStorage.getItem('intervalTime')) {
-      intvlTime = JSON.parse(localStorage.getItem('intervalTime'))
-    }
+    const intvlTime = localStorage.getItem('intervalTime')
+      ? JSON.parse(localStorage.getItem('intervalTime'))
+      : 3_000
 
     setIntervalTime(intvlTime)
   }, [color])
@@ -172,6 +173,9 @@ const Dashbord = () => {
     localStorage.setItem('intervalTime', JSON.stringify(time))
   }
 
+  const handeShowAnn = () => {
+    setShowAnn((prev) => !prev)
+  }
   return (
     <div className="max-h-screen max-w-screen overflow-hidden">
       <Navbar activeIndex={0} />
@@ -199,7 +203,13 @@ const Dashbord = () => {
                 <span className="p-buttonset">
                   <Button className="button" label="Map" />
                   <Button className="button" label="Cards" />
-                  <Button className="button" label="List" />
+                  <Button
+                    className="button"
+                    label="Ann"
+                    onClick={handeShowAnn}
+                    icon="pi pi-inbox"
+                    iconPos="right"
+                  />
                 </span>
               </div>
 
@@ -507,6 +517,13 @@ const Dashbord = () => {
           />
         </div>
       </OverlayPanel>
+
+      <Announcements
+        visible={showAnn}
+        setVisible={handeShowAnn}
+        toastRef={toastRef}
+        userToken={userToken}
+      />
     </div>
   )
 }
