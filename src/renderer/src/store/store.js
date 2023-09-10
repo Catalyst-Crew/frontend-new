@@ -13,7 +13,7 @@ export default configureStore({
 })
 
 export const selectAuth = (state) => state.auth
-export const selectUser = (state) => state.user
+export const selectUser = createSelector(selectAuth, (auth) => (auth.user ? auth.user.id : null))
 export const selectDashboardData = (state) => state.dashboardData
 export const selectUserRole = createSelector(selectAuth, (auth) =>
   auth.user ? auth.user.user_role_id : null
