@@ -2,12 +2,14 @@ import { configureStore, createSelector } from '@reduxjs/toolkit'
 import authReducer from './features/authSlice'
 import usersReducer from './features/usersSlice'
 import dashboadReducer from './features/dashboadSlice'
+import alerts from './features/alertsSlice'
 
 export default configureStore({
   reducer: {
     auth: authReducer,
     user: usersReducer,
-    dashboardData: dashboadReducer
+    dashboardData: dashboadReducer,
+    alerts: alerts
   },
   devTools: true
 })
@@ -39,3 +41,12 @@ export const selectAccessPoints = createSelector(
   selectDashboardData,
   (dashboardData) => dashboardData.accessPoints
 )
+export const selectAnnouncements = createSelector(
+  selectDashboardData,
+  (dashboardData) => dashboardData.announcements
+)
+
+const selectAlert = (state) => state.alerts
+export const selectAlerts = createSelector(selectAlert, (alerts) => alerts.alerts)
+export const selectAlertsCount = createSelector(selectAlert, (alerts) => alerts.alerts.length)
+export const selectAlertSstate = createSelector(selectAlert, (alerts) => alerts.active)

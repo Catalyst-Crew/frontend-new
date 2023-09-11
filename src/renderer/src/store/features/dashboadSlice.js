@@ -5,7 +5,8 @@ export const dashboard = createSlice({
   initialState: {
     areas: [],
     accessPoints: [],
-    state: false
+    state: false,
+    announcements: true
   },
   reducers: {
     setDashboardData: (state, { payload }) => {
@@ -33,6 +34,9 @@ export const dashboard = createSlice({
     },
     updateAccessPointMeasurements: (state, { payload }) => {
       state.accessPoints = payload
+    },
+    setSeenAnnouncements: (state) => {
+      state.announcements = !state.announcements
     }
   }
 })
@@ -41,7 +45,8 @@ export const {
   setDashboardData,
   setAccessPointStatus,
   updateAccessPoint,
-  updateAccessPointMeasurements
+  updateAccessPointMeasurements,
+  setSeenAnnouncements
 } = dashboard.actions
 
 export default dashboard.reducer

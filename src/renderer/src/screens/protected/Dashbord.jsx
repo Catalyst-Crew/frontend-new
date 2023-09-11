@@ -18,10 +18,18 @@ import Navbar from '../../components/Navbar'
 import { API_URL } from '../../utils/exports'
 import DateTime from '../../components/DateTime'
 import Announcements from '../../components/Announcements'
+import EmergencyAlert from '../../components/EmergencyAlert'
 
 import { catchHandler } from '../../utils/functions'
-import { setDashboardData } from '../../store/features/dashboadSlice'
-import { selectAccessPoints, selectAreas, selectUserToken } from '../../store/store'
+import { setAlertsOff } from '../../store/features/alertsSlice'
+import { setDashboardData, setSeenAnnouncements } from '../../store/features/dashboadSlice'
+import {
+  selectAccessPoints,
+  selectAlertsCount,
+  selectAnnouncements,
+  selectAreas,
+  selectUserToken
+} from '../../store/store'
 
 const Dashbord = () => {
   const op = useRef(null)
@@ -39,7 +47,9 @@ const Dashbord = () => {
 
   const areas = useSelector(selectAreas)
   const [plays, setPlay] = useState(true)
+  const ann = useSelector(selectAnnouncements)
   const userToken = useSelector(selectUserToken)
+  const alertCount = useSelector(selectAlertsCount)
   const accessPoints = useSelector(selectAccessPoints)
 
   useEffect(() => {
@@ -174,10 +184,12 @@ const Dashbord = () => {
   }
 
   const handeShowAnn = () => {
+    dispatch(setSeenAnnouncements())
     setShowAnn((prev) => !prev)
   }
   return (
     <div className="max-h-screen max-w-screen overflow-hidden">
+      <EmergencyAlert />
       <Navbar activeIndex={0} />
       <Toast ref={toastRef} />
 
@@ -202,7 +214,20 @@ const Dashbord = () => {
               <div className="col-4 flex p-0">
                 <span className="p-buttonset">
                   <Button className="button" label="Map" />
-                  <Button className="button" label="Cards" />
+                  {alertCount ? (
+                    <Button
+                      className="button"
+                      label="Stop Alerts"
+                      onClick={() => dispatch(setAlertsOff())}
+                      badge={alertCount.toString()}
+                    />
+                  ) : (
+                    <Button
+                      className="button"
+                      label="Stop Alerts"
+                      onClick={() => dispatch(setAlertsOff())}
+                    />
+                  )}
                   <Button
                     className="button"
                     label="Ann"
@@ -519,7 +544,7 @@ const Dashbord = () => {
       </OverlayPanel>
 
       <Announcements
-        visible={showAnn}
+        visible={showAnn && ann}
         setVisible={handeShowAnn}
         toastRef={toastRef}
         userToken={userToken}
