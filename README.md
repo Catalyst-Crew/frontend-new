@@ -35,8 +35,7 @@ $ yarn build:linux
 
 ## Todo
 
-- [ ] Notifications
-- [ ] Announcements
-- [ ] Generate reporsts live queue
+- [x] Notifications
+- [x] Announcements
 - [ ] Generate reporsts live queue
 - [ ] Access Points card next/prev
