@@ -250,7 +250,7 @@ const Dashbord = () => {
                 </Button>
               </div>
               <div className="col-3 p-0 flex align-items-center">
-                <DateTime format="ddd, MMMM Mo, Y, h:mm:ss A" />
+                <DateTime format="ddd, MMMM Mo, Y, HH:mm:ss" />
               </div>
 
               <div className="col-1 flex justify-content-end p-0">
