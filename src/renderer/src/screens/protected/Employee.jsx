@@ -245,6 +245,7 @@ const Employee = () => {
             onClick={() => setVisible(true)}
             className="add text-center mt-1 mb-2"
             disabled={user.user_role_id !== ADMIN_ROLE}
+            size='large'
           >
             Add Employee
           </Button>

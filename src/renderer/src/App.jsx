@@ -39,7 +39,7 @@ export default function App() {
             <Route path="/" element={<Login />} />
             <Route path="/help" element={<Help />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" element={<Help />} />
+            <Route path="*" element={<Login />} />
           </Routes>
         )}
       </HashRouter>
