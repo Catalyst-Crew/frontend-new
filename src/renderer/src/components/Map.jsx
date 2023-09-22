@@ -10,7 +10,7 @@ import { Button } from 'primereact/button'
 import CopyText from './CopyText'
 import { API_URL } from '../utils/exports'
 import { catchHandler } from '../utils/functions'
-import { selectAccessPoints, selectUserToken } from '../store/store'
+import { selectAccessPoints, selectFocusedAccessPoint, selectUserToken } from '../store/store'
 
 const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
 
@@ -22,13 +22,14 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
 
   const token = useSelector(selectUserToken)
   const accessPoints = useSelector(selectAccessPoints)
+  const focusedAccessPoint = useSelector(selectFocusedAccessPoint)
 
-  const CustomIcon = ({ count = 0, status }) => {
-    const SIZE = '25'
+  const CustomIcon = ({ count = 0, status, selected }) => {
+    const SIZE = 25
     return (
       <svg
-        width={SIZE}
-        height={SIZE}
+        width={selected ? SIZE + 5 : SIZE}
+        height={selected ? SIZE + 5 : SIZE}
         viewBox="0 0 50 50"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -37,11 +38,14 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
             count.toString().length * 2
           }px)`,
           cursor: 'pointer',
-          pointerEvents: 'all'
+          pointerEvents: 'all',
+          transition: 'ease-in-out',
+          transitionDuration: '5s',
+          transitionProperty: 'revert'
         }}
       >
         <circle cx="25" cy="25" r="25" fill={status ? '#FFC107' : 'grey'} />
-        <text x="50%" y="50%" textAnchor="middle" fill="black" fontSize="20px" dy=".3em">
+        <text x="50%" y="50%" textAnchor="middle" fill="black" fontSize="22px" dy=".3em">
           {count}
         </text>
       </svg>
@@ -148,6 +152,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
             key={point?.access_point_id + i * 2}
             status={point?.access_point_status}
             count={point?.measurements?.length}
+            selected={focusedAccessPoint === point?.access_point_id}
           />
         </Marker>
       ))}
