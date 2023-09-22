@@ -6,13 +6,17 @@ export const dashboard = createSlice({
     areas: [],
     accessPoints: [],
     state: false,
-    announcements: true
+    announcements: true,
+    focusedAccessPoint: 0
   },
   reducers: {
     setDashboardData: (state, { payload }) => {
       state.areas = payload?.areas
       state.accessPoints = payload?.access_points
       state.state = true
+    },
+    setFocusedAccesspoint: (state, { payload }) => {
+      state.focusedAccessPoint = payload
     },
     setAccessPointStatus: (state, { payload }) => {
       state.accessPoints.forEach((ap) => {
@@ -43,10 +47,11 @@ export const dashboard = createSlice({
 
 export const {
   setDashboardData,
-  setAccessPointStatus,
   updateAccessPoint,
-  updateAccessPointMeasurements,
-  setSeenAnnouncements
+  setAccessPointStatus,
+  setSeenAnnouncements,
+  setFocusedAccesspoint,
+  updateAccessPointMeasurements
 } = dashboard.actions
 
 export default dashboard.reducer

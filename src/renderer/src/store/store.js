@@ -37,6 +37,10 @@ export const selectAreas = createSelector(
   selectDashboardData,
   (dashboardData) => dashboardData.areas
 )
+export const selectFocusedAccessPoint = createSelector(
+  selectDashboardData,
+  (dashboardData) => dashboardData.focusedAccessPoint
+)
 export const selectAccessPoints = createSelector(
   selectDashboardData,
   (dashboardData) => dashboardData.accessPoints

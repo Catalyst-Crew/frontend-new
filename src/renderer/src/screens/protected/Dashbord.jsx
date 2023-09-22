@@ -22,13 +22,17 @@ import EmergencyAlert from '../../components/EmergencyAlert'
 
 import { catchHandler } from '../../utils/functions'
 import { setAlertsOff } from '../../store/features/alertsSlice'
-import { setDashboardData, setSeenAnnouncements } from '../../store/features/dashboadSlice'
 import {
-  selectAccessPoints,
-  selectAlertsCount,
-  selectAnnouncements,
+  setDashboardData,
+  setFocusedAccesspoint,
+  setSeenAnnouncements
+} from '../../store/features/dashboadSlice'
+import {
   selectAreas,
-  selectUserToken
+  selectUserToken,
+  selectAlertsCount,
+  selectAccessPoints,
+  selectAnnouncements
 } from '../../store/store'
 
 const Dashbord = () => {
@@ -60,7 +64,7 @@ const Dashbord = () => {
     if (localStorage.getItem('audio_alerts')) {
       setPlay(JSON.parse(localStorage.getItem('audio_alerts')))
     }
-    load(audio)
+    load(audio, { loop: true, html5: true })
 
     const intvlTime = localStorage.getItem('intervalTime')
       ? JSON.parse(localStorage.getItem('intervalTime'))
@@ -127,25 +131,22 @@ const Dashbord = () => {
   }
 
   const handleNextAccessPoint = () => {
-    if (accessPoints[next.area + 1]?.measurements) {
-      if (next.accessPoint < accessPoints[next.area]?.measurements?.length - 1) {
-        setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint + 1 }))
-      } else {
-        setNext((prev) => ({ ...prev, accessPoint: 0 }))
-      }
+    if (next.accessPoint < accessPoints.length - 1) {
+      setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint + 1 }))
+      dispatch(setFocusedAccesspoint(accessPoints[next.accessPoint + 1].access_point_id))
+    } else {
+      setNext((prev) => ({ ...prev, accessPoint: 0 }))
+      dispatch(setFocusedAccesspoint(accessPoints[0].access_point_id))
     }
   }
 
   const handlePrevAccessPoint = () => {
-    if (accessPoints[next.area - 1]?.measurements) {
-      if (next.accessPoint > 0) {
-        setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint - 1 }))
-      } else {
-        setNext((prev) => ({
-          ...prev,
-          accessPoint: accessPoints[next.area]?.measurements?.length - 1
-        }))
-      }
+    if (next.accessPoint > 0) {
+      setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint - 1 }))
+      dispatch(setFocusedAccesspoint(accessPoints[next.accessPoint - 1].access_point_id))
+    } else {
+      setNext((prev) => ({ ...prev, accessPoint: accessPoints.length - 1 }))
+      dispatch(setFocusedAccesspoint(accessPoints[accessPoints.length - 1].access_point_id))
     }
   }
 
@@ -414,6 +415,12 @@ const Dashbord = () => {
                   <td className="text-left w-">ID:</td>
                   <td className="font-bold text-right vertical-align-middle">
                     {`acc-${accessPoints[next.accessPoint]?.access_point_id}` || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left w-">Name:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {accessPoints[next.accessPoint]?.access_point_name || 'N/A'}
                   </td>
                 </tr>
                 <tr>
