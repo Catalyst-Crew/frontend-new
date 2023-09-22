@@ -18,7 +18,7 @@ export const alerts = createSlice({
         }
       })
     },
-    setAlertsOff: (state) => {
+    setAlertsOff: (state, {}) => {
       state.active = false
     }
   }
