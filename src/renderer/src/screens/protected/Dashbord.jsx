@@ -24,11 +24,11 @@ import { catchHandler } from '../../utils/functions'
 import { setAlertsOff } from '../../store/features/alertsSlice'
 import { setDashboardData, setSeenAnnouncements } from '../../store/features/dashboadSlice'
 import {
-  selectAccessPoints,
-  selectAlertsCount,
-  selectAnnouncements,
   selectAreas,
-  selectUserToken
+  selectUserToken,
+  selectAlertsCount,
+  selectAccessPoints,
+  selectAnnouncements,
 } from '../../store/store'
 
 const Dashbord = () => {
@@ -60,7 +60,7 @@ const Dashbord = () => {
     if (localStorage.getItem('audio_alerts')) {
       setPlay(JSON.parse(localStorage.getItem('audio_alerts')))
     }
-    load(audio)
+    load(audio, { loop: true, html5: true })
 
     const intvlTime = localStorage.getItem('intervalTime')
       ? JSON.parse(localStorage.getItem('intervalTime'))
@@ -83,6 +83,7 @@ const Dashbord = () => {
       .get(`${API_URL}/dashboard`, { headers: { 'x-access-token': userToken } })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
           dispatch(setDashboardData(res.data))
         }
       })
@@ -305,9 +306,8 @@ const Dashbord = () => {
                   <tr>
                     <td className="text-left">Miner ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`min-${
-                        accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
-                      }` || 'N/A'}
+                      {`min-${accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
+                        }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
@@ -327,9 +327,8 @@ const Dashbord = () => {
                   <tr>
                     <td className="text-left">Node ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`sen-${
-                        accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
-                      }` || 'N/A'}
+                      {`sen-${accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
+                        }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
@@ -343,7 +342,7 @@ const Dashbord = () => {
                     <td className="font-bold text-right vertical-align-middle">
                       {moment(
                         accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
-                          new Date(2000, 1, 1)
+                        new Date(2000, 1, 1)
                       ).fromNow()}
                     </td>
                   </tr>
@@ -433,7 +432,7 @@ const Dashbord = () => {
                   <td className="font-bold text-right vertical-align-middle">
                     {moment(
                       accessPoints[next.accessPoint]?.access_point_created_at ||
-                        new Date(2000, 1, 1)
+                      new Date(2000, 1, 1)
                     ).fromNow()}
                   </td>
                 </tr>

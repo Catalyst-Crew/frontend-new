@@ -15,7 +15,7 @@ const EmergencyAlert = () => {
   const alertsActive = useSelector(selectAlertSstate)
 
   useEffect(() => {
-    load(audio, { loop: true })
+    load(audio, { loop: true, html5: true })
   }, [])
 
   useEffect(() => {
