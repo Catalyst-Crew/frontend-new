@@ -22,13 +22,17 @@ import EmergencyAlert from '../../components/EmergencyAlert'
 
 import { catchHandler } from '../../utils/functions'
 import { setAlertsOff } from '../../store/features/alertsSlice'
-import { setDashboardData, setSeenAnnouncements } from '../../store/features/dashboadSlice'
+import {
+  setDashboardData,
+  setFocusedAccesspoint,
+  setSeenAnnouncements
+} from '../../store/features/dashboadSlice'
 import {
   selectAreas,
   selectUserToken,
   selectAlertsCount,
   selectAccessPoints,
-  selectAnnouncements,
+  selectAnnouncements
 } from '../../store/store'
 
 const Dashbord = () => {
@@ -83,7 +87,6 @@ const Dashbord = () => {
       .get(`${API_URL}/dashboard`, { headers: { 'x-access-token': userToken } })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data);
           dispatch(setDashboardData(res.data))
         }
       })
@@ -128,25 +131,22 @@ const Dashbord = () => {
   }
 
   const handleNextAccessPoint = () => {
-    if (accessPoints[next.area + 1]?.measurements) {
-      if (next.accessPoint < accessPoints[next.area]?.measurements?.length - 1) {
-        setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint + 1 }))
-      } else {
-        setNext((prev) => ({ ...prev, accessPoint: 0 }))
-      }
+    if (next.accessPoint < accessPoints.length - 1) {
+      setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint + 1 }))
+      dispatch(setFocusedAccesspoint(accessPoints[next.accessPoint + 1].access_point_id))
+    } else {
+      setNext((prev) => ({ ...prev, accessPoint: 0 }))
+      dispatch(setFocusedAccesspoint(accessPoints[0].access_point_id))
     }
   }
 
   const handlePrevAccessPoint = () => {
-    if (accessPoints[next.area - 1]?.measurements) {
-      if (next.accessPoint > 0) {
-        setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint - 1 }))
-      } else {
-        setNext((prev) => ({
-          ...prev,
-          accessPoint: accessPoints[next.area]?.measurements?.length - 1
-        }))
-      }
+    if (next.accessPoint > 0) {
+      setNext((prev) => ({ ...prev, accessPoint: prev.accessPoint - 1 }))
+      dispatch(setFocusedAccesspoint(accessPoints[next.accessPoint - 1].access_point_id))
+    } else {
+      setNext((prev) => ({ ...prev, accessPoint: accessPoints.length - 1 }))
+      dispatch(setFocusedAccesspoint(accessPoints[accessPoints.length - 1].access_point_id))
     }
   }
 
@@ -306,8 +306,9 @@ const Dashbord = () => {
                   <tr>
                     <td className="text-left">Miner ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`min-${accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
-                        }` || 'N/A'}
+                      {`min-${
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.miner_id
+                      }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
@@ -327,8 +328,9 @@ const Dashbord = () => {
                   <tr>
                     <td className="text-left">Node ID:</td>
                     <td className="font-bold text-right vertical-align-middle">
-                      {`sen-${accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
-                        }` || 'N/A'}
+                      {`sen-${
+                        accessPoints[next.accessPoint]?.measurements[next.miner]?.sensor_id
+                      }` || 'N/A'}
                     </td>
                   </tr>
                   <tr>
@@ -342,7 +344,7 @@ const Dashbord = () => {
                     <td className="font-bold text-right vertical-align-middle">
                       {moment(
                         accessPoints[next.accessPoint]?.measurements[next.miner]?.created_at ||
-                        new Date(2000, 1, 1)
+                          new Date(2000, 1, 1)
                       ).fromNow()}
                     </td>
                   </tr>
@@ -438,7 +440,7 @@ const Dashbord = () => {
                   <td className="font-bold text-right vertical-align-middle">
                     {moment(
                       accessPoints[next.accessPoint]?.access_point_created_at ||
-                      new Date(2000, 1, 1)
+                        new Date(2000, 1, 1)
                     ).fromNow()}
                   </td>
                 </tr>
