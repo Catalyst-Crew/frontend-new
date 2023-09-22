@@ -416,6 +416,12 @@ const Dashbord = () => {
                   </td>
                 </tr>
                 <tr>
+                  <td className="text-left w-">Name:</td>
+                  <td className="font-bold text-right vertical-align-middle">
+                    {accessPoints[next.accessPoint]?.access_point_name || 'N/A'}
+                  </td>
+                </tr>
+                <tr>
                   <td className="text-left w-">Nodes:</td>
                   <td className="font-bold text-right vertical-align-middle">
                     {accessPoints[next.accessPoint]?.measurements?.length || 'N/A'}
