@@ -38,10 +38,8 @@ const SocketDashboardWrapper = (props) => {
       })
   }
 
-  useEffect(() => {
-    let newSocket
-    if (isLogged) {
-      newSocket = io(API_URL, {
+  useEffect(() => {    
+     const newSocket = io(API_URL, {
         transports: ['websocket'],
         extraHeaders: {
           'x-auth-token': token
@@ -49,7 +47,7 @@ const SocketDashboardWrapper = (props) => {
       })
 
       setSocket(socket)
-
+if (isLogged) {
       newSocket.on(serverEvents.ACCESS_POINT, (data) => {
         dispatch(
           setAccessPointStatus({ access_point_status: data.status, access_point_id: data.id })
