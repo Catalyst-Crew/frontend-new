@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 import { Dialog } from 'primereact/dialog'
@@ -221,8 +222,6 @@ function NewUser({ visible, setVisible, toastRef, refresh }) {
     </Dialog>
   )
 }
-
-import PropTypes from 'prop-types'
 
 NewUser.propTypes = {
   visible: PropTypes.bool,
