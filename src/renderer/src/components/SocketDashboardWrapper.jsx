@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
+  setAccessPointEmergency,
   setAccessPointStatus,
   updateAccessPoint,
   updateAccessPointMeasurements
@@ -27,16 +28,18 @@ const SocketDashboardWrapper = (props) => {
   const isLogged = useSelector((state) => state.auth.state)
 
   const markAlert = (id) => {
-    axios.get(`${API_URL}/alerts/acknowledge/${id}`,
-      { headers: { 'x-access-token': token } }).then((res) => {
+    axios
+      .get(`${API_URL}/alerts/acknowledge/${id}`, { headers: { 'x-access-token': token } })
+      .then((res) => {
         dispatch(setAlertStatus(id))
-      }).catch((err) => {
+      })
+      .catch((err) => {
         catchHandler(err, toast)
       })
   }
 
   useEffect(() => {
-    let newSocket;
+    let newSocket
     if (isLogged) {
       newSocket = io(API_URL, {
         transports: ['websocket'],
@@ -44,7 +47,6 @@ const SocketDashboardWrapper = (props) => {
           'x-auth-token': token
         }
       })
-
 
       setSocket(socket)
 
@@ -63,6 +65,7 @@ const SocketDashboardWrapper = (props) => {
 
       newSocket.on(serverEvents.NEW_ALERT, (data) => {
         dispatch(setAlerts(data))
+        dispatch(setAccessPointEmergency(data.access_point_id))
         toast.current.show({
           sticky: true,
           life: 200_000,
@@ -124,12 +127,12 @@ const Acknowledge = ({ id, handleClick }) => {
     <Button
       size="small"
       link
-      label={clicked ? "" : "Acknowledge"}
+      label={clicked ? '' : 'Acknowledge'}
       onClick={() => {
         handleClick(id)
         setClicked(true)
       }}
-      icon={clicked ? "pi pi-check" : ""}
+      icon={clicked ? 'pi pi-check' : ''}
       disabled={clicked}
     />
   )
