@@ -1,6 +1,6 @@
 {
   "name": "rescueradar",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Miner tracking software. Built for windows OS with Electron JS",
   "main": "./out/main/index.js",
   "author": "Catalyst Crew",
