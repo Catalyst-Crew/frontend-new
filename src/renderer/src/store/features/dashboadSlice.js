@@ -48,7 +48,7 @@ export const dashboard = createSlice({
     },
     updateAccessPointMeasurements: (state, { payload }) => {
       //state.accessPoints = payload
-      state.accessPoints = payload.accessPoints.map((ap) => {
+      state.accessPoints = payload.map((ap) => {
         if (state.activeEmergencies.includes(ap.access_point_id)) {
           return { ...ap, emergency: true }
         }
