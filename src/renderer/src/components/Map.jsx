@@ -24,7 +24,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
   const accessPoints = useSelector(selectAccessPoints)
   const focusedAccessPoint = useSelector(selectFocusedAccessPoint)
 
-  const CustomIcon = ({ count = 0, status, selected }) => {
+  const CustomIcon = ({ count = 0, status, selected, emergency }) => {
     const SIZE = 25
     return (
       <svg
@@ -44,7 +44,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
           transitionProperty: 'revert'
         }}
       >
-        <circle cx="25" cy="25" r="25" fill={status ? '#FFC107' : 'grey'} />
+        <circle cx="25" cy="25" r="25" fill={emergency ? 'red' : status ? '#FFC107' : 'grey'} />
         <text x="50%" y="50%" textAnchor="middle" fill="black" fontSize="22px" dy=".3em">
           {count}
         </text>
@@ -54,7 +54,8 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
 
   CustomIcon.propTypes = {
     count: PropTypes.number,
-    status: PropTypes.number
+    status: PropTypes.number,
+    emergency: PropTypes.bool
   }
 
   useEffect(() => {
@@ -153,6 +154,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
             status={point?.access_point_status}
             count={point?.measurements?.length}
             selected={focusedAccessPoint === point?.access_point_id}
+            emergency={point?.emergency}
           />
         </Marker>
       ))}

@@ -7,9 +7,19 @@ export const dashboard = createSlice({
     accessPoints: [],
     state: false,
     announcements: true,
-    focusedAccessPoint: 0
+    focusedAccessPoint: 0,
+    activeEmergencies: []
   },
   reducers: {
+    setAccessPointEmergency: (state, { payload }) => {
+      state.activeEmergencies.push(payload)
+      state.accessPoints = state.accessPoints.map((ap) => {
+        if (ap.access_point_id === payload) {
+          return { ...ap, emergency: true }
+        }
+        return ap
+      })
+    },
     setDashboardData: (state, { payload }) => {
       state.areas = payload?.areas
       state.accessPoints = payload?.access_points
@@ -37,10 +47,20 @@ export const dashboard = createSlice({
       })
     },
     updateAccessPointMeasurements: (state, { payload }) => {
-      state.accessPoints = payload
+      //state.accessPoints = payload
+      state.accessPoints = payload.map((ap) => {
+        if (state.activeEmergencies.includes(ap.access_point_id)) {
+          return { ...ap, emergency: true }
+        }
+        return { ...ap, emergency: false }
+      })
     },
     setSeenAnnouncements: (state) => {
       state.announcements = !state.announcements
+    },
+    turnOffEmergencies: (state) => {
+      state.activeEmergencies = []
+      state.accessPoints = state.accessPoints.map((ap) => ({ ...ap, emergency: false }))
     }
   }
 })
@@ -48,9 +68,11 @@ export const dashboard = createSlice({
 export const {
   setDashboardData,
   updateAccessPoint,
+  turnOffEmergencies,
   setAccessPointStatus,
   setSeenAnnouncements,
   setFocusedAccesspoint,
+  setAccessPointEmergency,
   updateAccessPointMeasurements
 } = dashboard.actions
 

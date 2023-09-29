@@ -25,7 +25,8 @@ import { setAlertsOff } from '../../store/features/alertsSlice'
 import {
   setDashboardData,
   setFocusedAccesspoint,
-  setSeenAnnouncements
+  setSeenAnnouncements,
+  turnOffEmergencies
 } from '../../store/features/dashboadSlice'
 import {
   selectAreas,
@@ -219,15 +220,14 @@ const Dashbord = () => {
                     <Button
                       className="button"
                       label="Stop Alerts"
-                      onClick={() => dispatch(setAlertsOff())}
+                      onClick={() => {
+                        dispatch(setAlertsOff())
+                        dispatch(turnOffEmergencies())
+                      }}
                       badge={alertCount.toString()}
                     />
                   ) : (
-                    <Button
-                      className="button"
-                      label="Stop Alerts"
-                      onClick={() => dispatch(setAlertsOff())}
-                    />
+                    <Button className="button" label="Stop Alerts" />
                   )}
                   <Button
                     className="button"
