@@ -11,13 +11,13 @@ export const emailRegex = new RegExp(/\S+@\S+\.\S+/)
 
 export const catchHandler = (error, toastRef) => {
   try {
-    showToast('error', 'Error', error.response.data.message, toastRef)
-
-    if (error?.response?.status && error?.response?.status === 401) {
+    if (error?.response?.status === 401) {
       setTimeout(() => {
         store.dispatch(logout())
       }, 3000)
     }
+
+    showToast('error', 'Error', error.response.data.message, toastRef)
   } catch (err) {
     showToast('error', 'Error', error.message, toastRef)
   }
