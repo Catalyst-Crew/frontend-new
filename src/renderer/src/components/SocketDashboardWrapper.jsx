@@ -1,3 +1,4 @@
+import axios from 'axios'
 import PropTypes from 'prop-types'
 import { io } from 'socket.io-client'
 import { useEffect, useRef, useState } from 'react'
@@ -8,11 +9,13 @@ import {
   updateAccessPoint,
   updateAccessPointMeasurements
 } from '../store/features/dashboadSlice'
+import { selectUserToken } from '../store/store'
+import { catchHandler } from '../utils/functions'
 import { API_URL, serverEvents } from '../utils/exports'
-
-import { Button } from 'primereact/button'
-import { Toast } from 'primereact/toast'
 import { setAlertStatus, setAlerts } from '../store/features/alertsSlice'
+
+import { Toast } from 'primereact/toast'
+import { Button } from 'primereact/button'
 
 const SocketDashboardWrapper = (props) => {
   const toast = useRef(null)
@@ -20,21 +23,29 @@ const SocketDashboardWrapper = (props) => {
 
   const [socket, setSocket] = useState(null)
 
+  const token = useSelector(selectUserToken)
   const isLogged = useSelector((state) => state.auth.state)
 
   const markAlert = (id) => {
-    dispatch(setAlertStatus(id))
+    axios.get(`${API_URL}/alerts/acknowledge/${id}`,
+      { headers: { 'x-access-token': token } }).then((res) => {
+        dispatch(setAlertStatus(id))
+      }).catch((err) => {
+        catchHandler(err, toast)
+      })
   }
 
   useEffect(() => {
-    const newSocket = io(API_URL, {
-      transports: ['websocket'],
-      extraHeaders: {
-        'x-auth-token': localStorage.getItem('token')
-      }
-    })
-
+    let newSocket;
     if (isLogged) {
+      newSocket = io(API_URL, {
+        transports: ['websocket'],
+        extraHeaders: {
+          'x-auth-token': token
+        }
+      })
+
+
       setSocket(socket)
 
       newSocket.on(serverEvents.ACCESS_POINT, (data) => {
@@ -80,12 +91,7 @@ const SocketDashboardWrapper = (props) => {
                 </tbody>
               </table>
               <div>
-                <Button
-                  size="small"
-                  link
-                  label="Mark Resolved"
-                  onClick={() => markAlert(data.alert_id)}
-                />
+                <Acknowledge id={data.alert_id} handleClick={markAlert} />
               </div>
             </div>
           )
@@ -100,7 +106,7 @@ const SocketDashboardWrapper = (props) => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <Toast ref={toast} onHide={(data) => console.log(data)} />
       {props.children}
     </>
   )
@@ -111,3 +117,20 @@ SocketDashboardWrapper.propTypes = {
 }
 
 export default SocketDashboardWrapper
+
+const Acknowledge = ({ id, handleClick }) => {
+  const [clicked, setClicked] = useState(false)
+  return (
+    <Button
+      size="small"
+      link
+      label={clicked ? "" : "Acknowledge"}
+      onClick={() => {
+        handleClick(id)
+        setClicked(true)
+      }}
+      icon={clicked ? "pi pi-check" : ""}
+      disabled={clicked}
+    />
+  )
+}
