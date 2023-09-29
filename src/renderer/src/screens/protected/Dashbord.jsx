@@ -35,6 +35,7 @@ import {
   selectAccessPoints,
   selectAnnouncements
 } from '../../store/store'
+import MinerSearch from '../../components/MinerSearch'
 
 const Dashbord = () => {
   const op = useRef(null)
@@ -45,6 +46,7 @@ const Dashbord = () => {
 
   const [zoom, setZoom] = useState(16.2)
   const [color, setColor] = useState('info')
+  const [search, setSearch] = useState(false)
   const [showAnn, setShowAnn] = useState(true)
   const [intervalTime, setIntervalTime] = useState(10_000)
   const [center, setCenter] = useState([-26.260693, 29.121075])
@@ -300,7 +302,15 @@ const Dashbord = () => {
         {/* Cards caontainer */}
         <div className="col-3 pl-2 line-height-2 flex flex-column gap-2">
           {accessPoints[next.accessPoint]?.measurements?.length > 0 ? (
-            <Card title="Miner Details" className="text-sm">
+            <Card
+              title={() => (
+                <div className="flex justify-content-between align-items-center">
+                  <h4 className="p-0 m-0 ">Miner Details</h4>
+                  <Button icon="pi pi-search" text onClick={() => setSearch(true)} />
+                </div>
+              )}
+              className="text-sm"
+            >
               <table className="w-full">
                 <tbody>
                   <tr>
@@ -364,7 +374,15 @@ const Dashbord = () => {
               </div>
             </Card>
           ) : (
-            <Card title="Miner Details" className="text-sm">
+            <Card
+              title={() => (
+                <div className="flex justify-content-between align-items-center">
+                  <h4 className="p-0 m-0 ">Miner Details</h4>
+                  <Button icon="pi pi-search" text onClick={() => setSearch(true)} />
+                </div>
+              )}
+              className="text-sm"
+            >
               <table className="w-full">
                 <tbody>
                   <tr>
@@ -556,6 +574,8 @@ const Dashbord = () => {
         toastRef={toastRef}
         userToken={userToken}
       />
+
+      <MinerSearch show={search} setShow={setSearch} />
     </div>
   )
 }

@@ -1,6 +1,7 @@
+import axios from 'axios'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Image } from 'primereact/image'
 import { Button } from 'primereact/button'
@@ -8,6 +9,9 @@ import { TabMenu } from 'primereact/tabmenu'
 
 import IconImage from '../assets/images/icon.png'
 
+import { API_URL } from '../utils/exports'
+import { selectUserToken } from '../store/store'
+import { catchHandler } from '../utils/functions'
 import { logout } from '../store/features/authSlice'
 
 const items = [
@@ -20,8 +24,10 @@ const items = [
 ]
 
 const Navbar = ({ activeIndex = 0 }) => {
-  const navigator = useNavigate()
   const dispatch = useDispatch()
+  const navigator = useNavigate()
+
+  const token = useSelector(selectUserToken)
 
   return (
     <div>
@@ -39,6 +45,7 @@ const Navbar = ({ activeIndex = 0 }) => {
           severity="warning"
           label="Logout"
           onClick={() => {
+            axios.get(`${API_URL}/auth/logout/${token}`).then().catch((err) => catchHandler(err, null))
             dispatch(logout())
           }}
         />

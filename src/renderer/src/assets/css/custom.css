@@ -50,4 +50,10 @@
   align-items: center !important;
 }
 
+.search-card {
+  border: 2px solid #263238;
+  border-radius: 5px;
+  background-color: #26323842;
+}
+
 /* Path: src\js\assets\css\custom.css */
