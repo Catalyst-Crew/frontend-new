@@ -1,46 +1,50 @@
 {
   "questions": [
     {
-      "questionText": "What is the capital of France?",
-      "answer": "Paris"
+      "id": 1,
+      "questionText": "How does the RescueRadar RescueRadar work?",
+      "answer": "The RescueRadar is a plug and play, installed in the company's computers."
     },
     {
-      "questionText": "Who is CEO of Tesla?",
-      "answer": "Elon Musk"
+      "id": 2,
+      "questionText": "Does the RescueRadar require internet to work?",
+      "answer": "Yes, without internet the RescueRadar will not work."
+     
     },
     {
-      "questionText": "The iPhone was created by which company?",
-      "answer": "Apple"
+      "id": 3,
+      "questionText": "Who has access  to make changes in RescueRadar?",
+      "answer": "RescueRadar is connected to the administrator's computer through a server. The administrator has full access to make changes to RescueRadar, while supervisors have limited access, preventing them from making major changes."
     },
     {
-      "questionText": "What is the capital of France?",
-      "answer": "Paris"
+      "id": 4,
+      "questionText": "What occurs if there is loadshedding while the app is running?",
+      "answer": "The device will not work during loadshedding but the app will , if there is an uninterrupted power supply and internet connection available as it requires internet to work."
     },
     {
-      "questionText": "Who is CEO of Tesla?",
-      "answer": "Elon Musk"
+      "id": 5,
+      "questionText": "How do I log into RescueRadar?",
+      "answer": "You can log into RescueRadar by clicking on the login button after entering your email and password"
     },
     {
-      "questionText": "The iPhone was created by which company?",
-      "answer": "Apple"
+      "id": 6,
+      "questionText": "How do I reset RescueRadar password?",
+      "answer": "You can reset your password by clicking on the forgot password link on the login page"
     },
     {
-      "questionText": "What is the capital of France?",
-      "answer": "Paris"
+      "id": 7,
+      "questionText": "How accurate is the miner tracking system??",
+      "answer": "The miner tracking system is very accurate, with locating a miner approximately 20 metres from an access point."
+     
     },
     {
-      "questionText": "Who is CEO of Tesla?",
-      "answer": "Elon Musk"
-    },
-    {
-      "questionText": "The iPhone was created by which company?",
-      "answer": "Apple"
-    },
-    {
-      "questionText": "What is the capital of France?",
-      "answer": "Paris"
+      "id": 8,
+      "questionText": "What should I do when a panic button is accidently pressed ?",
+      "answer": "The admin at the control room will get an alert and verify the emergency with the supervisor assigned to that mine shaft, if it is a false alarm the admin will cancel the emergency"
     }
+    
   ],
+
 
   "mobile": [
     {
