@@ -44,58 +44,50 @@
     }
     
   ],
-
-
-  "mobile": [
-    {
-      "questionText": "Is there an app available ?",
-      "answer": "Yes we have an app available for both Android and IOS"
-    },
-    {
-      "questionText": "How do I get the app?",
-      "answer": "You can download the app from the App Store or Google Play Store"
-    },
-    {
-      "questionText": "Do you have a QR code for the app?",
-      "answer": "Yes we have a QR code for the app"
-    },
-    {
-      "questionText": "Does the app work offline?",
-      "answer": "No the app  does not work offline,Wifi/Data is required to use the app"
-    }
-  ],
   "tutorial": [
     {
-      "questionText": "How do I use the map in the desktop application?",
-      "answer": "first you need to click on the map icon on the left side of the screen,then you can use the map"
+      "id": 1,
+      "questionText": "How do I turn of sound alerts?",
+      "answerText": "Dashboard > Settings > Scroll Downs > Toggle Sound Alerts",
+      "media": [
+        {
+          "type": "video",
+          "source": "turn-off-sound-alerts.webm"
+        }
+      ]
     },
     {
-      "questionText": "Who is CEO of Tesla?",
-      "answer": "Elon Musk"
+      "id": 2,
+      "questionText": "Posting a new announcement",
+      "answerText": "",
+      "media": [
+        {
+          "type": "video",
+          "source": "post-announcement.webm"
+        }
+      ]
     },
     {
-      "questionText": "The iPhone was created by which company?",
-      "answer": "Apple"
+      "id": 3,
+      "questionText": "Adding a new user as an admin",
+      "answerText": "Head to 'Users' tab",
+      "media": [
+        {
+          "type": "video",
+          "source": "new-user.webm"
+        }
+      ]
     },
     {
-      "questionText": "What is the capital of France?",
-      "answer": "Paris"
-    },
-    {
-      "questionText": "Who is CEO of Tesla?",
-      "answer": "Elon Musk"
-    },
-    {
-      "questionText": "The iPhone was created by which company?",
-      "answer": "Apple"
-    },
-    {
-      "questionText": "What is the capital of France?",
-      "answer": "Paris"
-    },
-    {
-      "questionText": "How do I assign access ?",
-      "answer": "You can assign access by clicking on the user icon on the left side of the screen"
+      "id": 4,
+      "questionText": "Managing sensors and access point",
+      "answerText": "Head to 'Access Points' tab",
+      "media": [
+        {
+          "type": "video",
+          "source": "access-point.mp4"
+        }
+      ]
     }
   ]
 }

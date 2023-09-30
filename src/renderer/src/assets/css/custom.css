@@ -56,4 +56,31 @@
   background-color: #26323842;
 }
 
+.help-table th{
+  text-align: left;
+  padding: 10px ;
+  background-color: #575f7f;
+}
+
+.help-table td{
+  padding: 10px ;
+  margin: 0 10px;
+}
+
+.help-table tr:nth-child(2){
+  background-color: #575f7f88;
+}
+.help-table tr:nth-child(4){
+  background-color: #575f7f88;
+}
+.help-table tr:nth-child(6){
+  background-color: #575f7f88;
+}
+.help-table tr:nth-child(8){
+  background-color: #575f7f88;
+}
+.help-table tr:nth-child(10){
+  background-color: #575f7f88;
+}
+
 /* Path: src\js\assets\css\custom.css */

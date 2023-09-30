@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
-
-import PropTypes from 'prop-types'
-import { Dialog } from 'primereact/dialog'
-import { useEffect } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+
+import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
+import { Dropdown } from 'primereact/dropdown'
+import { InputText } from 'primereact/inputtext'
+
 import { API_URL } from '../utils/exports'
 import { catchHandler, showToast } from '../utils/functions'
-import { InputText } from 'primereact/inputtext'
-import { Dropdown } from 'primereact/dropdown'
-import { Button } from 'primereact/button'
 
 const NewAccess = ({ visible, setVisible, refresh, toastRef }) => {
   const { user } = useSelector((state) => state.auth)
