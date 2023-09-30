@@ -26,6 +26,7 @@ const Announcements = ({ visible, setVisible, toastRef }) => {
 
   const user = useSelector(selectUser)
   const token = useSelector(selectUserToken)
+  
   useEffect(() => {
     if (localStorage.getItem('announcements')) {
       const cachedData = JSON.parse(localStorage.getItem('announcements'))
@@ -68,9 +69,13 @@ const Announcements = ({ visible, setVisible, toastRef }) => {
         }
       )
       .then((response) => {
+        setNewAnnData({
+          ann_name: '',
+          ann_message: ''
+        })
+        getMessages()
         showToast('success', 'Success', response.data.message, toastRef)
         showNewAnn()
-        getMessages()
       })
       .catch((error) => {
         catchHandler(error, toastRef)
@@ -184,7 +189,7 @@ const Header = ({ handleClick, hide }) => (
       size="small"
       text
       label="Add new"
-      hidden={hide}
+      disabled={hide}
     />
   </div>
 )
