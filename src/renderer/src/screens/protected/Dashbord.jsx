@@ -276,6 +276,7 @@ const Dashbord = () => {
                     onClick={() => setZoom(zoom + 0.2 < 20 ? zoom + 0.2 : 20)}
                   />
                   <Button
+                    accessKey="Shift + r"
                     icon="pi pi-refresh"
                     text
                     raised

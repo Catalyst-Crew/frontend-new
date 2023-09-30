@@ -23,26 +23,25 @@ export default function App() {
       <HashRouter>
         {isLogged && user ? (
           //true ? (
-            <Routes>
-              <Route path="/" index element={<Dashbord />} />
-              <Route path="/help" element={<Help />} />
-              <Route path="/logs" element={<Logs />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/employees" element={<Employee />} />
-              <Route path="/access-points" element={<AccessPoints />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="*" index element={<Dashbord />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/help" element={<Help />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="*" element={<Login />} />
-            </Routes>
-          )
-        }
+          <Routes>
+            <Route path="/" index element={<Dashbord />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/logs" element={<Logs />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/employees" element={<Employee />} />
+            <Route path="/access-points" element={<AccessPoints />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="*" index element={<Dashbord />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="*" element={<Login />} />
+          </Routes>
+        )}
       </HashRouter>
     </SocketDashboardWrapper>
   )

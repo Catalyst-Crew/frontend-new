@@ -38,16 +38,16 @@ const SocketDashboardWrapper = (props) => {
       })
   }
 
-  useEffect(() => {    
-     const newSocket = io(API_URL, {
-        transports: ['websocket'],
-        extraHeaders: {
-          'x-auth-token': token
-        }
-      })
+  useEffect(() => {
+    const newSocket = io(API_URL, {
+      transports: ['websocket'],
+      extraHeaders: {
+        'x-auth-token': token
+      }
+    })
 
-      setSocket(socket)
-if (isLogged) {
+    setSocket(socket)
+    if (isLogged) {
       newSocket.on(serverEvents.ACCESS_POINT, (data) => {
         dispatch(
           setAccessPointStatus({ access_point_status: data.status, access_point_id: data.id })

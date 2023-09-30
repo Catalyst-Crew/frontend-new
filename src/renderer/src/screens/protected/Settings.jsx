@@ -61,7 +61,7 @@ const Settings = () => {
         if (res.status !== 200) {
           return
         }
-        console.log(res.data)
+        //console.log(res.data)
         setSettings((prev) => ({
           ...prev,
           ...res.data
@@ -202,7 +202,7 @@ const Settings = () => {
                 className="w-full md:w-14rem"
               />
             </div>
-            <div className="flex flex-column gap-2">
+            {/* <div className="flex flex-column gap-2">
               <label htmlFor="mode">Dark Mode:</label>
               <Dropdown
                 id="mode"
@@ -214,7 +214,7 @@ const Settings = () => {
                 placeholder="Off"
                 className="w-full md:w-14rem"
               />
-            </div>
+            </div> */}
             <Button
               label="Save"
               className="p-button-raised p-button-rounded"

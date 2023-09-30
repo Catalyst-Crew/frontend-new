@@ -45,7 +45,10 @@ const Navbar = ({ activeIndex = 0 }) => {
           severity="warning"
           label="Logout"
           onClick={() => {
-            axios.get(`${API_URL}/auth/logout/${token}`).then().catch((err) => catchHandler(err, null))
+            axios
+              .get(`${API_URL}/auth/logout/${token}`)
+              .then()
+              .catch((err) => catchHandler(err, null))
             dispatch(logout())
           }}
         />

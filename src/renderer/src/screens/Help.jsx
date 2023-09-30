@@ -13,15 +13,18 @@ const Help = () => {
   const navigator = useNavigate()
 
   return (
-    <div className="flex flex-column align-items-center overflow-hidden" style={{ height: '97vh' }}>
+    <div
+      className="flex flex-column align-items-center justify-content-center align-content-center overflow-hidden"
+      style={{ height: '97vh' }}
+    >
       <div className="text-center mb-3">
         <h1>Help</h1>
         <Button onClick={() => navigator('/')}>Go To Login</Button>
       </div>
 
       <TabView>
-        <TabPanel header="Frequently Asked Questions" leftIcon="pi pi-question-circle mr-2">
-          <ScrollPanel style={{ width: '97vw', height: '70vh' }}>
+        <TabPanel header="FAQ" leftIcon="pi pi-question-circle mr-2">
+          <ScrollPanel style={{ width: '96vw', height: '70vh' }}>
             <div className="grid gap-3 m-auto p-5 justify-content-center">
               {questions.map((item, i) => (
                 <Panel className="col-5" collapsed key={i} header={item.questionText} toggleable>
@@ -33,7 +36,7 @@ const Help = () => {
         </TabPanel>
 
         <TabPanel header="Tutorials" leftIcon="pi pi-book mr-2">
-          <ScrollPanel style={{ width: '97vw', height: '70vh' }}>
+          <ScrollPanel style={{ width: '96vw', height: '70vh' }}>
             <div className="flex flex-column gap-2">
               <Panel collapsed header="How to login" toggleable></Panel>
               <Panel collapsed header="How to reset password" toggleable></Panel>
@@ -42,7 +45,7 @@ const Help = () => {
           </ScrollPanel>
         </TabPanel>
 
-        <TabPanel header="Mobile App" leftIcon="pi pi-tablet mr-2">
+        {/* <TabPanel header="Mobile App" leftIcon="pi pi-tablet mr-2">
           <ScrollPanel style={{ width: '97vw', height: '70vh' }}>
             <div className="grid gap-3 m-auto p-5 justify-content-center">
               {mobile.map((item, i) => (
@@ -52,10 +55,10 @@ const Help = () => {
               ))}
             </div>
           </ScrollPanel>
-        </TabPanel>
+        </TabPanel> */}
 
         <TabPanel header="Contact" leftIcon="pi pi-envelope mr-2">
-          <ScrollPanel style={{ width: '97vw', height: '70vh' }}>
+          <ScrollPanel style={{ width: '96vw', height: '70vh' }}>
             <div className="grid gap-3 m-auto p-5 justify-content-center">
               <p className="m-0">
                 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
