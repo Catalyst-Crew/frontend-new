@@ -168,12 +168,14 @@ const Users = () => {
 
       <div className="flex h-max-h-full">
         {/* Table div */}
-        <div className="w-8 px-3 ">
+        <div className="w-8 px-3">
           <DataTable
             value={users}
             scrollable
             className="max-h-full"
             scrollHeight="calc(100vh - 5rem)"
+            rows={6}
+            paginator={users > 10}
           >
             <Column
               header="Name"
@@ -192,7 +194,7 @@ const Users = () => {
         <div className="flex flex-column w-4 px-3 gap-3">
           <Button
             onClick={() => setVisible(true)}
-            className="add text-center mt-1 mb-2"
+            className="add text-center mt-1"
             disabled={user.user_role_id !== ADMIN_ROLE}
             size="large"
           >
@@ -202,7 +204,7 @@ const Users = () => {
           <Card className="sidebar">
             {username(selectedUser)}
 
-            <div className="mt-4">
+            <div className="mt-4 flex flex-column gap-2">
               <div className="flex flex-column gap-2 text-left">
                 <label htmlFor="username">Access:</label>
                 <Dropdown
@@ -242,7 +244,7 @@ const Users = () => {
                 />
               </div>
 
-              <div className="mt-3 flex flex-column">
+              <div className="mt-4 flex flex-column">
                 <div>Activity:</div>
                 <div>
                   <table>
@@ -259,10 +261,10 @@ const Users = () => {
                       </tr>
                       <tr>
                         <td>
-                          <p className="m-0">Updated by:</p>
+                          <p className="m-0 mt-1">Updated by:</p>
                         </td>
                         <td>
-                          <p className="m-0 font-bold">{selectedUser.updated_by}</p>
+                          <p className="m-0 mt-1 font-bold">{selectedUser.updated_by}</p>
                         </td>
                       </tr>
 
@@ -277,9 +279,9 @@ const Users = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td>Created by:</td>
+                        <td className="m-0 mt-1">Created by:</td>
                         <td>
-                          <p className="m-0 font-bold">{selectedUser.created_by}</p>
+                          <p className="m-0 mt-1 font-bold">{selectedUser.created_by}</p>
                         </td>
                       </tr>
                     </tbody>

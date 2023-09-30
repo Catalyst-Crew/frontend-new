@@ -40,7 +40,7 @@
 
 .p-tabview-nav {
   display: grid !important;
-  grid-template-columns: 1fr 1fr 1fr 1fr !important ;
+  grid-template-columns: 1fr 1fr 1fr !important ;
 }
 
 .p-tabview-nav-link {

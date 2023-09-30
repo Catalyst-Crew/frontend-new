@@ -152,7 +152,7 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
           />
         </div>
 
-        <div className="mt-3 flex flex-column">
+        <div className="mt-1 flex flex-column">
           <div>
             <table>
               <tbody>
@@ -179,10 +179,16 @@ export default function ManageSensor({ data, toastRef, token, username, refresh 
           </div>
         </div>
 
-        <div className="mt-3 flex justify-content-end">
-          <Button className="w-8 mr-2" label="Update" size="small" onClick={updateSensor} />
+        <div className="mt-2 flex flex-column  justify-content-end">
           <Button
-            className="w-4 ml-2"
+            className="w-full "
+            label="Update"
+            size="small"
+            onClick={updateSensor}
+            icon="pi pi-check"
+          />
+          <Button
+            className="w-full mt-3"
             label="Unassign"
             size="small"
             outlined

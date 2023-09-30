@@ -84,7 +84,14 @@ const Logs = () => {
   }
 
   const paginatorLeft = (
-    <Button loading={isLoading} type="button" icon="pi pi-refresh" text onClick={fetchLogs} />
+    <Button
+      loading={isLoading}
+      type="button"
+      icon="pi pi-refresh"
+      text
+      onClick={fetchLogs}
+      accessKey="Shift + r"
+    />
   )
 
   const paginatorRight = (

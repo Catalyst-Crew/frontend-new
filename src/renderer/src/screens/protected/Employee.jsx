@@ -219,12 +219,16 @@ const Employee = () => {
 
       <div className="flex h-max-h-full">
         {/* Table div */}
-        <div className="w-8 px-3 ">
+        <div className="w-8 px-3">
           <DataTable
-            value={employess}
+            rows={20}
+            paginator
             scrollable
-            className="max-h-full"
-            scrollHeight="calc(100vh - 5rem)"
+            stripedRows
+            value={employess}
+            className="min-h-full"
+            alwaysShowPaginator={false}
+            scrollHeight="calc(100vh - rem)"
           >
             <Column
               header="Name"
@@ -243,11 +247,11 @@ const Employee = () => {
         <div className="flex flex-column w-4 px-3 gap-3">
           <Button
             onClick={() => setVisible(true)}
-            className="add text-center mt-1 mb-2"
+            className="add text-center mt-1"
             disabled={user.user_role_id !== ADMIN_ROLE}
             size="large"
           >
-            Add Employee
+            Add employee
           </Button>
 
           <Card className="sidebar">
@@ -293,37 +297,36 @@ const Employee = () => {
                 />
               </div>
 
-              <div className="mt-3 flex flex-column">
+              <div className="mt-4 flex flex-column">
                 <div>Activity:</div>
-
                 <div>
                   <table>
                     <tbody>
                       <tr>
                         <td>
-                          <p className="m-0 mt-4">Updated:</p>
+                          <p className="m-0 mt-3">Updated:</p>
                         </td>
                         <td>
-                          <p className="m-0  mt-4 font-bold">
+                          <p className="m-0  mt-3 font-bold">
                             {moment(selectedEmployee.updated_at).format('LLL')}
                           </p>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <p className="m-0">Updated by:</p>
+                          <p className="m-0 mt-1">Updated by:</p>
                         </td>
                         <td>
-                          <p className="m-0 font-bold">{selectedEmployee.updated_by}</p>
+                          <p className="m-0 mt-1 font-bold">{selectedEmployee.updated_by}</p>
                         </td>
                       </tr>
 
                       <tr>
                         <td>
-                          <p className="m-0 mt-4">Created:</p>
+                          <p className="m-0 mt-3">Created:</p>
                         </td>
                         <td>
-                          <p className="m-0  mt-4 font-bold">
+                          <p className="m-0  mt-3 font-bold">
                             {moment(selectedEmployee.created_at).format('LLL')}
                           </p>
                         </td>
@@ -331,23 +334,24 @@ const Employee = () => {
                       <tr>
                         <td>Created by:</td>
                         <td>
-                          <p className="m-0 font-bold">{selectedEmployee.created_by}</p>
+                          <p className="m-0 mt-1 font-bold">{selectedEmployee.created_by}</p>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-              <div className="mt-3 flex justify-content-end">
+              <div className="mt-3 flex flex-column gap-2">
                 <Button
-                  className="w-9 mr-2"
+                  className="w-full"
                   label="Save"
                   size="small"
+                  icon="pi pi-check"
                   onClick={updateEmployee}
                   disabled={selectedEmployee.id === 999_999}
                 />
                 <Button
-                  className="w-3 ml-2"
+                  className="w-full"
                   label="Delete"
                   size="small"
                   outlined

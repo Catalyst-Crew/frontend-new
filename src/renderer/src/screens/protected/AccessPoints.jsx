@@ -280,6 +280,7 @@ const header = ({ text, action, isLoading, refresh }) => {
           onClick={refresh}
           text
           size="small"
+          accessKey="Shift + r"
         />
       </div>
     </div>

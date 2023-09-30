@@ -140,10 +140,18 @@ const Reports = () => {
       .finally(() => setIsLoading(false))
   }
 
-  const paginatorRight = (
-    <Button loading={isLoading} type="button" icon="pi pi-refresh" text onClick={getReports} />
+  const paginatorLeft = (
+    <Button
+      id="refresh-Button"
+      loading={isLoading}
+      type="button"
+      icon="pi pi-refresh"
+      text
+      onClick={getReports}
+      accessKey="Shift+r"
+    />
   )
-  const paginatorLeft = <></>
+  const paginatorRight = <></>
 
   return (
     <div className="max-h-screen overflow-hidden">
@@ -156,8 +164,8 @@ const Reports = () => {
           paginator
           scrollable
           stripedRows
-          paginatorRight={paginatorLeft}
-          paginatorLeft={paginatorRight}
+          paginatorRight={paginatorRight}
+          paginatorLeft={paginatorLeft}
           className="p-datatable-sm w-8"
           scrollHeight="calc(90vh - 5rem)"
           rowsPerPageOptions={[20, 50, 100]}
@@ -168,7 +176,7 @@ const Reports = () => {
           <Column
             field="created_at"
             header="Date"
-            body={(rowData) => moment(rowData.created_at).format('MMM Do YY hh:mm')}
+            body={(rowData) => moment(rowData.created_at).format('Do MMM YYYY hh:mm')}
           />
           <Column
             field="download"
@@ -184,13 +192,13 @@ const Reports = () => {
           />
         </DataTable>
 
-        <div className="flex-column flex w-4 gap-2">
+        <div className="flex-column flex w-4 gap-3">
           <Card
             title="Generate a reports"
             className="w-full p-card-rounded p-card-plain p-mb-2"
-            subTitle="Select a report to generate below. Please note this might take time."
+            subTitle="Select a report to generate below. Please note this might take time to reflect back."
           >
-            <div className="flex flex-column gap-3">
+            <div className="flex flex-column gap-3 pt-2">
               <Dropdown
                 value={reportType}
                 options={[
@@ -241,7 +249,7 @@ const Reports = () => {
           <Card
             title="Uplod a report"
             className="w-full p-card-rounded p-card-plain p-mb-2"
-            subTitle="Upload a report below. Please note this might take time."
+            subTitle="Upload a report below. Please note this might take time to reflect back."
           >
             <div className="flex flex-column gap-3">
               <div className="flex flex-column gap-2 mt-2">
@@ -273,7 +281,7 @@ const Reports = () => {
                   loading={isLoading}
                   onError={() => showToast('error', 'Error', 'Upload failed.', toast)}
                 />
-                <small id="file-help">Please upload a CSV file only. Max file size is 10MB.</small>
+                <small id="file-help">Please upload CSV file only. Max file size is 10MB.</small>
               </div>
             </div>
           </Card>
@@ -286,7 +294,7 @@ const Reports = () => {
               </div>
               <div className="flex justify-content-between">
                 <p className="m-0">Current reports queue:</p>
-                <p className="ml-5 m-0">{Math.floor(Math.random() * 10)}</p>
+                <p className="ml-5 m-0">{Math.floor(Math.random() * 1)}</p>
               </div>
             </div>
           </Card>

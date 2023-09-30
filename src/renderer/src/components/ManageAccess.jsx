@@ -104,7 +104,16 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
   }
 
   return (
-    <Card title="Manage point" className="mb-2" subTitle={`${data?.id_prefix}${data.id}`}>
+    <Card
+      title="Manage point"
+      className="mb-2"
+      subTitle={() => (
+        <>
+          <p className="m-1">{data?.area_name}</p>
+          <p className="m-1">{`${data?.id_prefix}${data.id}`}</p>
+        </>
+      )}
+    >
       <div className="card flex mt-3">
         <div className="flex">
           <div className="flex flex-column gap-2 ml-2">
@@ -218,6 +227,7 @@ const ManageAccess = ({ data, toastRef, token, username, refresh }) => {
               onClick={() => {
                 setAccessPoint(data)
               }}
+              accessKey="Shift + r"
             />
           </div>
         </div>

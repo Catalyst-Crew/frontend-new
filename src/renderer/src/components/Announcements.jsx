@@ -26,7 +26,7 @@ const Announcements = ({ visible, setVisible, toastRef }) => {
 
   const user = useSelector(selectUser)
   const token = useSelector(selectUserToken)
-  
+
   useEffect(() => {
     if (localStorage.getItem('announcements')) {
       const cachedData = JSON.parse(localStorage.getItem('announcements'))

@@ -16,7 +16,7 @@ import { setFocusedAccesspoint } from '../store/features/dashboadSlice'
 const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
 
 export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef }) {
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   const [areas, setAreas] = useState([])
   const [overlayData, setOverlayData] = useState(null)
@@ -222,7 +222,15 @@ const dispatch = useDispatch()
                 setCenter([overlayData?.access_point_latitude, overlayData?.access_point_longitude])
               }}
             />
-            <Button label="View" className="mt" size="small" text onClick={()=>{dispatch(setFocusedAccesspoint(overlayData?.access_point_id))}}/>
+            <Button
+              label="View"
+              className="mt"
+              size="small"
+              text
+              onClick={() => {
+                dispatch(setFocusedAccesspoint(overlayData?.access_point_id))
+              }}
+            />
           </div>
         </Draggable>
       ) : null}
