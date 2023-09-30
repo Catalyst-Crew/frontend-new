@@ -1,7 +1,7 @@
 import axios from 'axios'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Draggable, GeoJson, Map, Marker } from 'pigeon-maps'
 
@@ -11,10 +11,13 @@ import CopyText from './CopyText'
 import { API_URL } from '../utils/exports'
 import { catchHandler } from '../utils/functions'
 import { selectAccessPoints, selectFocusedAccessPoint, selectUserToken } from '../store/store'
+import { setFocusedAccesspoint } from '../store/features/dashboadSlice'
 
 const colors = ['blue', 'red', 'green', 'black', 'yellow', 'orange', 'purple']
 
 export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef }) {
+const dispatch = useDispatch()
+
   const [areas, setAreas] = useState([])
   const [overlayData, setOverlayData] = useState(null)
   const [showOverlay, setShowOverlay] = useState(false)
@@ -219,7 +222,7 @@ export function MyMap({ defaultZoom, setZoom, defaultCenter, setCenter, toastRef
                 setCenter([overlayData?.access_point_latitude, overlayData?.access_point_longitude])
               }}
             />
-            <Button label="View" className="mt" size="small" text />
+            <Button label="View" className="mt" size="small" text onClick={()=>{dispatch(setFocusedAccesspoint(overlayData?.access_point_id))}}/>
           </div>
         </Draggable>
       ) : null}
