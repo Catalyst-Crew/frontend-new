@@ -302,7 +302,7 @@ const Users = () => {
           </Card>
         </div>
       </div>
-      <NewUser visible={visible} setVisible={setVisible} toast={toast} refresh={fetchtUsers} />
+      <NewUser visible={visible} setVisible={setVisible} toastRef={toast} refresh={fetchtUsers} />
     </div>
   )
 }
