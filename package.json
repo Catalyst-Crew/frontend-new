@@ -54,6 +54,6 @@
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.15.0",
     "redux": "^4.2.1",
-    "vite": "^4.4.9"
+    "vite": "^5.0.3"
   }
 }
